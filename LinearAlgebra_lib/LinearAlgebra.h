@@ -5,32 +5,30 @@
 #ifndef RAYTRACERCHAELLENGE_LINEARALGEBRA_H
 #define RAYTRACERCHAELLENGE_LINEARALGEBRA_H
 
+#include <stdexcept>
 
-class Tuple3 {
+class Tuple4 {
 public:
     float x, y, z;
-    Tuple3();
-    Tuple3(float x, float y, float z);
-    bool operator==(const Tuple3& other) const;
-    bool operator!=(const Tuple3& other) const;
+    const float w;
+    Tuple4(float x, float y, float z, float w);
+    bool operator==(const Tuple4& other) const;
+    bool operator!=(const Tuple4& other) const;
+    Tuple4 operator+(const Tuple4& other) const;
+    Tuple4 operator-(const Tuple4& other) const;
+    Tuple4 operator-() const;
 };
 
-class Point3 : public Tuple3 {
+class Point3 : public Tuple4 {
 public:
-    const float w;
     Point3();
     Point3(float x, float y, float z);
-    bool operator==(const Point3& other) const;
-    bool operator!=(const Point3& other) const;
 };
 
-class Vec3: public Tuple3 {
+class Vec3: public Tuple4 {
 public:
-    const float w;
     Vec3();
     Vec3(float x, float y, float z);
-    bool operator==(const Vec3& other) const;
-    bool operator!=(const Vec3& other) const;
 };
 
 

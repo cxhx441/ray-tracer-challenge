@@ -3,29 +3,40 @@
 //
 #include "LinearAlgebra.h"
 
-Tuple3::Tuple3() : x(0), y(0), z(0) {}
-Tuple3::Tuple3(float x, float y, float z) : x(x), y(y), z(z) {}
-bool Tuple3::operator==(const Tuple3& other) const {
-    return (x == other.x) && (y == other.y) && (z == other.z);
+Tuple4::Tuple4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
+bool Tuple4::operator==(const Tuple4& other) const {
+    return (x == other.x) && (y == other.y) && (z == other.z) && (w == other.w);
 }
-bool Tuple3::operator!=(const Tuple3& other) const {
-    return (x != other.x) || (y != other.y) || (z == other.z);
+bool Tuple4::operator!=(const Tuple4& other) const {
+    return (x != other.x) || (y != other.y) || (z != other.z) || (w != other.w);
+}
+Tuple4 Tuple4::operator+(const Tuple4& other) const {
+    if (w == 1 and other.w == 1) { throw std::invalid_argument("Cannot add two points"); }
+
+    float _x = x + other.x;
+    float _y = y + other.y;
+    float _z = z + other.z;
+    float _w = w + other.w;
+    if (_w == 1.f){ return Point3 (_x, _y, _z); }
+    else if (_w == 0.f){ return Vec3 ( _x, _y, _z); }
+    else { throw std::invalid_argument("Resulting w not equal to 0 or 1"); }
 }
 
-Point3::Point3() : Tuple3(), w(1.0f) {}
-Point3::Point3(float x, float y, float z) : Tuple3(x, y, z), w(1.0f) {}
-bool Point3::operator==(const Point3& other) const {
-    return Tuple3::operator==(other) && w == other.w;
-}
-bool Point3::operator!=(const Point3& other) const {
-    return Tuple3::operator!=(other) || w != other.w;
-}
+Tuple4 Tuple4::operator-(const Tuple4& other) const {
+    if (w == 0 and other.w == 1) { throw std::invalid_argument("Cannot subtract point from vector"); }
 
-Vec3::Vec3() : Tuple3(), w(0.0f) {}
-Vec3::Vec3(float x, float y, float z) : Tuple3(x, y, z), w(0.0f) {}
-bool Vec3::operator==(const Vec3& other) const {
-    return Tuple3::operator==(other) && w == other.w;
+    float _x = x - other.x;
+    float _y = y - other.y;
+    float _z = z - other.z;
+    float _w = w - other.w;
+    if (_w == 1.f){ return Point3 (_x, _y, _z); }
+    else if (_w == 0.f){ return Vec3 ( _x, _y, _z); }
+    else { throw std::invalid_argument("Resulting w not equal to 0 or 1"); }
 }
-bool Vec3::operator!=(const Vec3& other) const {
-    return Tuple3::operator!=(other) || w != other.w;
-}
+Tuple4 Tuple4::operator-() const { return { -x, -y, -z, w }; } //  SPECIFICALLY DEVIATING FROM BOOK BY NOT NEGATING W.
+
+Point3::Point3() : Tuple4(0.f, 0.f, 0.f, 1.f) {}
+Point3::Point3(float x, float y, float z) : Tuple4(x, y, z, 1.f) {}
+
+Vec3::Vec3() : Tuple4(0.f, 0.f, 0.f, 0.f) {}
+Vec3::Vec3(float x, float y, float z) : Tuple4(x, y, z, 0.f) {}
