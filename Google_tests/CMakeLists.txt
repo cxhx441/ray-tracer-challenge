@@ -4,8 +4,7 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 
 add_executable(Google_Tests_run
-        Point3Test.cpp
-        Vec3Test.cpp
+        TupleTest.cpp
 )
 
 target_link_libraries(Google_Tests_run LinearAlgebra_lib)

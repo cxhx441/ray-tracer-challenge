@@ -7,29 +7,30 @@
 
 #include <stdexcept>
 
-class Tuple4 {
+class Tuple {
 public:
     float x, y, z;
     const float w;
-    Tuple4(float x, float y, float z, float w);
-    bool operator==(const Tuple4& other) const;
-    bool operator!=(const Tuple4& other) const;
-    Tuple4 operator+(const Tuple4& other) const;
-    Tuple4 operator-(const Tuple4& other) const;
-    Tuple4 operator-() const;
-};
 
-class Point3 : public Tuple4 {
-public:
-    Point3();
-    Point3(float x, float y, float z);
-};
+    Tuple(float x, float y, float z, float w);
 
-class Vec3: public Tuple4 {
-public:
-    Vec3();
-    Vec3(float x, float y, float z);
-};
+    static Tuple point(float x, float y, float z);
+    static Tuple vector(float x, float y, float z);
 
+    static float magnitude(const Tuple &v);
+
+    [[nodiscard]] bool isPoint() const;
+    [[nodiscard]] bool isVector() const;
+
+    bool operator==(const Tuple& other) const;
+    bool operator!=(const Tuple& other) const;
+    Tuple operator+(const Tuple& other) const;
+    Tuple operator-(const Tuple& other) const;
+    Tuple operator-() const;
+    Tuple operator*(float scalar) const;
+    Tuple operator/(float scalar) const;
+
+
+};
 
 #endif //RAYTRACERCHAELLENGE_LINEARALGEBRA_H
