@@ -108,5 +108,37 @@ TEST(TupleTestSuite, MagnitudeOfVecNeg123) {
     EXPECT_FLOAT_EQ( Tuple::magnitude(v), std::sqrt(14));
 }
 
+TEST(TupleTestSuite, Normalize400) {
+    Tuple v = Tuple::vector(4, 0, 0);
+    EXPECT_EQ( Tuple::normalize(v), Tuple::vector(1, 0, 0));
+}
+
+TEST(TupleTestSuite, Normalize123) {
+    Tuple v = Tuple::vector(1, 2, 3);
+    Tuple n = Tuple::normalize(v);
+    EXPECT_FLOAT_EQ(n.x, 1.f / std::sqrt(14));
+    EXPECT_FLOAT_EQ(n.y, 2.f / std::sqrt(14));
+    EXPECT_FLOAT_EQ(n.z, 3.f / std::sqrt(14));
+}
+
+TEST(TupleTestSuite, MagnitudeOfNormalizedVector) {
+    Tuple v = Tuple::vector(1, 2, 3);
+    Tuple n = Tuple::normalize(v);
+    EXPECT_FLOAT_EQ(Tuple::magnitude(n), 1.f);
+}
+
+TEST(TupleTestSuite, DotProductOfTwoTuples) {
+    Tuple a = Tuple::vector(1, 2, 3);
+    Tuple b = Tuple::vector(2, 3, 4);
+    EXPECT_EQ(Tuple::dot(a, b), 20.f);
+}
+
+TEST(TupleTestSuite, CrossProductOfTwoTuples) {
+    Tuple v1 = Tuple::vector(1, 2, 3);
+    Tuple v2 = Tuple::vector(2, 3, 4);
+    EXPECT_EQ(Tuple::cross(v1, v2), Tuple::vector(-1, 2, -1) );
+    EXPECT_EQ(Tuple::cross(v2, v1), Tuple::vector(1, -2, 1) );
+}
+
 
 

@@ -18,6 +18,9 @@ public:
     static Tuple vector(float x, float y, float z);
 
     static float magnitude(const Tuple &v);
+    static Tuple normalize(const Tuple &v);
+    static float dot(const Tuple& a, const Tuple& b);
+    static Tuple cross(const Tuple& a, const Tuple& b);
 
     [[nodiscard]] bool isPoint() const;
     [[nodiscard]] bool isVector() const;
