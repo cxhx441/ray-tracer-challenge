@@ -1,7 +1,7 @@
 //
 // Created by Craig Harris on 7/26/24.
 //
-#include "LinearAlgebra.h"
+#include "Tuple.h"
 #include <cmath>
 
 Tuple::Tuple(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}

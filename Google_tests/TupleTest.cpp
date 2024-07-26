@@ -1,6 +1,6 @@
 
 #include "gtest/gtest.h"
-#include "LinearAlgebra.h"
+#include "Tuple.h"
 #include <cmath>
 
 TEST(TupleTestSuite, TupleWithW1IsPoint) {
