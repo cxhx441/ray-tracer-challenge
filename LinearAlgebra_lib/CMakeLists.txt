@@ -1,13 +1,11 @@
 project(LinearAlgebra)
 
 set(HEADER_FILES
-        Point3.h
-        Vec3.h
+        LinearAlgebra.h
         )
 
 set(SOURCE_FILES
-        Point3.cpp
-        Vec3.cpp
+        LinearAlgebra.cpp
 )
 
 add_library(LinearAlgebra_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})

@@ -1,24 +1,24 @@
 #include "gtest/gtest.h"
-#include "Vec3.h"
+#include "LinearAlgebra.h"
 
 
 class Vec3Fixture : public ::testing::Test {
 
 protected:
-    Vec3Fixture() : v1(nullptr), v2(nullptr) {} // Initialize pointers to nullptr
+    Vec3Fixture() : v1(nullptr), vZero(nullptr) {} // Initialize pointers to nullptr
 
     // Member variables
     Vec3 *v1;
-    Vec3 *v2;
+    Vec3 *vZero;
 
     void SetUp() override {
         v1 = new Vec3(1, 2, 3);
-        v2 = new Vec3(0, 0, 0);
+        vZero = new Vec3();
     }
 
     void TearDown() override {
         delete v1;
-        delete v2;
+        delete vZero;
     }
 
 };
@@ -29,19 +29,19 @@ TEST_F(Vec3Fixture, zeroVector){ // 1/1/1 -> 1/3/1
     v1->y = 0;
     v1->z = 0;
 
-    EXPECT_EQ(v1->x, v2->x);
-    EXPECT_EQ(v1->y, v2->y);
-    EXPECT_EQ(v1->z, v2->z);
+    EXPECT_EQ(v1->x, vZero->x);
+    EXPECT_EQ(v1->y, vZero->y);
+    EXPECT_EQ(v1->z, vZero->z);
 
 }
 
 TEST_F(Vec3Fixture, OneTwoThreeVector){ // 3/1/100 -> 3/2/100
 
-    v2->x = 1;
-    v2->y = 2;
-    v2->z = 3;
+    vZero->x = 1;
+    vZero->y = 2;
+    vZero->z = 3;
 
-    EXPECT_EQ(v2->x, v1->x);
-    EXPECT_EQ(v2->y, v1->y);
-    EXPECT_EQ(v2->z, v1->z);
+    EXPECT_EQ(vZero->x, v1->x);
+    EXPECT_EQ(vZero->y, v1->y);
+    EXPECT_EQ(vZero->z, v1->z);
 }
