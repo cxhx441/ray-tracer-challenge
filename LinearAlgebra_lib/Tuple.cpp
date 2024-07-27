@@ -3,6 +3,7 @@
 //
 #include "Tuple.h"
 #include <cmath>
+#include <iostream>
 
 Tuple::Tuple(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
 
@@ -66,6 +67,7 @@ Tuple Tuple::operator-(const Tuple& other) const {
     };
 }
 
+
 Tuple Tuple::operator-() const { return {-x, -y, -z, -w }; }
 
 Tuple Tuple::operator*(const float scalar) const {
@@ -84,4 +86,43 @@ Tuple Tuple::operator/(const float scalar) const {
             z / scalar,
             w / scalar
     };
+}
+
+Tuple& Tuple::operator+=(const Tuple& other) {
+    x += other.x;
+    y += other.y;
+    z += other.z;
+    w += other.w;
+    return *this;
+}
+
+Tuple& Tuple::operator-=(const Tuple& other) {
+    x -= other.x;
+    y -= other.y;
+    z -= other.z;
+    w -= other.w;
+    return *this;
+}
+
+Tuple& Tuple::operator*=(float scalar) {
+    x *= scalar;
+    y *= scalar;
+    z *= scalar;
+    w *= scalar;
+    return *this;
+}
+
+Tuple& Tuple::operator/=(float scalar) {
+    x /= scalar;
+    y /= scalar;
+    z /= scalar;
+    w /= scalar;
+    return *this;
+}
+
+
+// for printing
+std::ostream& operator<<(std::ostream& os, const Tuple& t) {
+    os << "(" << t.x << ", " << t.y << ", " << t.z << ", " << t.w << ")";
+    return os;
 }

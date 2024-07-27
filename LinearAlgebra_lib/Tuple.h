@@ -9,8 +9,7 @@
 
 class Tuple {
 public:
-    float x, y, z;
-    const float w;
+    float x, y, z, w;
 
     Tuple(float x, float y, float z, float w);
 
@@ -32,7 +31,11 @@ public:
     Tuple operator-() const;
     Tuple operator*(float scalar) const;
     Tuple operator/(float scalar) const;
-
+    Tuple& operator+=(const Tuple& other);
+    Tuple& operator-=(const Tuple& other);
+    Tuple& operator*=(float scalar);
+    Tuple& operator/=(float scalar);
+    friend std::ostream& operator<<(std::ostream& os, const Tuple& t); // for printing
 
 };
 

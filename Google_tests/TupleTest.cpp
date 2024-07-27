@@ -39,6 +39,7 @@ TEST(TupleTestSuite, AddingTwoTuples) {
     EXPECT_EQ( a1 + a2, Tuple(1, 1, 6, 1) );
 }
 
+
 TEST(TupleTestSuite, SubtractTwoPoints) {
     Tuple p1 = Tuple::point(3, 2, 1);
     Tuple p2 = Tuple::point(5, 6, 7);
@@ -81,6 +82,32 @@ TEST(TupleTestSuite, MultiplyingTupleByFraction) {
 TEST(TupleTestSuite, DivideTupleByScalar) {
     Tuple a(1, -2, 3, -4);
     EXPECT_EQ( a / 2, Tuple(0.5, -1, 1.5, -2) );
+}
+
+TEST(TupleTestSuite, AddingTupleToExisting) {
+    Tuple a1(3, -2, 5, 1);
+    Tuple a2(-2, 3, 1, 0);
+    a1 += a2;
+    EXPECT_EQ( a1, Tuple(1, 1, 6, 1) );
+}
+
+TEST(TupleTestSuite, SubtractTupleFromExisting) {
+    Tuple v1 = Tuple::vector(3, 2, 1);
+    Tuple v2 = Tuple::vector(5, 6, 7);
+    v1 -= v2;
+    EXPECT_EQ(v1, Tuple::vector(-2, -4, -6) );
+}
+
+TEST(TupleTestSuite, MultiplyingExisting) {
+    Tuple a(1, -2, 3, -4);
+    a *= 3.5;
+    EXPECT_EQ( a, Tuple(3.5, -7, 10.5, -14) );
+}
+
+TEST(TupleTestSuite, DivideExisting) {
+    Tuple a(1, -2, 3, -4);
+    a /= 2;
+    EXPECT_EQ( a, Tuple(0.5, -1, 1.5, -2) );
 }
 
 TEST(TupleTestSuite, MagnitudeOfVec100) {
