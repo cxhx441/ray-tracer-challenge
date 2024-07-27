@@ -154,6 +154,7 @@ std::ostream& operator<<(std::ostream& os, const Tuple& t) {
     return os;
 }
 
+Color::Color() : Tuple(0, 0, 0, 1) {}
 Color::Color(float r, float g, float b, float a) : Tuple(r, g, b, a){}
 float Color::r() { return x; }
 float Color::g() { return y; }
