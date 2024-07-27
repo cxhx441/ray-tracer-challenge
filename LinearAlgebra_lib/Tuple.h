@@ -15,6 +15,15 @@ public:
 
     static Tuple point(float x, float y, float z);
     static Tuple vector(float x, float y, float z);
+    static Tuple color(float r, float g, float b, float a);
+    float r() const;
+    float g() const;
+    float b() const;
+    float a() const;
+    void r(float r_val);
+    void g(float g_val);
+    void b(float b_val);
+    void a(float a_val);
 
     static float magnitude(const Tuple &v);
     static Tuple normalize(const Tuple &v);
@@ -30,6 +39,7 @@ public:
     Tuple operator-(const Tuple& other) const;
     Tuple operator-() const;
     Tuple operator*(float scalar) const;
+    Tuple operator*(const Tuple& other) const;
     Tuple operator/(float scalar) const;
     Tuple& operator+=(const Tuple& other);
     Tuple& operator-=(const Tuple& other);
@@ -38,5 +48,21 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Tuple& t); // for printing
 
 };
+
+class Color : public Tuple {
+public:
+    Color(float r, float g, float b, float a);
+    float r();
+    float g();
+    float b();
+    float a();
+    void r(float r_val);
+    void g(float g_val);
+    void b(float b_val);
+    void a(float a_val);
+    bool operator==(const Color& other) const;
+    bool operator!=(const Color& other) const;
+};
+
 
 #endif //RAYTRACERCHAELLENGE_TUPLE_H

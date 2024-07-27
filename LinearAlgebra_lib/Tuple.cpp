@@ -15,6 +15,18 @@ Tuple Tuple::vector(float x, float y, float z) {
     return {x, y, z, 0.0f};
 }
 
+Tuple Tuple::color(float r, float g, float b, float a) {
+    return {r, g, b, a};
+}
+float Tuple::r() const { return x; }
+float Tuple::g() const { return y; }
+float Tuple::b() const { return z; }
+float Tuple::a() const { return w; }
+void Tuple::r(float r) { x = r; }
+void Tuple::g(float g) { y = g; }
+void Tuple::b(float b) { z = b; }
+void Tuple::a(float a) { w = a; }
+
 [[nodiscard]] bool Tuple::isPoint() const { return w == 1.0f; }
 [[nodiscard]] bool Tuple::isVector() const { return w == 0.0f; }
 
@@ -42,11 +54,17 @@ Tuple Tuple::cross(const Tuple& a, const Tuple& b){
 }
 
 bool Tuple::operator==(const Tuple& other) const {
-    return (x == other.x) && (y == other.y) && (z == other.z) && (w == other.w);
+    return (abs(x - other.x) < 10e-5) &&
+         (abs(y - other.y) < 10e-5) &&
+         (abs(z - other.z) < 10e-5) &&
+         (abs(w - other.w) < 10e-5);
 }
 
 bool Tuple::operator!=(const Tuple& other) const {
-    return (x != other.x) || (y != other.y) || (z != other.z) || (w != other.w);
+    return (abs(x - other.x) >= 10e-5) ||
+           (abs(y - other.y) >= 10e-5) ||
+           (abs(z - other.z) >= 10e-5) ||
+           (abs(w - other.w) >= 10e-5);
 }
 
 Tuple Tuple::operator+(const Tuple& other) const {
@@ -76,6 +94,15 @@ Tuple Tuple::operator*(const float scalar) const {
             y * scalar,
             z * scalar,
             w * scalar
+    };
+}
+
+Tuple Tuple::operator*(const Tuple& other) const {
+    return {
+            x * other.x,
+            y * other.y,
+            z * other.z,
+            w * other.w
     };
 }
 
@@ -126,3 +153,13 @@ std::ostream& operator<<(std::ostream& os, const Tuple& t) {
     os << "(" << t.x << ", " << t.y << ", " << t.z << ", " << t.w << ")";
     return os;
 }
+
+Color::Color(float r, float g, float b, float a) : Tuple(r, g, b, a){}
+float Color::r() { return x; }
+float Color::g() { return y; }
+float Color::b() { return z; }
+float Color::a() { return w; }
+void Color::r(float r) { x = r; }
+void Color::g(float g) { y = g; }
+void Color::b(float b) { z = b; }
+void Color::a(float a) { w = a; }
