@@ -6,6 +6,7 @@
 #define RAYTRACERCHAELLENGE_CANVAS_H
 
 #include "Tuple.h"
+#include <string>
 
 class Canvas {
 public:
@@ -17,6 +18,9 @@ public:
     ~Canvas();
     void FillPixels(const Tuple& color);
     void WritePixel(int x, int y, const Tuple& color);
+    std::string ToPPMString();
+    void ToPPMFile(std::string title);
+    static int MapColorValue(float colorVal, int maxValue);
     friend std::ostream& operator<<(std::ostream& os, const Canvas& canvas); // for printing
 };
 

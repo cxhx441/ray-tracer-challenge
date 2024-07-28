@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Tuple.h"
 #include "Canvas.h"
+#include <filesystem>
 
 struct Projectile
 {
@@ -22,11 +23,15 @@ void tick(Projectile* proj, Environment* env) {
 }
 int main()
 {
-    Canvas canvas(5, 5);
-    canvas.FillPixels(Tuple::color(1, 0, 0, 1));  // Fill with red color
+    Canvas canvas(500, 500);
+    canvas.FillPixels(Tuple::color(1, 1, 0, 1));  // Fill with red color
 
     // Output the colors of the canvas
-    std::cout << canvas << std::endl;
+//    std::cout << canvas << std::endl;
+//    canvas.ToPPMString();
+    std::filesystem::path cwd = std::filesystem::current_path();
+    std::string filename(cwd.string() + "/canvas");
+    canvas.ToPPMFile(filename);
 
     Tuple initialPosition = Tuple::vector(0, 0, 0);
     Tuple initialVelocity = Tuple::vector(0, 50, 0);
