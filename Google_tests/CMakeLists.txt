@@ -5,6 +5,7 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 add_executable(Google_Tests_run
         TupleTest.cpp
+        CanvasTest.cpp
 )
 
 target_link_libraries(Google_Tests_run LinearAlgebra_lib)

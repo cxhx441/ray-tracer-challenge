@@ -29,6 +29,13 @@ void Canvas::FillPixels(const Tuple& color){
     }
 }
 
+void Canvas::WritePixel(int x, int y, const Tuple& color){
+    if (x > width - 1 || y > height - 1) {
+        throw std::invalid_argument("X or y exceeds the limits of the canvas");
+    }
+    pixels[y][x] = color;
+}
+
 
 std::ostream& operator<<(std::ostream& os, const Canvas& canvas) {
     for (int h = 0; h < canvas.height; ++h) {

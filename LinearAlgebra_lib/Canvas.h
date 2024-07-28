@@ -5,7 +5,7 @@
 #ifndef RAYTRACERCHAELLENGE_CANVAS_H
 #define RAYTRACERCHAELLENGE_CANVAS_H
 
-#include "tuple.h"
+#include "Tuple.h"
 
 class Canvas {
 public:
@@ -16,6 +16,7 @@ public:
     Canvas(int width, int height);
     ~Canvas();
     void FillPixels(const Tuple& color);
+    void WritePixel(int x, int y, const Tuple& color);
     friend std::ostream& operator<<(std::ostream& os, const Canvas& canvas); // for printing
 };
 
