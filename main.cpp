@@ -23,29 +23,39 @@ void tick(Projectile* proj, Environment* env) {
 }
 int main()
 {
-    Canvas canvas(500, 500);
-    canvas.FillPixels(Tuple::color(1, 1, 0, 1));  // Fill with red color
+    Canvas canvas(900, 550);
+//    canvas.FillPixels(Tuple::color(1, 1, 1, 1));  // Fill with red color
 
     // Output the colors of the canvas
 //    std::cout << canvas << std::endl;
 //    canvas.ToPPMString();
-    std::filesystem::path cwd = std::filesystem::current_path();
-    std::string filename(cwd.string() + "/canvas");
-    canvas.ToPPMFile(filename);
+//    canvas.ToPPMFile("../canvas");
 
-    Tuple initialPosition = Tuple::vector(0, 0, 0);
-    Tuple initialVelocity = Tuple::vector(0, 50, 0);
+    Tuple initialPosition = Tuple::vector(0, 1, 0);
+    Tuple initialVelocity = Tuple::normalize(Tuple::vector(1, 1.8, 0)) * 11.25;
     Projectile proj(initialPosition, initialVelocity);
 
-    Tuple gravity = Tuple::vector(0, -9.8, 0);
-    Tuple wind = Tuple::vector(-3, 0, 0);
+    Tuple gravity = Tuple::vector(0, -0.1, 0);
+    Tuple wind = Tuple::vector(-0.01, 0, 0);
     Environment env(gravity, wind );
 
 
     while (proj.position.y >= 0){
         tick(&proj, &env);
         std::cout << "Projectile Pos: " << proj.position << " Projectile Vel: " << proj.velocity << std::endl;
+        try{
+            canvas.WritePixel(proj.position.x, canvas.height - proj.position.y, Tuple::color(1, 1, 1, 1));
+            canvas.WritePixel(proj.position.x+1, canvas.height - proj.position.y, Tuple::color(1, 1, 1, 1));
+            canvas.WritePixel(proj.position.x-1, canvas.height - proj.position.y, Tuple::color(1, 1, 1, 1));
+            canvas.WritePixel(proj.position.x, canvas.height - proj.position.y+1, Tuple::color(1, 1, 1, 1));
+            canvas.WritePixel(proj.position.x, canvas.height - proj.position.y-1, Tuple::color(1, 1, 1, 1));
+        }
+        catch(std::invalid_argument const& ex){
+            std::cout << ex.what() << std::endl;
+        };
+
     }
+    canvas.ToPPMFile("../canvas");
     return 0;
 
 }

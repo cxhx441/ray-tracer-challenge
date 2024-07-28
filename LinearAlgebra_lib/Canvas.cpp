@@ -31,7 +31,7 @@ void Canvas::FillPixels(const Tuple& color){
 }
 
 void Canvas::WritePixel(int x, int y, const Tuple& color){
-    if (x > width - 1 || y > height - 1) {
+    if (x > width - 1 || x < 0 || y > height - 1 || y < 0) {
         throw std::invalid_argument("X or y exceeds the limits of the canvas");
     }
     pixels[y][x] = color;
@@ -76,11 +76,11 @@ std::string Canvas::ToPPMString(){
     return ppm;
 }
 
-void Canvas::ToPPMFile(std::string title){
+void Canvas::ToPPMFile(std::string filename){
     // write to file
     std::string ppm = ToPPMString();
-    title.append(".ppm");
-    std::ofstream out(title);
+    filename.append(".ppm");
+    std::ofstream out(filename);
     out << ppm;
 }
 

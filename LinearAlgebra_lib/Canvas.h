@@ -19,7 +19,7 @@ public:
     void FillPixels(const Tuple& color);
     void WritePixel(int x, int y, const Tuple& color);
     std::string ToPPMString();
-    void ToPPMFile(std::string title);
+    void ToPPMFile(std::string filename);
     static int MapColorValue(float colorVal, int maxValue);
     friend std::ostream& operator<<(std::ostream& os, const Canvas& canvas); // for printing
 };
