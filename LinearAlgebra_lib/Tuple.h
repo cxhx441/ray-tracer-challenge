@@ -11,6 +11,7 @@ class Tuple {
 public:
     float x, y, z, w;
 
+    Tuple();
     Tuple(float x, float y, float z, float w);
 
     static Tuple point(float x, float y, float z);
@@ -48,22 +49,5 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Tuple& t); // for printing
 
 };
-
-class Color : public Tuple {
-public:
-    Color();
-    Color(float r, float g, float b, float a);
-    float r();
-    float g();
-    float b();
-    float a();
-    void r(float r_val);
-    void g(float g_val);
-    void b(float b_val);
-    void a(float a_val);
-    bool operator==(const Color& other) const;
-    bool operator!=(const Color& other) const;
-};
-
 
 #endif //RAYTRACERCHAELLENGE_TUPLE_H

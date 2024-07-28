@@ -6,11 +6,11 @@
 #include <iostream>
 
 Canvas::Canvas(int width, int height) : width(width), height(height){
-    pixels = new Color*[height];
+    pixels = new Tuple*[height];
     for (int h = 0; h < height; ++h){
-        pixels[h] = new Color[width];
+        pixels[h] = new Tuple[width];
     }
-    FillPixels(Color(0, 0, 0, 1));
+    FillPixels(Tuple(0, 0, 0, 1));
 };
 
 Canvas::~Canvas() {
@@ -21,7 +21,7 @@ Canvas::~Canvas() {
     delete[] pixels;
 }
 
-void Canvas::FillPixels(const Color& color){
+void Canvas::FillPixels(const Tuple& color){
     for (int h = 0; h < height; ++h){
         for (int w = 0; w < width; ++w){
             pixels[h][w] = color;
@@ -33,8 +33,8 @@ void Canvas::FillPixels(const Color& color){
 std::ostream& operator<<(std::ostream& os, const Canvas& canvas) {
     for (int h = 0; h < canvas.height; ++h) {
         for (int w = 0; w < canvas.width; ++w) {
-            Color c = canvas.pixels[h][w];
-            os << "(" << c.r() << ", " << c.g() << ", " << c.b() << ", " << c.a() << ") ";
+            Tuple c = canvas.pixels[h][w];
+            os << c;
         }
         os << std::endl;
     }

@@ -23,7 +23,7 @@ void tick(Projectile* proj, Environment* env) {
 int main()
 {
     Canvas canvas(5, 5);
-    canvas.FillPixels(Color(1, 0, 0, 1.0));  // Fill with red color
+    canvas.FillPixels(Tuple::color(1, 0, 0, 1));  // Fill with red color
 
     // Output the colors of the canvas
     std::cout << canvas << std::endl;

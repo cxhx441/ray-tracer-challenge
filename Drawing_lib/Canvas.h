@@ -11,11 +11,11 @@ class Canvas {
 public:
     int width;
     int height;
-    Color** pixels;
+    Tuple** pixels;
 
     Canvas(int width, int height);
     ~Canvas();
-    void FillPixels(const Color& color);
+    void FillPixels(const Tuple& color);
     friend std::ostream& operator<<(std::ostream& os, const Canvas& canvas); // for printing
 };
 

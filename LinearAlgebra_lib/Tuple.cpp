@@ -5,6 +5,7 @@
 #include <cmath>
 #include <iostream>
 
+Tuple::Tuple() : x(0), y(0), z(0), w(0) {}
 Tuple::Tuple(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
 
 Tuple Tuple::point(float x, float y, float z) {
@@ -27,8 +28,8 @@ void Tuple::g(float g) { y = g; }
 void Tuple::b(float b) { z = b; }
 void Tuple::a(float a) { w = a; }
 
-[[nodiscard]] bool Tuple::isPoint() const { return w == 1.0f; }
-[[nodiscard]] bool Tuple::isVector() const { return w == 0.0f; }
+bool Tuple::isPoint() const { return w == 1.0f; }
+bool Tuple::isVector() const { return w == 0.0f; }
 
 float Tuple::magnitude(const Tuple& v) {
     return std:: sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
@@ -153,14 +154,3 @@ std::ostream& operator<<(std::ostream& os, const Tuple& t) {
     os << "(" << t.x << ", " << t.y << ", " << t.z << ", " << t.w << ")";
     return os;
 }
-
-Color::Color() : Tuple(0, 0, 0, 1) {}
-Color::Color(float r, float g, float b, float a) : Tuple(r, g, b, a){}
-float Color::r() { return x; }
-float Color::g() { return y; }
-float Color::b() { return z; }
-float Color::a() { return w; }
-void Color::r(float r) { x = r; }
-void Color::g(float g) { y = g; }
-void Color::b(float b) { z = b; }
-void Color::a(float a) { w = a; }
