@@ -3,8 +3,10 @@
 //
 
 #include "Canvas.h"
+#include <cmath>
 #include <iostream>
 #include <fstream>
+#include <cmath>
 
 Canvas::Canvas(int width, int height) : width(width), height(height){
     pixels = new Tuple*[height];
@@ -37,27 +39,27 @@ void Canvas::WritePixel(int x, int y, const Tuple& color){
     pixels[y][x] = color;
 }
 
-std::string Canvas::ToPPMString(){
+std::string Canvas::ToPPMString() {
     /**
-    P3
-    width height
-    255
-    ...colors...
+    P3\n
+    width height\n
+    255\n
+    ... r g b values ... row by row. 70 char per row max.
     \n
      **/
     std::string ppm;
     ppm.append("P3\n");
     ppm.append(std::to_string(width) + ' ' + std::to_string(height) + '\n');
     ppm.append("255\n");
-    for (int h = 0; h < height; ++h){
+    for (int h = 0; h < height; ++h) {
         std::string s_row;
-        for (int w = 0; w < width; ++w){
-            Tuple& color = pixels[h][w];
+        for (int w = 0; w < width; ++w) {
+            Tuple &color = pixels[h][w];
             int r = MapColorValue(color.r(), 255);
             int g = MapColorValue(color.g(), 255);
             int b = MapColorValue(color.b(), 255);
             int colorRGB[3] = {r, g, b};
-            for (int i : colorRGB){
+            for (int i: colorRGB) {
                 std::string s_color_val = std::to_string(i);
                 if (s_row.length() + s_color_val.length() + 1 > 70) // + 1 '\n'
                 {
@@ -67,12 +69,14 @@ std::string Canvas::ToPPMString(){
                 s_row.append(s_color_val + ' ');
             }
         }
-        if (!s_row.empty()){
+        if (!s_row.empty()) {
             ppm.append(s_row + '\n');
             s_row.clear();
         }
     }
-    ppm.push_back('\n');
+    if (ppm.back() != '\n') {
+        ppm.push_back('\n');
+    }
     return ppm;
 }
 
@@ -85,7 +89,7 @@ void Canvas::ToPPMFile(std::string filename){
 }
 
 int Canvas::MapColorValue(float colorVal, int maxValue){
-    int MappedColorVal = (int) colorVal * maxValue;
+    int MappedColorVal = (int) std::round( colorVal * (float) maxValue );
 
     if (MappedColorVal <= 0)
         return 0;
