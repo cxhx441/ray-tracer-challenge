@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Tuple.h"
 #include "Canvas.h"
+#include "Matrix.h"
 #include <filesystem>
 
 struct Projectile
@@ -56,6 +57,10 @@ int main()
 
     }
     canvas.ToPPMFile("../canvas");
+
+    Matrix m(4, 2);
+    m[1][1] = 9.5;
+    std::cout << m << std::endl;
     return 0;
 
 }
