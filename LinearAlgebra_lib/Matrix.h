@@ -6,7 +6,7 @@
 #define RAYTRACERCHAELLENGE_MATRIX_H
 
 #include <iostream>
-
+#include <vector>
 
 class Matrix {
 private:
@@ -16,6 +16,7 @@ private:
 public:
     Matrix(int rows, int cols);
     ~Matrix();
+    void Fill(const std::vector<float>& values);
 
     class Row {
     private:
@@ -27,6 +28,10 @@ public:
     };
 
     Row operator[](int row);
+    bool operator==(const Matrix& other) const;
+    bool operator!=(const Matrix& other) const;
+    Matrix operator*(const Matrix& other) const;
+//    bool operator*(const float& f) const;
 
     friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
 };

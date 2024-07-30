@@ -69,3 +69,65 @@ TEST(MatrixTestSuite, MatrixOperandOutOfRange) {
     EXPECT_THROW(m[0][5], std::out_of_range);
     EXPECT_THROW(m[5][5], std::out_of_range);
 }
+
+TEST(MatrixTestSuite, MatrixEquality){
+    Matrix a(4, 4);
+    Matrix b(4, 4);
+    float n = 1.f/3;
+    for (int r = 0; r < 4; ++r){
+        for (int c = 0; c < 4; ++c) {
+            a[r][c] = n;
+            b[r][c] = n;
+            ++n;
+        }
+    }
+    EXPECT_EQ(a, b);
+}
+
+TEST(MatrixTestSuite, MatrixInequality){
+    Matrix a(4, 4);
+    Matrix b(4, 4);
+    float n = 1.f/3;
+    for (int r = 0; r < 4; ++r){
+        for (int c = 0; c < 4; ++c) {
+            a[r][c] = n;
+            b[r][c] = n;
+            ++n;
+        }
+    }
+    a[2][2] = -10.2;
+    EXPECT_NE(a, b);
+}
+
+TEST(MatrixTestSuite, Matrix44Multiply){
+    Matrix a(4, 4);
+    Matrix b(4, 4);
+    Matrix c(4, 4);
+    std::vector<float> a_vals = {1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2};
+    std::vector<float> b_vals = {-2, 1, 2, 3, 3, 2, 1, -1, 4, 3, 6, 5, 1, 2, 7, 8};
+    std::vector<float> c_vals = {20, 22, 50, 48, 44, 54, 114, 108, 40, 58, 110, 102, 16, 26, 46, 42};
+    a.Fill(a_vals);
+    b.Fill(b_vals);
+    c.Fill(c_vals);
+    Matrix check = a*b;
+    EXPECT_EQ(a * b, c);
+}
+
+TEST(MatrixTestSuite, MatrixBadMultiply){
+    // a_cols needs to equal b_rows
+    Matrix a(4, 1);
+    Matrix b(2, 4);
+    EXPECT_THROW(a * b, std::invalid_argument);
+}
+
+TEST(MatrixTestSuite, MatrixMNMultiply){
+    // a_cols needs to equal b_rows
+    Matrix a(2, 2);
+    Matrix b(2, 1);
+    Matrix c(2, 1);
+    a.Fill(std::vector<float> {1, 2, 3, 4});
+    b.Fill(std::vector<float> {10, 20});
+    c.Fill(std::vector<float> {50, 110});
+    Matrix cc = a*b;
+    EXPECT_EQ(a * b, c);
+}

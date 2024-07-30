@@ -92,9 +92,9 @@ TEST(CanvasTestSUite, PPMSplitLongLines){
         i += 1;
     }
     std::string trueHeader;
-    trueHeader.append("255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204\n");
-    trueHeader.append("153 255 204 153 255 204 153 255 204 153 255 204 153\n");
-    trueHeader.append("255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204\n");
-    trueHeader.append("153 255 204 153 255 204 153 255 204 153 255 204 153\n");
+    trueHeader.append("255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204 \n");
+    trueHeader.append("153 255 204 153 255 204 153 255 204 153 255 204 153 \n");
+    trueHeader.append("255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204 \n");
+    trueHeader.append("153 255 204 153 255 204 153 255 204 153 255 204 153 \n");
     EXPECT_EQ(header, trueHeader);
 }

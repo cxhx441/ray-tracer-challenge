@@ -62,10 +62,7 @@ bool Tuple::operator==(const Tuple& other) const {
 }
 
 bool Tuple::operator!=(const Tuple& other) const {
-    return (abs(x - other.x) >= 10e-5) ||
-           (abs(y - other.y) >= 10e-5) ||
-           (abs(z - other.z) >= 10e-5) ||
-           (abs(w - other.w) >= 10e-5);
+    return !(*this == other);
 }
 
 Tuple Tuple::operator+(const Tuple& other) const {
