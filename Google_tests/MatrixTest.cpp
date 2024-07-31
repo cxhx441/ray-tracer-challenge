@@ -176,3 +176,26 @@ TEST(MatrixTestSuite, TransposeMatrixIdentity){
     Matrix::Transpose(A);
     EXPECT_EQ(A, C);
 }
+
+TEST(MatrixTestSuite, Matrix22Determinant){
+    Matrix A(2, 2);
+    A.Fill(std::vector<float> {1, 5, -3, 2});
+    EXPECT_FLOAT_EQ(Matrix::Determinant(A), 17);
+}
+
+TEST(MatrixTestSuite, Matrix33Submatrix22){
+    Matrix A(3, 3);
+    Matrix C(2, 2);
+    A.Fill(std::vector<float> {1, 5, 0, -3, 2, 7, 0, 6, -3});
+    C.Fill(std::vector<float> {-3, 2, 0, 6});
+
+    EXPECT_EQ(A.Submatrix(0, 2), C);
+}
+
+TEST(MatrixTestSuite, SubmatrixErrors){
+    Matrix A(3, 1);
+    Matrix B(2, 2);
+
+    EXPECT_THROW(A.Submatrix(0, 0), std::invalid_argument);
+    EXPECT_THROW(B.Submatrix(0, 3), std::invalid_argument);
+}

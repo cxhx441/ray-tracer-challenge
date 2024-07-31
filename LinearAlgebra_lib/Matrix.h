@@ -20,6 +20,8 @@ public:
     void Fill(const std::vector<float>& values);
     static Matrix Identity(int n);
     static void Transpose(Matrix& m);
+    static float Determinant(Matrix& m);
+    Matrix Submatrix(int row, int col);
 
     class Row {
     private:

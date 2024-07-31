@@ -60,6 +60,35 @@ void Matrix::Transpose(Matrix &m) {
     }
 }
 
+float Matrix::Determinant(Matrix &m) {
+    if (m.rows != m.cols) {
+        throw std::invalid_argument("operation only valid for Square matrices");
+    }
+
+//    if (m.rows == 2){
+        return m[0][0] * m[1][1] - m[0][1] * m[1][0];
+//    }
+}
+
+Matrix Matrix::Submatrix(int row, int col){
+    // Returns a matrix with the given row and col removed.
+    if (row >= this->rows || col >= this->cols)
+        throw std::invalid_argument("given row or col greater than the size of the matrix.");
+    if (this->rows == 1 || this->cols == 1)
+        throw std::invalid_argument("The matrix already has row or col dimension of 1.");
+
+    std::vector<float> m_data;
+    Matrix m(this->rows - 1, this->cols - 1);
+    for (int r = 0; r < this->rows; ++r){
+        for (int c = 0; c < this->cols; ++c) {
+            if (r == row or c == col)
+                continue;
+            m_data.push_back(this->data[r * this->cols + c]);
+        }
+    }
+    m.Fill(m_data);
+    return m;
+}
 
 bool Matrix::operator==(const Matrix& other) const{
     if (this->rows != other.rows || this->cols != other.cols){
