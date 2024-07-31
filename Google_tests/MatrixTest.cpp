@@ -199,3 +199,12 @@ TEST(MatrixTestSuite, SubmatrixErrors){
     EXPECT_THROW(Matrix::Submatrix(A, 0, 0), std::invalid_argument);
     EXPECT_THROW(Matrix::Submatrix(B, 0, 3), std::invalid_argument);
 }
+
+TEST(MatrixTestSuite, Minor){
+    Matrix A(3, 3);
+    A.Fill(std::vector<float> {3, 5, 0, 2, -1, 7, 6, -1, 5});
+    Matrix B = Matrix::Submatrix(A, 1, 0);
+    EXPECT_FLOAT_EQ(Matrix::Minor(A, 1, 0), Matrix::Determinant(B));
+}
+
+

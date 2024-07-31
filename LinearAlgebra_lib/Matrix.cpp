@@ -91,6 +91,11 @@ Matrix Matrix::Submatrix(Matrix& m, int row, int col){
     return subm;
 }
 
+float Matrix::Minor(Matrix& m, int row, int col){
+    Matrix subm = Matrix::Submatrix(m, row, col);
+    return Matrix::Determinant(subm);
+}
+
 bool Matrix::operator==(const Matrix& other) const{
     if (this->rows != other.rows || this->cols != other.cols){
         return false;
