@@ -70,24 +70,25 @@ float Matrix::Determinant(Matrix &m) {
 //    }
 }
 
-Matrix Matrix::Submatrix(int row, int col){
+Matrix Matrix::Submatrix(Matrix& m, int row, int col){
     // Returns a matrix with the given row and col removed.
-    if (row >= this->rows || col >= this->cols)
+    if (row >= m.rows || col >= m.cols)
         throw std::invalid_argument("given row or col greater than the size of the matrix.");
-    if (this->rows == 1 || this->cols == 1)
+    if (m.rows == 1 || m.cols == 1)
         throw std::invalid_argument("The matrix already has row or col dimension of 1.");
 
-    std::vector<float> m_data;
-    Matrix m(this->rows - 1, this->cols - 1);
-    for (int r = 0; r < this->rows; ++r){
-        for (int c = 0; c < this->cols; ++c) {
+    std::vector<float> subm_data;
+    Matrix subm(m.rows - 1, m.cols - 1);
+    for (int r = 0; r < m.rows; ++r){
+        for (int c = 0; c < m.cols; ++c) {
             if (r == row or c == col)
                 continue;
-            m_data.push_back(this->data[r * this->cols + c]);
+            subm_data.push_back(m[r][c]);
+//            subm_data.push_back(m.data[r * m.cols + c]);
         }
     }
-    m.Fill(m_data);
-    return m;
+    subm.Fill(subm_data);
+    return subm;
 }
 
 bool Matrix::operator==(const Matrix& other) const{

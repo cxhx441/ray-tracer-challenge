@@ -21,7 +21,7 @@ public:
     static Matrix Identity(int n);
     static void Transpose(Matrix& m);
     static float Determinant(Matrix& m);
-    Matrix Submatrix(int row, int col);
+    static Matrix Submatrix(Matrix& m, int row, int col);
 
     class Row {
     private:

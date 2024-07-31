@@ -189,13 +189,13 @@ TEST(MatrixTestSuite, Matrix33Submatrix22){
     A.Fill(std::vector<float> {1, 5, 0, -3, 2, 7, 0, 6, -3});
     C.Fill(std::vector<float> {-3, 2, 0, 6});
 
-    EXPECT_EQ(A.Submatrix(0, 2), C);
+    EXPECT_EQ(Matrix::Submatrix(A, 0, 2), C);
 }
 
 TEST(MatrixTestSuite, SubmatrixErrors){
     Matrix A(3, 1);
     Matrix B(2, 2);
 
-    EXPECT_THROW(A.Submatrix(0, 0), std::invalid_argument);
-    EXPECT_THROW(B.Submatrix(0, 3), std::invalid_argument);
+    EXPECT_THROW(Matrix::Submatrix(A, 0, 0), std::invalid_argument);
+    EXPECT_THROW(Matrix::Submatrix(B, 0, 3), std::invalid_argument);
 }
