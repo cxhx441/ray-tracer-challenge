@@ -23,6 +23,7 @@ public:
     static float Determinant(Matrix& m);
     static Matrix Submatrix(Matrix& m, int row, int col);
     static float Minor(Matrix& m, int row, int col);
+    static float Cofactor(Matrix& m, int row, int col);
 
     class Row {
     private:

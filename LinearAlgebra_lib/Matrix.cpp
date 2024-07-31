@@ -61,13 +61,18 @@ void Matrix::Transpose(Matrix &m) {
 }
 
 float Matrix::Determinant(Matrix &m) {
-    if (m.rows != m.cols) {
-        throw std::invalid_argument("operation only valid for Square matrices");
-    }
+    if (m.rows != m.cols)
+        throw std::invalid_argument("operation only valid for square matrices");
 
-//    if (m.rows == 2){
-        return m[0][0] * m[1][1] - m[0][1] * m[1][0];
-//    }
+    if (m.rows == 2 and m.cols == 2)
+        return (m[0][0] * m[1][1]) - (m[0][1] * m[1][0]);
+
+    // if not 2x2, recursively find determinant.
+    float sub_det = 0;
+    for (int c = 0; c < m.cols; ++c){
+        sub_det += m[0][c] * Cofactor(m, 0, c);
+    }
+    return sub_det;
 }
 
 Matrix Matrix::Submatrix(Matrix& m, int row, int col){
@@ -94,6 +99,13 @@ Matrix Matrix::Submatrix(Matrix& m, int row, int col){
 float Matrix::Minor(Matrix& m, int row, int col){
     Matrix subm = Matrix::Submatrix(m, row, col);
     return Matrix::Determinant(subm);
+}
+
+float Matrix::Cofactor(Matrix& m, int row, int col){
+    Matrix subm = Matrix::Submatrix(m, row, col);
+    if (row + col % 2 == 0)
+        return Matrix::Determinant(subm);
+    return -1 * Matrix::Determinant(subm);
 }
 
 bool Matrix::operator==(const Matrix& other) const{
