@@ -207,4 +207,33 @@ TEST(MatrixTestSuite, Minor){
     EXPECT_FLOAT_EQ(Matrix::Minor(A, 1, 0), Matrix::Determinant(B));
 }
 
+TEST(MatrixTestSuite, Cofactor3x3AgainstMinor){
+    Matrix A(3, 3);
+    A.Fill(std::vector<float> {3, 5, 0, 2, -1, -7, 6, -1, 5});
+    EXPECT_FLOAT_EQ(Matrix::Minor(A, 0, 0), -12);
+    EXPECT_FLOAT_EQ(Matrix::Cofactor(A, 0, 0), -12);
+
+    EXPECT_FLOAT_EQ(Matrix::Minor(A, 1, 0), 25);
+    EXPECT_FLOAT_EQ(Matrix::Cofactor(A, 1, 0), -25);
+}
+
+TEST(MatrixTestSuite, Cofactor3x3){
+    Matrix A(3, 3);
+    A.Fill(std::vector<float> {1, 2, 6, -5, 8, -4, 2, 6, 4});
+    EXPECT_FLOAT_EQ(Matrix::Cofactor(A, 0, 0), 56);
+    EXPECT_FLOAT_EQ(Matrix::Cofactor(A, 0, 1), 12);
+    EXPECT_FLOAT_EQ(Matrix::Cofactor(A, 0, 2), -46);
+    EXPECT_FLOAT_EQ(Matrix::Determinant(A), -196);
+}
+
+TEST(MatrixTestSuite, Cofactor4x4){
+    Matrix A(4, 4);
+    A.Fill(std::vector<float> {-2, -8, 3, 5, -3, 1, 7, 3, 1, 2, -9, 6, -6, 7, 7, -9});
+    EXPECT_FLOAT_EQ(Matrix::Cofactor(A, 0, 0), 690);
+    EXPECT_FLOAT_EQ(Matrix::Cofactor(A, 0, 1), 447);
+    EXPECT_FLOAT_EQ(Matrix::Cofactor(A, 0, 2), 210);
+    EXPECT_FLOAT_EQ(Matrix::Cofactor(A, 0, 3), 51);
+    EXPECT_FLOAT_EQ(Matrix::Determinant(A), -4071);
+}
+
 
