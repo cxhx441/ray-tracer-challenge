@@ -55,9 +55,7 @@ Matrix Matrix::Identity(int n){
 void Matrix::Transpose(Matrix &m) {
     for (int r = 0; r < m.rows; ++r){
         for (int c = r+1; c < m.cols; ++c) {
-            float tmp = m[r][c];
-            m[r][c] = m[c][r];
-            m[c][r] = tmp;
+            std::swap(m[r][c], m[c][r]);
         }
     }
 }
