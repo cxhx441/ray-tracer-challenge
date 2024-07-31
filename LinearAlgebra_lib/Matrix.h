@@ -5,6 +5,7 @@
 #ifndef RAYTRACERCHAELLENGE_MATRIX_H
 #define RAYTRACERCHAELLENGE_MATRIX_H
 
+#include "Tuple.h"
 #include <iostream>
 #include <vector>
 
@@ -31,6 +32,7 @@ public:
     bool operator==(const Matrix& other) const;
     bool operator!=(const Matrix& other) const;
     Matrix operator*(const Matrix& other) const;
+    Tuple operator*(const Tuple& t) const;
 //    bool operator*(const float& f) const;
 
     friend std::ostream& operator<<(std::ostream& os, const Matrix& m);

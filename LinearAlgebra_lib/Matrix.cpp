@@ -81,6 +81,21 @@ Matrix Matrix::operator*(const Matrix& other) const{
     }
     return m;
 }
+
+Tuple Matrix::operator*(const Tuple& t) const{
+    if (this-> rows != 4 and this->cols != 4) {
+        throw std::invalid_argument("operation only valid for 4x4 matrices");
+    }
+    float newTupData[4] = {0, 0, 0, 0};
+    for (int i = 0; i < 4; ++i){
+        newTupData[i] = data[i * 4 + 0] * t.x +
+                        data[i * 4 + 1] * t.y +
+                        data[i * 4 + 2] * t.z +
+                        data[i * 4 + 3] * t.w;
+    }
+    return Tuple(newTupData[0], newTupData[1], newTupData[2], newTupData[3]);
+}
+
 std::ostream& operator<<(std::ostream& os, const Matrix& m) {
     for (int r = 0; r < m.rows; ++r) {
         os << "|";

@@ -128,6 +128,15 @@ TEST(MatrixTestSuite, MatrixMNMultiply){
     a.Fill(std::vector<float> {1, 2, 3, 4});
     b.Fill(std::vector<float> {10, 20});
     c.Fill(std::vector<float> {50, 110});
-    Matrix cc = a*b;
+//    Matrix cc = a*b;
     EXPECT_EQ(a * b, c);
+}
+
+TEST(MatrixTestSuite, MatrixMultiplyByTuple){
+    // a_cols needs to equal b_rows
+    Matrix A(4, 4);
+    A.Fill(std::vector<float> {1, 2, 3, 4, 2, 4, 4, 2, 8, 6, 4, 1, 0, 0, 0, 1});
+    Tuple b(1, 2, 3, 1);
+//    Tuple cc = A*b;
+    EXPECT_EQ(A * b, Tuple(18, 24, 33, 1));
 }
