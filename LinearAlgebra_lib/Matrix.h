@@ -18,6 +18,8 @@ public:
     Matrix(int rows, int cols);
     ~Matrix();
     void Fill(const std::vector<float>& values);
+    static Matrix Identity(int n);
+    static void Transpose(Matrix& m);
 
     class Row {
     private:

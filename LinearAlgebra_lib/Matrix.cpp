@@ -6,7 +6,7 @@
 //#include <cmath>
 
 Matrix::Matrix(int rows, int cols): rows(rows), cols(cols) {
-    data = new float[rows * cols];
+    data = new float[rows * cols]();
 }
 
 Matrix::~Matrix() {
@@ -38,6 +38,31 @@ void Matrix::Fill(const std::vector<float>& values){
         this->data[i] = values[i];
     }
 }
+
+Matrix Matrix::Identity(int n){
+    Matrix m(n, n);
+    for (int r = 0; r < n; ++r){
+        for (int c = 0; c < n; ++c){
+            if (r == c)
+                m[r][c] = 1.f;
+            else
+                m[r][c] = 0.f;
+        }
+    }
+    return m;
+}
+
+void Matrix::Transpose(Matrix &m) {
+    for (int r = 0; r < m.rows; ++r){
+        for (int c = r+1; c < m.cols; ++c) {
+            float tmp = m[r][c];
+            m[r][c] = m[c][r];
+            m[c][r] = tmp;
+        }
+    }
+}
+
+
 bool Matrix::operator==(const Matrix& other) const{
     if (this->rows != other.rows || this->cols != other.cols){
         return false;
@@ -106,3 +131,4 @@ std::ostream& operator<<(std::ostream& os, const Matrix& m) {
     }
     return os;
 }
+

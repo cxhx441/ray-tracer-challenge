@@ -128,7 +128,6 @@ TEST(MatrixTestSuite, MatrixMNMultiply){
     a.Fill(std::vector<float> {1, 2, 3, 4});
     b.Fill(std::vector<float> {10, 20});
     c.Fill(std::vector<float> {50, 110});
-//    Matrix cc = a*b;
     EXPECT_EQ(a * b, c);
 }
 
@@ -137,6 +136,43 @@ TEST(MatrixTestSuite, MatrixMultiplyByTuple){
     Matrix A(4, 4);
     A.Fill(std::vector<float> {1, 2, 3, 4, 2, 4, 4, 2, 8, 6, 4, 1, 0, 0, 0, 1});
     Tuple b(1, 2, 3, 1);
-//    Tuple cc = A*b;
     EXPECT_EQ(A * b, Tuple(18, 24, 33, 1));
+}
+
+TEST(MatrixTestSuite, MatrixIdentityMultiplyByMatrix){
+    Matrix I = Matrix::Identity(4);
+    Matrix A(4, 4);
+    A.Fill(std::vector<float> {1, 2, 3, 4, 2, 4, 4, 2, 8, 6, 4, 1, 0, 0, 0, 1});
+    EXPECT_EQ(A * I, A);
+}
+
+TEST(MatrixTestSuite, MatrixIdentityMultiplyByTuple){
+    Matrix I = Matrix::Identity(4);
+    Tuple a(1, 2, 3, 1);
+    EXPECT_EQ(I * a, Tuple(1, 2, 3, 1));
+}
+
+TEST(MatrixTestSuite, TransposeMatrix44){
+    Matrix A(4, 4);
+    Matrix C(4, 4);
+    A.Fill(std::vector<float> {0, 9, 3, 0, 9, 8, 0, 8, 1, 8, 5, 3, 0, 0, 5, 8});
+    C.Fill(std::vector<float> {0, 9, 1, 0, 9, 8, 8, 0, 3, 0, 5, 5, 0, 8, 3, 8});
+    Matrix::Transpose(A);
+    EXPECT_EQ(A, C);
+}
+
+TEST(MatrixTestSuite, TransposeMatrix22){
+    Matrix A(2, 2);
+    Matrix C(2, 2);
+    A.Fill(std::vector<float> {0, 1, 2, 0});
+    C.Fill(std::vector<float> {0, 2, 1, 0});
+    Matrix::Transpose(A);
+    EXPECT_EQ(A, C);
+}
+
+TEST(MatrixTestSuite, TransposeMatrixIdentity){
+    Matrix A = Matrix::Identity(4);
+    Matrix C = Matrix::Identity(4);
+    Matrix::Transpose(A);
+    EXPECT_EQ(A, C);
 }
