@@ -103,9 +103,28 @@ float Matrix::Minor(Matrix& m, int row, int col){
 
 float Matrix::Cofactor(Matrix& m, int row, int col){
     Matrix subm = Matrix::Submatrix(m, row, col);
-    if (row + col % 2 == 0)
+    if ((row + col) % 2 == 0)
         return Matrix::Determinant(subm);
     return -1 * Matrix::Determinant(subm);
+}
+
+bool Matrix::IsInvertible(Matrix &m) {
+    return Determinant(m) != 0;
+}
+
+Matrix Matrix::Inverse(Matrix& m){
+    // Compute the Inverse Matrix of cofactors.
+    //     Transpose the matrix of cofactors.
+    //     Divide each element by the original matrix's determinant.
+    Matrix inverse_mat(m.rows, m.cols);
+    float m_det = Determinant(m);
+    for (int r = 0; r < m.rows; ++r) {
+        for (int c = 0; c < m.cols; ++c) {
+            // [c][r] instead of [r][c] to handle transposition.
+            inverse_mat[c][r] = Cofactor(m, r, c) / m_det;
+        }
+    }
+    return inverse_mat;
 }
 
 bool Matrix::operator==(const Matrix& other) const{

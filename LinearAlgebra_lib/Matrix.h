@@ -24,6 +24,8 @@ public:
     static Matrix Submatrix(Matrix& m, int row, int col);
     static float Minor(Matrix& m, int row, int col);
     static float Cofactor(Matrix& m, int row, int col);
+    static bool IsInvertible(Matrix& m);
+    static Matrix Inverse(Matrix& m);
 
     class Row {
     private:
