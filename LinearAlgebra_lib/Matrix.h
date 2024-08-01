@@ -26,6 +26,7 @@ public:
     static float Cofactor(Matrix& m, int row, int col);
     static bool IsInvertible(Matrix& m);
     static Matrix Inverse(Matrix& m);
+    static Matrix copy(Matrix& m);
 
     class Row {
     private:

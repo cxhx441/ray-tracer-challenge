@@ -286,3 +286,23 @@ TEST(MatrixTestSuite, InverseMatrixMult){
     Matrix C = A * B;
     EXPECT_EQ(C * Matrix::Inverse(B), A);
 }
+
+TEST(MatrixTestSuite, CopyMatrix){
+    Matrix A(4, 4);
+    A.Fill(std::vector<float> {3, -9, 7, 3, 3, -8, 2, -9, -4, 4, 4, 1, -6, 5, -1, 1});
+    Matrix B = Matrix::copy(A);
+    EXPECT_EQ(B, A);
+}
+
+TEST(MatrixTestSuite, MatrixTimesInverseIsIdentity){
+    Matrix A(4, 4);
+    A.Fill(std::vector<float> {6, 4, 4, 4,
+                               5, 5, 7, 6,
+                               4, -9, 3, -7,
+                               9, 1, 7, -6});
+    Matrix A_inv = Matrix::Inverse(A);
+
+    Matrix I = Matrix::Identity(4);
+    EXPECT_EQ(A_inv * A, I);
+    EXPECT_EQ(A * A_inv, I);
+}

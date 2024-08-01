@@ -61,6 +61,39 @@ int main()
     Matrix m(4, 2);
     m[1][1] = 9.5;
     std::cout << m << std::endl;
+
+    // I = inverse(I)
+    Matrix I = Matrix::Identity(4);
+    std::cout << I << std::endl;
+    Matrix::Inverse(I);
+    std::cout << I << std::endl;
+
+    // Mult Matrix by its Inverse
+    Matrix A(4, 4);
+    A.Fill(std::vector<float> {6, 4, 4, 4,
+                               5, 5, 7, 6,
+                               4, -9, 3, -7,
+                               9, 1, 7, -6});
+
+    Matrix A_inv = Matrix::copy(A);
+    std::cout << (A_inv == A);
+    A_inv = Matrix::Inverse(A_inv);
+
+    std::cout << A << std::endl;
+    std::cout << A_inv << std::endl;
+
+    Matrix A_A_inv = A * A_inv;
+    std::cout << A_A_inv << std::endl;
+    Matrix A_A_inv2 = A_inv * A;
+    std::cout << A_A_inv2 << std::endl;
+
+    std::cout << (I == A_A_inv) << std::endl;
+    std::cout << (I == A_A_inv2) << std::endl;
+
+
+
+
+
     return 0;
 
 }

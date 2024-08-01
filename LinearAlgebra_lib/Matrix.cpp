@@ -116,8 +116,11 @@ Matrix Matrix::Inverse(Matrix& m){
     // Compute the Inverse Matrix of cofactors.
     //     Transpose the matrix of cofactors.
     //     Divide each element by the original matrix's determinant.
-    Matrix inverse_mat(m.rows, m.cols);
     float m_det = Determinant(m);
+    if (m_det == 0)
+        throw std:: invalid_argument("Matrix is Not invertible");
+
+    Matrix inverse_mat(m.rows, m.cols);
     for (int r = 0; r < m.rows; ++r) {
         for (int c = 0; c < m.cols; ++c) {
             // [c][r] instead of [r][c] to handle transposition.
@@ -125,6 +128,16 @@ Matrix Matrix::Inverse(Matrix& m){
         }
     }
     return inverse_mat;
+}
+
+Matrix Matrix::copy(Matrix& m){
+    Matrix copy(m.rows, m.cols);
+    for (int r = 0; r < m.rows; ++r) {
+        for (int c = 0; c < m.cols; ++c) {
+            copy[r][c] = m[r][c];
+        }
+    }
+    return copy;
 }
 
 bool Matrix::operator==(const Matrix& other) const{
