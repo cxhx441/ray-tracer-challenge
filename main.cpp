@@ -75,20 +75,28 @@ int main()
                                4, -9, 3, -7,
                                9, 1, 7, -6});
 
-    Matrix A_inv = Matrix::copy(A);
-    std::cout << (A_inv == A);
-    A_inv = Matrix::Inverse(A_inv);
+    Matrix A_INV = Matrix::Inverse(A);
+    Matrix A_T = Matrix::Transpose(A);
+    Matrix A_T_INV = Matrix::Inverse(A_T);
+    Matrix A_INV_T = Matrix::Transpose(A_INV);
 
-    std::cout << A << std::endl;
-    std::cout << A_inv << std::endl;
-
-    Matrix A_A_inv = A * A_inv;
-    std::cout << A_A_inv << std::endl;
-    Matrix A_A_inv2 = A_inv * A;
-    std::cout << A_A_inv2 << std::endl;
-
-    std::cout << (I == A_A_inv) << std::endl;
-    std::cout << (I == A_A_inv2) << std::endl;
+    std::cout << A_T_INV << std::endl;
+    std::cout << A_INV_T << std::endl;
+    std::cout << (A_INV_T == A_T_INV) << std::endl;
+//    Matrix A_ING = Matrix::copy(A);
+//    std::cout << (A_inv == A);
+//    A_inv = Matrix::Inverse(A_inv);
+//
+//    std::cout << A << std::endl;
+//    std::cout << A_inv << std::endl;
+//
+//    Matrix A_A_inv = A * A_inv;
+//    std::cout << A_A_inv << std::endl;
+//    Matrix A_A_inv2 = A_inv * A;
+//    std::cout << A_A_inv2 << std::endl;
+//
+//    std::cout << (I == A_A_inv) << std::endl;
+//    std::cout << (I == A_A_inv2) << std::endl;
 
 
 

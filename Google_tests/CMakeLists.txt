@@ -7,6 +7,7 @@ add_executable(Google_Tests_run
         TupleTest.cpp
         CanvasTest.cpp
         MatrixTest.cpp
+        TransformationTest.cpp
 )
 
 target_link_libraries(Google_Tests_run LinearAlgebra_lib)
