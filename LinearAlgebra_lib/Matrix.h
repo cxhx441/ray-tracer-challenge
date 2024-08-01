@@ -19,7 +19,7 @@ public:
     ~Matrix();
     void Fill(const std::vector<float>& values);
     static Matrix Identity(int n);
-    static void Transpose(Matrix& m);
+    static Matrix Transpose(Matrix& m);
     static float Determinant(Matrix& m);
     static Matrix Submatrix(Matrix& m, int row, int col);
     static float Minor(Matrix& m, int row, int col);

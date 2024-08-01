@@ -157,8 +157,8 @@ TEST(MatrixTestSuite, TransposeMatrix44){
     Matrix C(4, 4);
     A.Fill(std::vector<float> {0, 9, 3, 0, 9, 8, 0, 8, 1, 8, 5, 3, 0, 0, 5, 8});
     C.Fill(std::vector<float> {0, 9, 1, 0, 9, 8, 8, 0, 3, 0, 5, 5, 0, 8, 3, 8});
-    Matrix::Transpose(A);
-    EXPECT_EQ(A, C);
+    Matrix AT = Matrix::Transpose(A);
+    EXPECT_EQ(AT, C);
 }
 
 TEST(MatrixTestSuite, TransposeMatrix22){
@@ -166,8 +166,8 @@ TEST(MatrixTestSuite, TransposeMatrix22){
     Matrix C(2, 2);
     A.Fill(std::vector<float> {0, 1, 2, 0});
     C.Fill(std::vector<float> {0, 2, 1, 0});
-    Matrix::Transpose(A);
-    EXPECT_EQ(A, C);
+    Matrix AT = Matrix::Transpose(A);
+    EXPECT_EQ(AT, C);
 }
 
 TEST(MatrixTestSuite, TransposeMatrixIdentity){
@@ -305,4 +305,18 @@ TEST(MatrixTestSuite, MatrixTimesInverseIsIdentity){
     Matrix I = Matrix::Identity(4);
     EXPECT_EQ(A_inv * A, I);
     EXPECT_EQ(A * A_inv, I);
+}
+
+TEST(MatrixTestSuite, TransposeInverseEqualsInverseTranspose){
+    Matrix A(4, 4);
+    A.Fill(std::vector<float> {6, 4, 4, 4,
+                               5, 5, 7, 6,
+                               4, -9, 3, -7,
+                               9, 1, 7, -6});
+
+    Matrix A_INV = Matrix::Inverse(A);
+    Matrix A_T = Matrix::Transpose(A);
+    Matrix A_T_INV = Matrix::Inverse(A_T);
+    Matrix A_INV_T = Matrix::Transpose(A_INV);
+    EXPECT_EQ(A_T_INV, A_INV_T);
 }

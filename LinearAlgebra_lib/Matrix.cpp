@@ -52,12 +52,14 @@ Matrix Matrix::Identity(int n){
     return m;
 }
 
-void Matrix::Transpose(Matrix &m) {
-    for (int r = 0; r < m.rows; ++r){
-        for (int c = r+1; c < m.cols; ++c) {
-            std::swap(m[r][c], m[c][r]);
+Matrix Matrix::Transpose(Matrix &m) {
+    Matrix mT = copy(m);
+    for (int r = 0; r < mT.rows; ++r){
+        for (int c = r+1; c < mT.cols; ++c) {
+            std::swap(mT[r][c], mT[c][r]);
         }
     }
+    return mT;
 }
 
 float Matrix::Determinant(Matrix &m) {
