@@ -5,13 +5,17 @@ set(HEADER_FILES
         Canvas.h
         Matrix.h
         Transformation.h
-        )
+        Ray.h
+        Sphere.h
+)
 
 set(SOURCE_FILES
         Tuple.cpp
         Canvas.cpp
         Matrix.cpp
         Transformation.cpp
+        Ray.cpp
+        Sphere.cpp
 )
 
 add_library(LinearAlgebra_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})

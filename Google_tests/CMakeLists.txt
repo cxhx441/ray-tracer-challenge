@@ -8,6 +8,8 @@ add_executable(Google_Tests_run
         CanvasTest.cpp
         MatrixTest.cpp
         TransformationTest.cpp
+        RayTest.cpp
+        SphereTest.cpp
 )
 
 target_link_libraries(Google_Tests_run LinearAlgebra_lib)

@@ -28,7 +28,7 @@ void Tuple::g(float g) { y = g; }
 void Tuple::b(float b) { z = b; }
 void Tuple::a(float a) { w = a; }
 
-bool Tuple::isPoint() const { return w == 1.0f; }
+bool Tuple::isPoint() const { return w != 0.0f; }
 bool Tuple::isVector() const { return w == 0.0f; }
 
 float Tuple::magnitude(const Tuple& v) {
