@@ -9,9 +9,12 @@
 
 class Transformation {
 public:
-    Matrix translation(float x, float y, float z);
-    Matrix scaling(float x, float y, float z);
-    Matrix rotation(float x, float y, float z);
+    static Matrix translation(float x, float y, float z);
+    static Matrix scaling(float x, float y, float z);
+    static Matrix rotation_x(float radians);
+    static Matrix rotation_y(float radians);
+    static Matrix rotation_z(float radians);
+    static Matrix shearing(float xy, float xz, float yx, float yz, float zx, float zy);
 };
 
 

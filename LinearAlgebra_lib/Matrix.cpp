@@ -155,6 +155,24 @@ bool Matrix::operator==(const Matrix& other) const{
     return true;
 }
 
+Matrix& Matrix::operator=(Matrix other) {
+    swap(*this, other);
+    return *this;
+}
+
+void swap(Matrix& first, Matrix& second) {
+    // Enable ADL (not necessary in our case, but good practice)
+    using std::swap;
+
+    // Swap member variables
+    swap(first.data, second.data);
+//    for (int r = 0; r < first.rows; ++r) {
+//        for (int c = 0; c < first.cols; ++c) {
+//            swap(first[r][c], second[r][c]);
+//        }
+//    }
+}
+
 bool Matrix::operator!=(const Matrix& other) const{
     return !(*this == other);
 }

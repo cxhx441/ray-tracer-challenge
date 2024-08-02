@@ -42,7 +42,8 @@ public:
     bool operator!=(const Matrix& other) const;
     Matrix operator*(const Matrix& other) const;
     Tuple operator*(const Tuple& t) const;
-//    bool operator*(const float& f) const;
+    Matrix& operator=(Matrix other);
+    friend void swap(Matrix& first, Matrix& second);
 
     friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
 };
