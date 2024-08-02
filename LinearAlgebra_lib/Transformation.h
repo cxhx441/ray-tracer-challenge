@@ -11,6 +11,7 @@ class Transformation {
 public:
     static Matrix translation(float x, float y, float z);
     static Matrix scaling(float x, float y, float z);
+    static Matrix scaling(float xyz);
     static Matrix rotation_x(float radians);
     static Matrix rotation_y(float radians);
     static Matrix rotation_z(float radians);

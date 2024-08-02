@@ -2,7 +2,9 @@
 #include "Tuple.h"
 #include "Canvas.h"
 #include "Matrix.h"
+#include "Transformation.h"
 #include <filesystem>
+#include <cmath>
 
 struct Projectile
 {
@@ -22,15 +24,9 @@ void tick(Projectile* proj, Environment* env) {
     proj->position += proj->velocity;
     proj->velocity += env->gravity + env->wind;
 }
-int main()
-{
-    Canvas canvas(900, 550);
-//    canvas.FillPixels(Tuple::color(1, 1, 1, 1));  // Fill with red color
 
-    // Output the colors of the canvas
-//    std::cout << canvas << std::endl;
-//    canvas.ToPPMString();
-//    canvas.ToPPMFile("../canvas");
+void challenge_projectile(){
+    Canvas canvas(900, 550);
 
     Tuple initialPosition = Tuple::vector(0, 1, 0);
     Tuple initialVelocity = Tuple::normalize(Tuple::vector(1, 1.8, 0)) * 11.25;
@@ -58,49 +54,41 @@ int main()
     }
     canvas.ToPPMFile("../canvas");
 
-//    Matrix m(4, 2);
-//    m[1][1] = 9.5;
-//    std::cout << m << std::endl;
-//
-//    // I = inverse(I)
-//    Matrix I = Matrix::Identity(4);
-//    std::cout << I << std::endl;
-//    Matrix::Inverse(I);
-//    std::cout << I << std::endl;
-//
-//    // Mult Matrix by its Inverse
-//    Matrix A(4, 4);
-//    A.Fill(std::vector<float> {6, 4, 4, 4,
-//                               5, 5, 7, 6,
-//                               4, -9, 3, -7,
-//                               9, 1, 7, -6});
-//
-//    Matrix A_INV = Matrix::Inverse(A);
-//    Matrix A_T = Matrix::Transpose(A);
-//    Matrix A_T_INV = Matrix::Inverse(A_T);
-//    Matrix A_INV_T = Matrix::Transpose(A_INV);
-//
-//    std::cout << A_T_INV << std::endl;
-//    std::cout << A_INV_T << std::endl;
-//    std::cout << (A_INV_T == A_T_INV) << std::endl;
+}
 
-    Tuple t = Tuple(1,2, 3,4);
-    Matrix I = Matrix::Identity(4);
-    std::cout << I << std::endl;
-    std::cout << t << std::endl;
-    std::cout << I * t << std::endl;
+void challenge_clock(){
+    int size = 1000;
+    Canvas canvas(size, size);
+    Matrix canvas_transform = Transformation::translation(size/2, size/2, 0);
 
-    I[0][2] = 100;
-//    I[3][3] = 2;
-    std::cout << I << std::endl;
-    std::cout << t << std::endl;
-    std::cout << I * t << std::endl;
+    int numVertices = 48;
+    Tuple p = Tuple::point(0, 0, 0);
+    Matrix T = Transformation::translation(1, 0, 0);
+    Matrix R = Transformation::rotation_z(2.f * M_PI / numVertices);
+    Matrix S = Transformation::scaling(size/2 - size/10);
+
+    p = T * p;
+
+    for (int i = 0; i < numVertices; ++i){
+        p = R * p;
+        Tuple Sp = S * p;
+        std::cout << "Point Pos: " << Sp << std::endl;
+        Tuple cp = canvas_transform * Sp;
+        try{
+            canvas.WritePixel(cp.x, cp.y, Tuple::color(1, 1, 1, 1));
+        }
+        catch(std::invalid_argument const& ex){
+            std::cout << ex.what() << std::endl;
+        };
+
+    }
+    canvas.ToPPMFile("../canvas");
+
+}
 
 
-
-
-
-
+int main()
+{
+    challenge_clock();
     return 0;
-
 }

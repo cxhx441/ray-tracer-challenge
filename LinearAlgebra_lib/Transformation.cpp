@@ -21,6 +21,10 @@ Matrix Transformation::scaling(float x, float y, float z){
     return T;
 }
 
+Matrix Transformation::scaling(float xyz){
+    return scaling(xyz, xyz, xyz);
+}
+
 Matrix Transformation::rotation_x(float radians){
     Matrix T = Matrix::Identity(4);
     T[1][1] = (float) cos((double) radians);
