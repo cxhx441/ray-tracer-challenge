@@ -75,9 +75,14 @@ TEST(TransformationTestSuite, RotationY_onPoint){
 
 TEST(TransformationTestSuite, RotationY_onPoint_Inverse){
     Tuple p = Tuple::point(0, 0, 1);
-    Matrix half_quarter = Transformation::rotation_x(M_PI / 4);
+    Matrix half_quarter = Transformation::rotation_y(M_PI / 4);
+    Matrix full_quarter = Transformation::rotation_y(M_PI / 2);
+
     Matrix inverse_half_quarter = Matrix::Inverse(half_quarter);
-    EXPECT_EQ(half_quarter * p, Tuple::point(-sqrt(2) / 2.f, 0, sqrt(2) / 2.f));
+    Matrix inverse_full_quarter = Matrix::Inverse(full_quarter);
+
+    EXPECT_EQ(inverse_half_quarter * p, Tuple::point(-sqrt(2) / 2.f, 0, sqrt(2) / 2.f));
+    EXPECT_EQ(inverse_full_quarter * p, Tuple::point(-1, 0, 0));
 }
 
 TEST(TransformationTestSuite, RotationZ_onPoint){
