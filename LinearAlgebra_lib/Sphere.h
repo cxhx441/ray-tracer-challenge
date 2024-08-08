@@ -11,7 +11,6 @@
 class Sphere {
 public:
     Sphere() = default;
-    static std::vector<float> Intersect(Sphere& s, Ray& r);
 };
 
 

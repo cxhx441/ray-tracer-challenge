@@ -10,6 +10,7 @@ add_executable(Google_Tests_run
         TransformationTest.cpp
         RayTest.cpp
         SphereTest.cpp
+        IntersectionTest.cpp
 )
 
 target_link_libraries(Google_Tests_run LinearAlgebra_lib)

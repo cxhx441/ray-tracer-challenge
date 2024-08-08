@@ -7,6 +7,7 @@ set(HEADER_FILES
         Transformation.h
         Ray.h
         Sphere.h
+        Intersection.h
 )
 
 set(SOURCE_FILES
@@ -16,6 +17,7 @@ set(SOURCE_FILES
         Transformation.cpp
         Ray.cpp
         Sphere.cpp
+        Intersection.cpp
 )
 
 add_library(LinearAlgebra_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})
