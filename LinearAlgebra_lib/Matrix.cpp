@@ -126,10 +126,23 @@ Matrix Matrix::Inverse(Matrix& m){
     for (int r = 0; r < m.rows; ++r) {
         for (int c = 0; c < m.cols; ++c) {
             // [c][r] instead of [r][c] to handle transposition.
-            inverse_mat[c][r] = Cofactor(m, r, c) / m_det;
+            float cof = Cofactor(m, r, c);
+            float val = cof / m_det;
+            inverse_mat[c][r] = val;
         }
     }
     return inverse_mat;
+}
+
+Matrix Matrix::NormalMatrix(Matrix& m){
+//    if (m.rows != 4 and m.cols != 4) {
+//        throw std::invalid_argument("operation only valid for 4x4 matrices");
+//    }
+//
+    Matrix n3 = Matrix::Submatrix(m, 3, 3);
+    Matrix inverse = Matrix::Inverse(n3);
+    Matrix transpose_inverse = Matrix::Transpose(inverse);
+    return transpose_inverse;
 }
 
 Matrix Matrix::copy(Matrix& m){
@@ -205,17 +218,29 @@ Matrix Matrix::operator*(const Matrix& other) const{
 }
 
 Tuple Matrix::operator*(const Tuple& t) const{
-    if (this-> rows != 4 and this->cols != 4) {
-        throw std::invalid_argument("operation only valid for 4x4 matrices");
+    if (this-> rows == 4 and this->cols == 4) {
+        float newTupData[4] = {0, 0, 0, 0};
+        for (int i = 0; i < 4; ++i) {
+            newTupData[i] = data[i * 4 + 0] * t.x +
+                            data[i * 4 + 1] * t.y +
+                            data[i * 4 + 2] * t.z +
+                            data[i * 4 + 3] * t.w;
+        }
+        return Tuple(newTupData[0], newTupData[1], newTupData[2], newTupData[3]);
     }
-    float newTupData[4] = {0, 0, 0, 0};
-    for (int i = 0; i < 4; ++i){
-        newTupData[i] = data[i * 4 + 0] * t.x +
-                        data[i * 4 + 1] * t.y +
-                        data[i * 4 + 2] * t.z +
-                        data[i * 4 + 3] * t.w;
+
+    else if (this-> rows == 3 and this->cols == 3) {
+        float newTupData[3] = {0, 0, 0};
+        for (int i = 0; i < 3; ++i) {
+            newTupData[i] = data[i * 3 + 0] * t.x +
+                            data[i * 3 + 1] * t.y +
+                            data[i * 3 + 2] * t.z;
+        }
+        return Tuple(newTupData[0], newTupData[1], newTupData[2], 0.f);
     }
-    return Tuple(newTupData[0], newTupData[1], newTupData[2], newTupData[3]);
+    else {
+        throw std::invalid_argument("operation only valid for 4x4 and 3x3 matrices");
+    }
 }
 
 std::ostream& operator<<(std::ostream& os, const Matrix& m) {

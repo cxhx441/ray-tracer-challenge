@@ -22,6 +22,7 @@ public:
     static Matrix Transpose(Matrix& m);
     static float Determinant(Matrix& m);
     static Matrix Submatrix(Matrix& m, int row, int col);
+    static Matrix NormalMatrix(Matrix& m);
     static float Minor(Matrix& m, int row, int col);
     static float Cofactor(Matrix& m, int row, int col);
     static bool IsInvertible(Matrix& m);
