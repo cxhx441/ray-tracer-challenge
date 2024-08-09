@@ -4,6 +4,7 @@
 
 #include "gtest/gtest.h"
 #include "Ray.h"
+#include "Transformation.h"
 #include <cmath>
 
 TEST(RayTestSuite, CreateRay){
@@ -20,6 +21,22 @@ TEST(RayTestSuite, GetRayPosition){
     EXPECT_EQ(Ray::Position(r, 1), Tuple::point(3, 3, 4));
     EXPECT_EQ(Ray::Position(r, -1), Tuple::point(1, 3, 4));
     EXPECT_EQ(Ray::Position(r, 2.5), Tuple::point(4.5, 3, 4));
+}
+
+TEST(RayTestSuite, TranslatingARay){
+    Ray r(Tuple::point(1, 2, 3), Tuple::vector(0, 1, 0));
+    Matrix m = Transformation::translation(3, 4, 5);
+    Ray r2 = Transformation::transform(r, m);
+    EXPECT_EQ(r2.origin, Tuple::point(4, 6, 8));
+    EXPECT_EQ(r2.direction, Tuple::vector(0, 1, 0));
+}
+
+TEST(RayTestSuite, ScalingARay){
+    Ray r(Tuple::point(1, 2, 3), Tuple::vector(0, 1, 0));
+    Matrix m = Transformation::scaling(2, 3, 4);
+    Ray r2 = Transformation::transform(r, m);
+    EXPECT_EQ(r2.origin, Tuple::point(2, 6, 12));
+    EXPECT_EQ(r2.direction, Tuple::vector(0, 3, 0));
 }
 
 

@@ -3,3 +3,5 @@
 //
 
 #include "Sphere.h"
+
+Sphere::Sphere(Matrix transformation) : transformation(transformation){}

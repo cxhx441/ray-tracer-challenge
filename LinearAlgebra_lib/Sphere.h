@@ -6,11 +6,14 @@
 #define RAYTRACERCHAELLENGE_SPHERE_H
 
 #include "Ray.h"
+#include "Transformation.h"
 #include <vector>
 
 class Sphere {
 public:
+    Matrix transformation = Matrix::Identity(4);
     Sphere() = default;
+    explicit Sphere(Matrix transformation);
 };
 
 

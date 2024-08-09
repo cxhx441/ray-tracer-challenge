@@ -55,10 +55,10 @@ Tuple Tuple::cross(const Tuple& a, const Tuple& b){
 }
 
 bool Tuple::operator==(const Tuple& other) const {
-    return (abs(x - other.x) < 10e-5) &&
-         (abs(y - other.y) < 10e-5) &&
-         (abs(z - other.z) < 10e-5) &&
-         (abs(w - other.w) < 10e-5);
+    return (std::abs(x - other.x) < 10e-5) &&
+         (std::abs(y - other.y) < 10e-5) &&
+         (std::abs(z - other.z) < 10e-5) &&
+         (std::abs(w - other.w) < 10e-5);
 }
 
 bool Tuple::operator!=(const Tuple& other) const {

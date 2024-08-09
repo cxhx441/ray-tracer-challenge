@@ -62,3 +62,9 @@ Matrix Transformation::shearing(float xy, float xz, float yx, float yz, float zx
     T[2][1] = zy;
     return T;
 }
+
+Ray Transformation::transform(Ray r, const Matrix& m) {
+    Tuple o2 = m * r.origin;
+    Tuple d2 = m * r.direction;
+    return Ray(o2, d2);
+}

@@ -11,10 +11,12 @@ std::vector<Intersection> Intersection::Intersect(Sphere &s, Ray &r) {
     /**
         Return the times t when the ray intersects the sphere
     **/
-    Tuple sphere_to_ray = r.origin - Tuple::point(0, 0,0); // sphere origin is always 000 for simplicity.
+    // use the sphere's inverse transformation matrix on the ray first
+    Ray trans_ray = Transformation::transform( r, Matrix::Inverse(s.transformation) );
+    Tuple sphere_to_ray = trans_ray.origin - Tuple::point(0, 0,0); // sphere origin is always 000 for simplicity.
 
-    float a = Tuple::dot(r.direction, r.direction);
-    float b = 2.f * Tuple::dot(r.direction, sphere_to_ray);
+    float a = Tuple::dot(trans_ray.direction, trans_ray.direction);
+    float b = 2.f * Tuple::dot(trans_ray.direction, sphere_to_ray);
     float c = Tuple::dot(sphere_to_ray, sphere_to_ray) - 1;
 
     // Check the discriminant is valid

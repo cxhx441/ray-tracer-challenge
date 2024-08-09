@@ -6,6 +6,7 @@
 #define RAYTRACERCHAELLENGE_TRANSFORMATION_H
 
 #include "Matrix.h"
+#include "Ray.h"
 
 class Transformation {
 public:
@@ -16,6 +17,7 @@ public:
     static Matrix rotation_y(float radians);
     static Matrix rotation_z(float radians);
     static Matrix shearing(float xy, float xz, float yx, float yz, float zx, float zy);
+    static Ray transform(Ray r, const Matrix& m);
 };
 
 
