@@ -32,8 +32,8 @@ std::vector<Intersection> Intersection::Intersect(Sphere &s, Ray &r) {
 
 std::optional<Intersection> Intersection::Hit(std::vector<Intersection> &xs) {
     /** return the Intersection object with the lowest positive t **/
-    if (xs.empty())
-        throw std::invalid_argument("Empty Intersections Vector!");
+//    if (xs.empty())
+//        throw std::invalid_argument("Empty Intersections Vector!");
 
     std::optional<Intersection> nearest = std::nullopt;
     for (auto& x : xs){
