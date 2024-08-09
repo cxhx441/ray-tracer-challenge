@@ -30,21 +30,21 @@ std::vector<Intersection> Intersection::Intersect(Sphere &s, Ray &r) {
     return std::vector<Intersection> {Intersection(t1, &s), Intersection(t2, &s)};
 }
 
-std::optional<Intersection> Intersection::Hit(std::vector<Intersection> &xs) {
+Intersection* Intersection::Hit(std::vector<Intersection> &xs) {
     /** return the Intersection object with the lowest positive t **/
 //    if (xs.empty())
 //        throw std::invalid_argument("Empty Intersections Vector!");
 
-    std::optional<Intersection> nearest = std::nullopt;
+    Intersection *nearest = nullptr;
     for (auto& x : xs){
-        if (x.t >= 0 and (!nearest or x.t < nearest->t))
-            nearest = x;
+        if (x.t >= 0 && (!nearest || x.t < nearest->t))
+            nearest = &x;
     }
     return nearest;
 }
 
 bool Intersection::operator==(const Intersection& other) const {
-    if (t == other.t and object == other.object)
+    if (t == other.t && object == other.object)
         return true;
     return false;
 }

@@ -8,7 +8,6 @@
 
 #include "Sphere.h"
 #include <vector>
-#include <optional>
 
 class Intersection {
 public:
@@ -17,7 +16,7 @@ public:
     Intersection(float t, Sphere* object);
     bool operator==(const Intersection& other) const;
     static std::vector<Intersection> Intersect(Sphere& s, Ray& r);
-    static std::optional<Intersection> Hit(std::vector<Intersection> &xs);
+    static Intersection* Hit(std::vector<Intersection> &xs);
 };
 
 

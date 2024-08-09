@@ -13,7 +13,6 @@ class Sphere {
 public:
     Matrix transformation = Matrix::Identity(4);
     Sphere() = default;
-    Tuple NormalAt(Tuple world_point);
     explicit Sphere(Matrix transformation);
 };
 

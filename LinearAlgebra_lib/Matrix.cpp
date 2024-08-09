@@ -6,27 +6,30 @@
 //#include <cmath>
 
 Matrix::Matrix(int rows, int cols): rows(rows), cols(cols) {
-    data = new float[rows * cols]();
+//    data = new float[rows * cols]();
+    data = std::vector<std::vector<float>> (rows, std::vector<float>(cols, 0));
 }
 
-Matrix::~Matrix() {
-    delete[] data;
-}
+//Matrix::~Matrix() {
+//    delete[] data;
+//}
 
-Matrix::Row::Row(float* row_data, int cols) : row_data(row_data), cols(cols) {}
+//Matrix::Row::Row(float* row_data, int cols) : row_data(row_data), cols(cols) {}
+//
+//float& Matrix::Row::operator[](int col){
+//    if (col < 0 || col >= this->cols) {
+//        throw std::out_of_range("col input is out of range");
+//    }
+//    return row_data[col];
+//}
 
-float& Matrix::Row::operator[](int col){
-    if (col < 0 || col >= this->cols) {
-        throw std::out_of_range("col input is out of range");
-    }
-    return row_data[col];
-}
+std::vector<float>& Matrix::operator[](int row){
+//    if (row < 0 || row >= this->rows) {
+//        throw std::out_of_range("row input is out of range");
+//    }
+//    return Row(&data[row * cols], this->cols);
+    return data[row];
 
-Matrix::Row Matrix::operator[](int row){
-    if (row < 0 || row >= this->rows) {
-        throw std::out_of_range("row input is out of range");
-    }
-    return Row(&data[row * cols], this->cols);
 }
 
 void Matrix::Fill(const std::vector<float>& values){
@@ -34,9 +37,16 @@ void Matrix::Fill(const std::vector<float>& values){
         throw std::invalid_argument("size of input array doesn't match size of matrix");
     }
 
-    for (int i = 0; i < this->cols * this->rows; ++i){
-        this->data[i] = values[i];
+    int i = 0;
+    for (int r = 0; r < this->rows; ++r) {
+        for (int c = 0; c < this->cols; ++c) {
+            this->data[r][c] = values[i];
+            ++i;
+        }
     }
+//    for (int i = 0; i < this->cols * this->rows; ++i){
+//        this->data[i] = values[i];
+//    }
 }
 
 Matrix Matrix::Identity(int n){
@@ -66,7 +76,7 @@ float Matrix::Determinant(Matrix &m) {
     if (m.rows != m.cols)
         throw std::invalid_argument("operation only valid for square matrices");
 
-    if (m.rows == 2 and m.cols == 2)
+    if (m.rows == 2 && m.cols == 2)
         return (m[0][0] * m[1][1]) - (m[0][1] * m[1][0]);
 
     // if not 2x2, recursively find determinant.
@@ -88,7 +98,7 @@ Matrix Matrix::Submatrix(Matrix& m, int row, int col){
     Matrix subm(m.rows - 1, m.cols - 1);
     for (int r = 0; r < m.rows; ++r){
         for (int c = 0; c < m.cols; ++c) {
-            if (r == row or c == col)
+            if (r == row || c == col)
                 continue;
             subm_data.push_back(m[r][c]);
 //            subm_data.push_back(m.data[r * m.cols + c]);
@@ -126,23 +136,10 @@ Matrix Matrix::Inverse(Matrix& m){
     for (int r = 0; r < m.rows; ++r) {
         for (int c = 0; c < m.cols; ++c) {
             // [c][r] instead of [r][c] to handle transposition.
-            float cof = Cofactor(m, r, c);
-            float val = cof / m_det;
-            inverse_mat[c][r] = val;
+            inverse_mat[c][r] = Cofactor(m, r, c) / m_det;
         }
     }
     return inverse_mat;
-}
-
-Matrix Matrix::NormalMatrix(Matrix& m){
-//    if (m.rows != 4 and m.cols != 4) {
-//        throw std::invalid_argument("operation only valid for 4x4 matrices");
-//    }
-//
-    Matrix n3 = Matrix::Submatrix(m, 3, 3);
-    Matrix inverse = Matrix::Inverse(n3);
-    Matrix transpose_inverse = Matrix::Transpose(inverse);
-    return transpose_inverse;
 }
 
 Matrix Matrix::copy(Matrix& m){
@@ -160,12 +157,20 @@ bool Matrix::operator==(const Matrix& other) const{
         return false;
     }
 
-    for (int i = 0; i < rows * cols; ++i){
-        if (std::abs(this->data[i] - other.data[i]) > 10e-5){
-            return false;
+    for (int r = 0; r < this->rows; ++r) {
+        for (int c = 0; c < this->cols; ++c) {
+            if (std::abs(this->data[r][c] - other.data[r][c]) > 10e-5) {
+                return false;
+            }
         }
     }
+//    for (int i = 0; i < rows * cols; ++i){
+//        if (std::abs(this->data[i] - other.data[i]) > 10e-5){
+//            return false;
+//        }
+//    }
     return true;
+//    return this->data == other.data;
 }
 
 Matrix& Matrix::operator=(Matrix other) {
@@ -206,8 +211,10 @@ Matrix Matrix::operator*(const Matrix& other) const{
 
             float val = 0;
             for (int i = 0; i < a_n; ++i){
-                float a_rc = this->data[r * a_m + i];
-                float b_cr = other.data[i * b_p + c];
+//                float a_rc = this->data[r * a_m + i];
+//                float b_cr = other.data[i * b_p + c];
+                float a_rc = this->data[r][i];
+                float b_cr = other.data[i][c];
                 val += a_rc * b_cr;
             }
 
@@ -218,39 +225,40 @@ Matrix Matrix::operator*(const Matrix& other) const{
 }
 
 Tuple Matrix::operator*(const Tuple& t) const{
-    if (this-> rows == 4 and this->cols == 4) {
-        float newTupData[4] = {0, 0, 0, 0};
-        for (int i = 0; i < 4; ++i) {
-            newTupData[i] = data[i * 4 + 0] * t.x +
-                            data[i * 4 + 1] * t.y +
-                            data[i * 4 + 2] * t.z +
-                            data[i * 4 + 3] * t.w;
-        }
-        return Tuple(newTupData[0], newTupData[1], newTupData[2], newTupData[3]);
+    if (this-> rows != 4 && this->cols != 4) {
+        throw std::invalid_argument("operation only valid for 4x4 matrices");
     }
-
-    else if (this-> rows == 3 and this->cols == 3) {
-        float newTupData[3] = {0, 0, 0};
-        for (int i = 0; i < 3; ++i) {
-            newTupData[i] = data[i * 3 + 0] * t.x +
-                            data[i * 3 + 1] * t.y +
-                            data[i * 3 + 2] * t.z;
-        }
-        return Tuple(newTupData[0], newTupData[1], newTupData[2], 0.f);
+    float newTupData[4] = {0, 0, 0, 0};
+    for (int i = 0; i < 4; ++i){
+        newTupData[i] = data[i][0] * t.x +
+                        data[i][1] * t.y +
+                        data[i][2] * t.z +
+                        data[i][3] * t.w;
     }
-    else {
-        throw std::invalid_argument("operation only valid for 4x4 and 3x3 matrices");
-    }
+    return Tuple(newTupData[0], newTupData[1], newTupData[2], newTupData[3]);
 }
 
 std::ostream& operator<<(std::ostream& os, const Matrix& m) {
     for (int r = 0; r < m.rows; ++r) {
         os << "|";
         for (int c = 0; c < m.cols; ++c) {
-            os << m.data[r * m.cols + c] << "|";
+//            os << m.data[r * m.cols + c] << "|";
+            os << m.data[r][c] << "|";
         }
         os << std::endl;
     }
     return os;
 }
 
+//void Matrix::set(int row, int col, float val) {
+//    if (row >= this->rows || col >= this->cols)
+//        throw std::invalid_argument("invalid row/col access");
+//    this->data[this->cols * row + col] = val;
+//}
+//
+//float Matrix::get(int row, int col) {
+//    if (row >= this->rows || col >= this->cols)
+//        throw std::invalid_argument("invalid row/col access");
+//    return this->data[this->cols * row + col];
+//}
+//

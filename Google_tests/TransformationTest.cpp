@@ -52,31 +52,31 @@ TEST(TransformationTestSuite, ReflectionByScalingWithNegative){
 
 TEST(TransformationTestSuite, RotationX_onPoint){
     Tuple p = Tuple::point(0, 1, 0);
-    Matrix half_quarter = Transformation::rotation_x(M_PI / 4);
-    Matrix full_quarter = Transformation::rotation_x(M_PI / 2);
+    Matrix half_quarter = Transformation::rotation_x(355.f/113.f / 4);
+    Matrix full_quarter = Transformation::rotation_x(355.f/113.f / 2);
     EXPECT_EQ(half_quarter * p, Tuple::point(0, sqrt(2) / 2.f, sqrt(2) / 2.f));
     EXPECT_EQ(full_quarter * p, Tuple::point(0, 0, 1));
 }
 
 TEST(TransformationTestSuite, RotationX_onPoint_Inverse){
     Tuple p = Tuple::point(0, 1, 0);
-    Matrix half_quarter = Transformation::rotation_x(M_PI / 4);
+    Matrix half_quarter = Transformation::rotation_x(355.f/113.f / 4);
     Matrix inverse_half_quarter = Matrix::Inverse(half_quarter);
     EXPECT_EQ(inverse_half_quarter * p, Tuple::point(0, sqrt(2) / 2.f, -sqrt(2) / 2.f));
 }
 
 TEST(TransformationTestSuite, RotationY_onPoint){
     Tuple p = Tuple::point(0, 0, 1);
-    Matrix half_quarter = Transformation::rotation_y(M_PI / 4);
-    Matrix full_quarter = Transformation::rotation_y(M_PI / 2);
+    Matrix half_quarter = Transformation::rotation_y(355.f/113.f / 4);
+    Matrix full_quarter = Transformation::rotation_y(355.f/113.f / 2);
     EXPECT_EQ(half_quarter * p, Tuple::point(sqrt(2) / 2.f, 0, sqrt(2) / 2.f));
     EXPECT_EQ(full_quarter * p, Tuple::point(1, 0, 0));
 }
 
 TEST(TransformationTestSuite, RotationY_onPoint_Inverse){
     Tuple p = Tuple::point(0, 0, 1);
-    Matrix half_quarter = Transformation::rotation_y(M_PI / 4);
-    Matrix full_quarter = Transformation::rotation_y(M_PI / 2);
+    Matrix half_quarter = Transformation::rotation_y(355.f/113.f / 4);
+    Matrix full_quarter = Transformation::rotation_y(355.f/113.f / 2);
 
     Matrix inverse_half_quarter = Matrix::Inverse(half_quarter);
     Matrix inverse_full_quarter = Matrix::Inverse(full_quarter);
@@ -87,8 +87,8 @@ TEST(TransformationTestSuite, RotationY_onPoint_Inverse){
 
 TEST(TransformationTestSuite, RotationZ_onPoint){
     Tuple p = Tuple::point(0, 1, 0);
-    Matrix half_quarter = Transformation::rotation_z(M_PI / 4);
-    Matrix full_quarter = Transformation::rotation_z(M_PI / 2);
+    Matrix half_quarter = Transformation::rotation_z(355.f/113.f / 4);
+    Matrix full_quarter = Transformation::rotation_z(355.f/113.f / 2);
     EXPECT_EQ(half_quarter * p, Tuple::point(-sqrt(2) / 2.f, sqrt(2) / 2.f, 0));
     EXPECT_EQ(full_quarter * p, Tuple::point(-1, 0, 0));
 }
@@ -137,7 +137,7 @@ TEST(TransformationTestSuite, ShearZy2){
 
 TEST(TransformationTestSuite, IndividualTransformations){
     Tuple p = Tuple::point(1, 0, 1);
-    Matrix A = Transformation::rotation_x(M_PI / 2.f);
+    Matrix A = Transformation::rotation_x(355.f/113.f / 2.f);
     Matrix B = Transformation::scaling(5, 5, 5);
     Matrix C = Transformation::translation(10, 5, 7);
 
@@ -149,7 +149,7 @@ TEST(TransformationTestSuite, IndividualTransformations){
 
 TEST(TransformationTestSuite, ChainedTransformations){
     Tuple p = Tuple::point(1, 0, 1);
-    Matrix A = Transformation::rotation_x(M_PI / 2.f);
+    Matrix A = Transformation::rotation_x(355.f/113.f / 2.f);
     Matrix B = Transformation::scaling(5, 5, 5);
     Matrix C = Transformation::translation(10, 5, 7);
 

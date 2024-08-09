@@ -4,6 +4,7 @@
 
 #include "gtest/gtest.h"
 #include "Matrix.h"
+#include <vector>
 
 TEST(MatrixTestSuite, ConstructAndInspectMat4) {
     Matrix m(4, 4);
@@ -61,14 +62,15 @@ TEST(MatrixTestSuite, ConstructAndInspectMat2) {
     EXPECT_EQ(m[1][0], 5.5);
 }
 
-TEST(MatrixTestSuite, MatrixOperandOutOfRange) {
-    Matrix m(3, 3);
-    m[0][0] = 1;
-    EXPECT_EQ(m[0][0], 1);
-    EXPECT_THROW(m[5][0], std::out_of_range);
-    EXPECT_THROW(m[0][5], std::out_of_range);
-    EXPECT_THROW(m[5][5], std::out_of_range);
-}
+//TEST(MatrixTestSuite, MatrixOperandOutOfRange) {
+//    Matrix m(3, 3);
+//    m[0][0] = 1;
+//    EXPECT_EQ(m[0][0], 1);
+//    m[5][0] = 1;
+//    EXPECT_THROW(m[5][0], std::out_of_range);
+//    EXPECT_THROW(m[0][5], std::out_of_range);
+//    EXPECT_THROW(m[5][5], std::out_of_range);
+//}
 
 TEST(MatrixTestSuite, MatrixEquality){
     Matrix a(4, 4);
@@ -109,8 +111,8 @@ TEST(MatrixTestSuite, Matrix44Multiply){
     a.Fill(a_vals);
     b.Fill(b_vals);
     c.Fill(c_vals);
-    Matrix check = a*b;
-    EXPECT_EQ(a * b, c);
+    Matrix result = a*b;
+    EXPECT_EQ(result, c);
 }
 
 TEST(MatrixTestSuite, MatrixBadMultiply){

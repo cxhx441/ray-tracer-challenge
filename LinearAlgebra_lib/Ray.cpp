@@ -5,7 +5,7 @@
 #include "Ray.h"
 
 Ray::Ray(Tuple origin, Tuple direction) {
-    if (!origin.isPoint() or !direction.isVector()){
+    if (!origin.isPoint() || !direction.isVector()){
         throw std::invalid_argument("origin must be a point, direction must be a vector");
     }
     this->origin = origin;

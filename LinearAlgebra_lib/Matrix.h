@@ -11,34 +11,35 @@
 
 class Matrix {
 private:
-    float* data;
+    std::vector<std::vector<float>> data;
     int rows;
     int cols;
 public:
     Matrix(int rows, int cols);
-    ~Matrix();
+//    ~Matrix();
     void Fill(const std::vector<float>& values);
+    void set(int row, int col, float val);
+    float get(int row, int col);
     static Matrix Identity(int n);
     static Matrix Transpose(Matrix& m);
     static float Determinant(Matrix& m);
     static Matrix Submatrix(Matrix& m, int row, int col);
-    static Matrix NormalMatrix(Matrix& m);
     static float Minor(Matrix& m, int row, int col);
     static float Cofactor(Matrix& m, int row, int col);
     static bool IsInvertible(Matrix& m);
     static Matrix Inverse(Matrix& m);
     static Matrix copy(Matrix& m);
 
-    class Row {
-    private:
-        float* row_data;
-        int cols;
-    public:
-        Row(float* row_data, int cols);
-        float& operator[](int col);
-    };
-
-    Row operator[](int row);
+//    class Row {
+//    private:
+//        float* row_data;
+//        int cols;
+//    public:
+//        Row(float* row_data, int cols);
+//        float& operator[](int col);
+//    };
+//
+    std::vector<float>& operator[](int row);
     bool operator==(const Matrix& other) const;
     bool operator!=(const Matrix& other) const;
     Matrix operator*(const Matrix& other) const;
