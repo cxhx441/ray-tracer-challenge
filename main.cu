@@ -3,8 +3,13 @@
 #include "Canvas.h"
 #include "Matrix.h"
 #include "Transformation.h"
+#include "Sphere.h"
+#include "Intersection.h"
 #include <filesystem>
 #include <cmath>
+
+#include <math_constants.h>
+#include <cuda_runtime.h>
 
 struct Projectile
 {
@@ -64,7 +69,8 @@ void challenge_clock(){
     int numVertices = 12;
     Tuple p = Tuple::point(0, 0, 0);
     Matrix T = Transformation::translation(1, 0, 0);
-    Matrix R = Transformation::rotation_z(2.f * (355.f/113.f) / numVertices);
+    // Matrix R = Transformation::rotation_z(2.f * (355.f/113.f) / numVertices);
+    Matrix R = Transformation::rotation_z(2.f * (CUDART_PI) / numVertices);
     Matrix S = Transformation::scaling(size/2 - size/10);
 
     p = T * p;
@@ -86,9 +92,44 @@ void challenge_clock(){
 
 }
 
+void challenge_ray_to_sphere(){
+    float backdrop_z = 10.f;
+    float backdrop_size = 7.f;
+    float backdrop_half_size = backdrop_size / 2.f;
+    int canvas_size = 64;
+    float pixel_size = (float) backdrop_size / (float) canvas_size;
+    Tuple color = Tuple::color(1, 0, 0, 1);
+    Canvas canvas(canvas_size, canvas_size);
+
+    Sphere s;
+    Matrix shear = Transformation::shearing(1, 0, 0, 0, 0, 0);
+    Matrix rot = Transformation::rotation_y((355.f/113.f) / 2.f);
+    Matrix scale = Transformation::scaling(0.75f);
+    s.transformation = scale * rot * shear;
+
+    Tuple origin = Tuple::point(0, 0, -5);
+    Ray r(origin, Tuple::vector(0, 0, 0));
+
+    for (int y = 0; y < canvas_size; ++y) {
+        float world_y = backdrop_half_size - ( pixel_size * y );
+        for (int x = 0; x < canvas_size; ++x) {
+            float world_x = -backdrop_half_size + ( pixel_size * x );
+            Tuple target = Tuple::point(world_x, world_y, backdrop_z);
+            r.direction = Tuple::normalize(target - r.origin);
+            std::vector<Intersection> xs = Intersection::Intersect(s, r);
+            Intersection* h = Intersection::Hit(xs);
+            if (h) {
+                try { canvas.WritePixel(x, y, color); }
+                catch (std::invalid_argument const &ex) { std::cout << ex.what() << std::endl; };
+            }
+        }
+    }
+    canvas.ToPPMFile("../../canvas");
+}
 
 int main()
 {
-    challenge_clock();
+//    challenge_clock();
+    challenge_ray_to_sphere();
     return 0;
 }
