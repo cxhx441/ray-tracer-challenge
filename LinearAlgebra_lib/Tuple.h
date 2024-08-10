@@ -37,7 +37,7 @@ public:
     bool operator==(const Tuple& other) const;
     bool operator!=(const Tuple& other) const;
     Tuple operator+(const Tuple& other) const;
-    Tuple operator-(const Tuple& other) const;
+    __host__ __device__ Tuple operator-(const Tuple& other) const;
     Tuple operator-() const;
     Tuple operator*(float scalar) const;
     Tuple operator*(const Tuple& other) const;

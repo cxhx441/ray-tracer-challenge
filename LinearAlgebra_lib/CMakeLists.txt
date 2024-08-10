@@ -11,7 +11,7 @@ set(HEADER_FILES
 )
 
 set(SOURCE_FILES
-        Tuple.cpp
+        Tuple.cu
         Canvas.cpp
         Matrix.cpp
         Transformation.cpp

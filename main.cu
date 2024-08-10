@@ -127,6 +127,77 @@ void challenge_ray_to_sphere(){
     canvas.ToPPMFile("../../canvas");
 }
 
+__global__ void render_kernel(Canvas canvas, Sphere s, Ray r, float backdrop_z, float backdrop_half_size, float pixel_size, Tuple color){
+    int x = blockIdx.x * blockDim.x + threadIdx.x;
+    int y = blockIdx.y * blockDim.y + threadIdx.y;
+    int canvas_size = canvas.width;
+
+    if (x < canvas_size && y < canvas_size) {
+        float world_y = backdrop_half_size - (pixel_size * y);
+        float world_x = -backdrop_half_size + (pixel_size * x);
+//        Tuple ToTarget = Tuple::vector(world_x - r.origin.x, world_y - r.origin.y, backdrop_z - r.origin.z);
+        Tuple target = Tuple::point(world_x, world_y, backdrop_z);
+        r.direction = Tuple::normalize( target - r.origin);
+
+        std::vector<Intersection> xs = Intersection::Intersect(s, r);
+        Intersection *h = Intersection::Hit(xs);
+        if (h) {
+            canvas.WritePixel(x, y, color);
+        }
+    }
+}
+
+void challenge_ray_to_sphere_CUDA(){
+    float backdrop_z = 10.f;
+    float backdrop_size = 7.f;
+    float backdrop_half_size = backdrop_size / 2.f;
+    int canvas_size = 64;
+    float pixel_size = (float) backdrop_size / (float) canvas_size;
+    Tuple color = Tuple::color(1, 0, 0, 1);
+    Canvas canvas(canvas_size, canvas_size);
+
+    Sphere s;
+    Matrix shear = Transformation::shearing(1, 0, 0, 0, 0, 0);
+    Matrix rot = Transformation::rotation_y((355.f/113.f) / 2.f);
+    Matrix scale = Transformation::scaling(0.75f);
+    s.transformation = scale * rot * shear;
+
+    Tuple origin = Tuple::point(0, 0, -5);
+    Ray r(origin, Tuple::vector(0, 0, 0));
+
+    // Define CUDA grid and block sizes
+    dim3 blockSize(16, 16);
+    dim3 gridSize((canvas_size + blockSize.x - 1) / blockSize.x, (canvas_size + blockSize.y - 1) / blockSize.y);
+
+    Canvas* d_canvas;
+    Sphere* d_sphere;
+    Tuple* d_ray;
+    Tuple* d_color;
+
+    cudaMalloc(&d_canvas, sizeof (Canvas));
+    cudaMalloc(&d_sphere, sizeof (Sphere));
+    cudaMalloc(&d_ray, sizeof (Ray));
+    cudaMalloc(&d_color, sizeof (Tuple));
+
+    cudaMemcpy(d_canvas, &canvas, sizeof (Canvas), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_sphere, &s, sizeof (Sphere), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_ray, &r, sizeof (Ray), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_color, &color, sizeof (Tuple), cudaMemcpyHostToDevice);
+
+    // Launch the kernel
+    render_kernel<<<gridSize, blockSize>>>(canvas, s, r, backdrop_z, backdrop_half_size, pixel_size, color);
+
+    // Copy the results back to host memory
+    cudaMemcpy(&canvas, d_canvas, sizeof (Canvas), cudaMemcpyDeviceToHost);
+
+    cudaFree(d_canvas);
+    cudaFree(d_sphere);
+    cudaFree(d_ray);
+    cudaFree(d_color);
+
+    canvas.ToPPMFile("../../canvas");
+}
+
 int main()
 {
 //    challenge_clock();

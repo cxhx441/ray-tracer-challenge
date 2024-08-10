@@ -74,7 +74,7 @@ Tuple Tuple::operator+(const Tuple& other) const {
     };
 }
 
-Tuple Tuple::operator-(const Tuple& other) const {
+__host__ __device__ Tuple Tuple::operator-(const Tuple& other) const {
     return {
         x - other.x,
         y - other.y,
