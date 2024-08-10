@@ -151,3 +151,7 @@ std::ostream& operator<<(std::ostream& os, const Tuple& t) {
     os << "(" << t.x << ", " << t.y << ", " << t.z << ", " << t.w << ")";
     return os;
 }
+
+Tuple Tuple::reflect(const Tuple &v, const Tuple &n) {
+    return v - ( n * 2 * dot(v, n) );
+}

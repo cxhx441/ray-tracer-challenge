@@ -4,6 +4,7 @@
 
 #include "gtest/gtest.h"
 #include "Intersection.h"
+#include <cmath>
 
 TEST(SphereTestSuite, RayIntersectsSphereAtTangent){
     Ray r(Tuple::point(0, 1, -5), Tuple::vector(0, 0, 1) );

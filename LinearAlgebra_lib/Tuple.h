@@ -30,6 +30,7 @@ public:
     static Tuple normalize(const Tuple &v);
     static float dot(const Tuple& a, const Tuple& b);
     static Tuple cross(const Tuple& a, const Tuple& b);
+    static Tuple reflect(const Tuple &v, const Tuple &n);
 
     [[nodiscard]] bool isPoint() const;
     [[nodiscard]] bool isVector() const;

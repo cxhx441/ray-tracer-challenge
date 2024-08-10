@@ -197,3 +197,17 @@ TEST(TupleTestSuite, ColorEqualityAfterMultiplication) {
     Tuple c2 = Tuple::color(0.9, 1, 0.1, 1);
     EXPECT_EQ(c1 * c2, Tuple::color(0.9, 0.2, 0.04, 1));
 }
+
+TEST(TupleTestSuite, ReflectVectorApproachingAt45Deg) {
+    Tuple inV = Tuple::vector(1, -1, 0);
+    Tuple n = Tuple::vector(0, 1, 0);
+    Tuple outV = Tuple::reflect(inV, n);
+    EXPECT_EQ(outV, Tuple::vector(1, 1, 0));
+}
+
+TEST(TupleTestSuite, ReflectVectorOffSlantedSurface) {
+    Tuple inV = Tuple::vector(0, -1, 0);
+    Tuple n = Tuple::vector(sqrt(2)/2.f, sqrt(2)/2.f, 0);
+    Tuple outV = Tuple::reflect(inV, n);
+    EXPECT_EQ(outV, Tuple::vector(1, 0, 0));
+}
