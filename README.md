@@ -1,6 +1,8 @@
 # Ray Tracer Challenge
 My implementation of a ray tracer following the tests outlined in [Jamis Buck's Ray Tracer Challenge](http://raytracerchallenge.com/).
 
+Implemented in C++ and tested with Google tests. 
+
 ### Chapter 2 Challenge: Projectile
 
 <img src="example_imgs/0_projectile.png" height="150"> 
