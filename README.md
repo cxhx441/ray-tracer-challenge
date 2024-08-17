@@ -3,18 +3,18 @@ My implementation of a ray tracer following the tests outlined in [Jamis Buck's 
 
 Implemented in C++ and tested with Google tests. 
 
-### Chapter 2 Challenge: Projectile
+### Chapter 2: Projectile
 
 <img src="example_imgs/0_projectile.png" height="150"> 
 
-### Chapter 4 Challenge: Clock
+### Chapter 4: Clock
 
 <img src="example_imgs/1_clock.png" height="200">
 
-### Chapter 5 Challenge: Transformed Sphere
+### Chapter 5: Transformed Sphere
 
 <img src="example_imgs/2_sheared_sphere.png" height="200"></br>
 
-### Chapter 6 Challenge: Phong Lighting on Sphere 
+### Chapter 6: Phong Lighting on Sphere 
 
 <img src="example_imgs/3_phong_lit_sphere.png" height="200"></br>
