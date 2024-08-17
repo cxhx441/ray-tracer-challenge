@@ -14,3 +14,7 @@ Implemented in C++ and tested with Google tests.
 ### Chapter 5 Challenge: Transformed Sphere
 
 <img src="example_imgs/2_sheared_sphere.png" height="200"></br>
+
+### Chapter 6 Challenge: Phong Lighting on Sphere 
+
+<img src="example_imgs/3_phong_lit_sphere.png" height="200"></br>
