@@ -11,11 +11,12 @@ Tuple Lighting::phong_lighting(const Material &material, const Light &light, con
     Tuple ambient = Tuple();
     Tuple diffuse = Tuple();
     Tuple specular = Tuple();
-//    Tuple diffuse = Tuple();
 
+    // point to light. Ambient is always added.
     Tuple lightv = Tuple::normalize(light.position - point);
     ambient = effective_color * material.ambient;
 
+    // if the angle between light and normal is greater than 90 degrees, no diffuse or specular because light is on other side of surface.
     float light_dot_normal = Tuple::dot(lightv, normalv);
     if (light_dot_normal < 0){
         diffuse = Tuple::color(0, 0, 0, 1);
@@ -25,8 +26,10 @@ Tuple Lighting::phong_lighting(const Material &material, const Light &light, con
         diffuse = effective_color * material.diffuse * light_dot_normal;
 
         Tuple reflectv = Tuple::reflect(-lightv, normalv);
+
+        // if the angle between reflected ray and the eye vector is greater than or equal to 90 degrees, no specular because light is reflected away from the eye.
         float reflect_dot_eye = Tuple::dot(reflectv, eyev);
-        if (std::abs(reflect_dot_eye) < 10e-5)
+        if (reflect_dot_eye <= 0)
             specular = Tuple::color(0, 0, 0, 1);
         else{
             float factor = pow(reflect_dot_eye, material.shininess);

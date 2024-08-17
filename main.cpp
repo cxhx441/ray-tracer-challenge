@@ -5,6 +5,8 @@
 #include "Sphere.h"
 #include "Intersection.h"
 #include "Transformation.h"
+#include "Light.h"
+#include "Lighting.h"
 #include <filesystem>
 #include <cmath>
 
@@ -119,8 +121,51 @@ void challenge_ray_to_sphere(){
     canvas.ToPPMFile("../canvas");
 }
 
+void challenge_ray_to_sphere_w_phong_lighting(){
+    float backdrop_z = 10.f;
+    float backdrop_size = 7.f;
+    float backdrop_half_size = backdrop_size / 2.f;
+    int canvas_size = 256;
+    float pixel_size = (float) backdrop_size / (float) canvas_size;
+    Tuple color = Tuple::color(1, 0, 0, 1);
+    Canvas canvas(canvas_size, canvas_size);
+
+    Sphere sphere;
+    sphere.material = Material();
+    sphere.material.color = Tuple::color(1, 0.2, 1, 1);
+    Matrix shear = Transformation::shearing(1, 0, 0, 0, 0, 0);
+    Matrix rot = Transformation::rotation_y((355.f/113.f) / 2.f);
+    Matrix scale = Transformation::scaling(0.75f);
+//    sphere.transformation = scale * rot * shear;
+//    sphere.transformation = scale * shear;
+
+    Light light = Light::PointLight(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
+
+    Tuple origin = Tuple::point(0, 0, -5);
+    Ray ray(origin, Tuple::vector(0, 0, 0));
+
+    for (int y = 0; y < canvas_size; ++y) {
+        float world_y = backdrop_half_size - ( pixel_size * y );
+        for (int x = 0; x < canvas_size; ++x) {
+            float world_x = -backdrop_half_size + ( pixel_size * x );
+            Tuple target = Tuple::point(world_x, world_y, backdrop_z);
+            ray.direction = Tuple::normalize(target - ray.origin);
+            std::vector<Intersection> intersections = Intersection::Intersect(sphere, ray);
+            std::optional<Intersection> hit = Intersection::Hit(intersections);
+            if (hit) {
+                Tuple point = Ray::Position(ray, hit->t);
+                Tuple normalv = sphere.NormalAt(point);
+                Tuple eyev = -ray.direction;
+                color = Lighting::phong_lighting(hit->object->material, light, point, eyev, normalv);
+                try { canvas.WritePixel(x, y, color); }
+                catch (std::invalid_argument const &ex) { std::cout << ex.what() << std::endl; };
+            }
+        }
+    }
+    canvas.ToPPMFile("../canvas");
+}
 int main()
 {
-    challenge_ray_to_sphere();
+    challenge_ray_to_sphere_w_phong_lighting();
     return 0;
 }
