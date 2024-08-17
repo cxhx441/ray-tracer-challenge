@@ -16,6 +16,8 @@ public:
     float shininess;
     Material();
     Material(Tuple color, float ambient, float diffuse, float specular, float shininess);
+    bool operator==(const Material& other) const;
+    bool operator!=(const Material& other) const;
 };
 
 

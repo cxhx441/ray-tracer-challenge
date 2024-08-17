@@ -10,6 +10,7 @@ set(HEADER_FILES
         Intersection.h
         Light.h
         Material.h
+        Lighting.h
 )
 
 set(SOURCE_FILES
@@ -22,6 +23,7 @@ set(SOURCE_FILES
         Intersection.cpp
         Light.cpp
         Material.cpp
+        Lighting.cpp
 )
 
 add_library(LinearAlgebra_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})

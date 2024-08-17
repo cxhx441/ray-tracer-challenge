@@ -54,6 +54,11 @@ Tuple Tuple::cross(const Tuple& a, const Tuple& b){
     );
 }
 
+Tuple Tuple::reflect(const Tuple &v, const Tuple &n) {
+    return v - ( n * 2 * dot(v, n) );
+}
+
+
 bool Tuple::operator==(const Tuple& other) const {
     return (std::abs(x - other.x) < 10e-5) &&
          (std::abs(y - other.y) < 10e-5) &&
@@ -152,6 +157,3 @@ std::ostream& operator<<(std::ostream& os, const Tuple& t) {
     return os;
 }
 
-Tuple Tuple::reflect(const Tuple &v, const Tuple &n) {
-    return v - ( n * 2 * dot(v, n) );
-}

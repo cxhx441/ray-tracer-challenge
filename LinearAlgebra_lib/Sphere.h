@@ -7,11 +7,13 @@
 
 #include "Ray.h"
 #include "Transformation.h"
+#include "Material.h"
 #include <vector>
 
 class Sphere {
 public:
     Matrix transformation = Matrix::Identity(4);
+    Material material = Material();
     Sphere() = default;
     Tuple NormalAt(Tuple world_point);
     explicit Sphere(Matrix transformation);

@@ -25,3 +25,18 @@ Material::Material(){
     shininess = 200.0;
 }
 
+bool Material::operator==(const Material &other) const {
+    if (color != other.color ||
+        ambient != other.ambient ||
+        diffuse != other.diffuse ||
+        specular != other.specular ||
+        shininess != other.shininess
+    )
+        return false;
+    return true;
+}
+
+bool Material::operator!=(const Material &other) const {
+    return !(*this == other);
+}
+

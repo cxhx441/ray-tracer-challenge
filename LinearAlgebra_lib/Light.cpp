@@ -13,3 +13,4 @@ Light Light::PointLight(Tuple position, Tuple intensity) {
 }
 
 Light::Light(Tuple position, Tuple intensity) : position(position), intensity(intensity){}
+

@@ -13,6 +13,7 @@ add_executable(Google_Tests_run
         IntersectionTest.cpp
         LightTest.cpp
         MaterialTest.cpp
+        LightingAnObjectTest.cpp
 )
 
 target_link_libraries(Google_Tests_run LinearAlgebra_lib)

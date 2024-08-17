@@ -125,3 +125,16 @@ TEST(SphereTestSuite, ComputeNormalOnTransformedSphere) {
     Tuple n = s.NormalAt(Tuple::point(0, sqrt(2)/2.f, -sqrt(2)/2.f));
     EXPECT_EQ(n, Tuple::vector(0, 0.97014, -0.24254));
 }
+
+TEST(SphereTestSuite, SphereGetsDefaultMaterial) {
+    Sphere s = Sphere();
+    EXPECT_EQ(s.material, Material());
+}
+
+TEST(SphereTestSuite, SphereMayBeAssignedMaterial) {
+    Sphere s = Sphere();
+    Material m = Material();
+    m.ambient = 1;
+    s.material = m;
+    EXPECT_EQ(s.material, m);
+}
