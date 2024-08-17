@@ -11,6 +11,8 @@ add_executable(Google_Tests_run
         RayTest.cpp
         SphereTest.cpp
         IntersectionTest.cpp
+        LightTest.cpp
+        MaterialTest.cpp
 )
 
 target_link_libraries(Google_Tests_run LinearAlgebra_lib)

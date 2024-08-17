@@ -8,6 +8,8 @@ set(HEADER_FILES
         Ray.h
         Sphere.h
         Intersection.h
+        Light.h
+        Material.h
 )
 
 set(SOURCE_FILES
@@ -18,6 +20,8 @@ set(SOURCE_FILES
         Ray.cpp
         Sphere.cpp
         Intersection.cpp
+        Light.cpp
+        Material.cpp
 )
 
 add_library(LinearAlgebra_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})
