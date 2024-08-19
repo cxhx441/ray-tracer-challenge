@@ -9,8 +9,49 @@ Matrix::Matrix(int rows, int cols): rows(rows), cols(cols) {
     data = new float[rows * cols]();
 }
 
+// Destructor
 Matrix::~Matrix() {
     delete[] data;
+}
+
+// Copy constructor
+Matrix::Matrix(const Matrix& other) : rows(other.rows), cols(other.cols) {
+    copyData(other.data);
+}
+
+// Move constructor
+Matrix::Matrix(Matrix&& other) noexcept : data(nullptr), rows(0), cols(0) {
+    swap(*this, other);
+}
+
+// Copy assignment operator
+Matrix& Matrix::operator=(const Matrix& other) {
+    if (this != &other) {
+        Matrix temp(other);
+        swap(*this, temp);
+    }
+    return *this;
+}
+
+// Move assignment operator
+Matrix& Matrix::operator=(Matrix&& other) noexcept {
+    if (this != &other) {
+        swap(*this, other);
+    }
+    return *this;
+}
+
+void Matrix::copyData(const float* sourceData) {
+    data = new float[rows * cols];
+    std::copy(sourceData, sourceData + rows * cols, data);
+}
+
+void swap(Matrix& first, Matrix& second) {
+    using std::swap;
+
+    swap(first.data, second.data);
+    swap(first.rows, second.rows);
+    swap(first.cols, second.cols);
 }
 
 Matrix::Row::Row(float* row_data, int cols) : row_data(row_data), cols(cols) {}
@@ -53,7 +94,7 @@ Matrix Matrix::Identity(int n){
 }
 
 Matrix Matrix::Transpose(Matrix &m) {
-    Matrix mT = copy(m);
+    Matrix mT = m;
     for (int r = 0; r < mT.rows; ++r){
         for (int c = r+1; c < mT.cols; ++c) {
             std::swap(mT[r][c], mT[c][r]);
@@ -135,24 +176,10 @@ Matrix Matrix::Inverse(Matrix& m){
 }
 
 Matrix Matrix::NormalMatrix(Matrix& m){
-//    if (m.rows != 4 and m.cols != 4) {
-//        throw std::invalid_argument("operation only valid for 4x4 matrices");
-//    }
-//
     Matrix n3 = Matrix::Submatrix(m, 3, 3);
     Matrix inverse = Matrix::Inverse(n3);
     Matrix transpose_inverse = Matrix::Transpose(inverse);
     return transpose_inverse;
-}
-
-Matrix Matrix::copy(Matrix& m){
-    Matrix copy(m.rows, m.cols);
-    for (int r = 0; r < m.rows; ++r) {
-        for (int c = 0; c < m.cols; ++c) {
-            copy[r][c] = m[r][c];
-        }
-    }
-    return copy;
 }
 
 bool Matrix::operator==(const Matrix& other) const{
@@ -166,24 +193,6 @@ bool Matrix::operator==(const Matrix& other) const{
         }
     }
     return true;
-}
-
-Matrix& Matrix::operator=(Matrix other) {
-    swap(*this, other);
-    return *this;
-}
-
-void swap(Matrix& first, Matrix& second) {
-    // Enable ADL (not necessary in our case, but good practice)
-    using std::swap;
-
-    // Swap member variables
-    swap(first.data, second.data);
-//    for (int r = 0; r < first.rows; ++r) {
-//        for (int c = 0; c < first.cols; ++c) {
-//            swap(first[r][c], second[r][c]);
-//        }
-//    }
 }
 
 bool Matrix::operator!=(const Matrix& other) const{

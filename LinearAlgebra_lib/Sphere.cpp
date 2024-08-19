@@ -4,7 +4,39 @@
 
 #include "Sphere.h"
 
-Sphere::Sphere(Matrix transformation) : transformation(transformation){}
+#include <utility>
+
+Sphere::Sphere(Matrix transformation)
+: transformation(std::move(transformation)){}
+
+// Copy constructor
+Sphere::Sphere(const Sphere& other)
+: material(other.material), transformation(other.transformation) {}
+
+// Move constructor
+Sphere::Sphere(Sphere&& other) noexcept
+: material(other.material), transformation(std::move(other.transformation)) {}
+
+// Copy assignment operator
+Sphere& Sphere::operator=(const Sphere& other) {
+    if (this != &other) {
+        material = other.material;
+        transformation = other.transformation;
+    }
+    return *this;
+}
+
+// Move assignment operator
+Sphere& Sphere::operator=(Sphere&& other) noexcept {
+    if (this != &other) {
+        material = other.material;
+        transformation = std::move(other.transformation);
+    }
+    return *this;
+}
+
+// Destructor
+Sphere::~Sphere() = default;
 
 Tuple Sphere::NormalAt(Tuple world_point) {
     Tuple model_point = Matrix::Inverse(this->transformation) * world_point;

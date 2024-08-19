@@ -4,6 +4,7 @@
 
 #include "gtest/gtest.h"
 #include "Intersection.h"
+#include "Ray.h"
 
 
 TEST(IntersectionTestSuite, IntersectionEncapsulatesTandShape){
@@ -61,4 +62,16 @@ TEST(IntersectionTestSuite, HitIsAlwaysLowestNonNegativeIntersection){
     std::vector<Intersection> xs = {i1, i2, i3, i4};
     std::optional<Intersection> i = Intersection::Hit(xs);
     EXPECT_EQ(i, i4);
+}
+
+TEST(WorldTestSuite, PrecomputeStateOfIntersection) {
+    Ray r = Ray(Tuple::point(0, 0, -5), Tuple::vector(0, 0, 1));
+    Sphere shape = Sphere();
+    Intersection i = Intersection(4, &shape);
+    Precompute comps = Intersection::PrepareComputations(i, r);
+    EXPECT_EQ(comps.t, i.t);
+    EXPECT_EQ(comps.object, &shape);
+    EXPECT_EQ(comps.point, Tuple::point(0, 0, -1) );
+    EXPECT_EQ(comps.eyev, Tuple::vector(0, 0, -1) );
+    EXPECT_EQ(comps.normalv, Tuple::vector(0, 0, -1) );
 }

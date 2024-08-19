@@ -290,7 +290,8 @@ TEST(MatrixTestSuite, InverseMatrixMult){
 TEST(MatrixTestSuite, CopyMatrix){
     Matrix A(4, 4);
     A.Fill(std::vector<float> {3, -9, 7, 3, 3, -8, 2, -9, -4, 4, 4, 1, -6, 5, -1, 1});
-    Matrix B = Matrix::copy(A);
+//    Matrix B = Matrix::copy(A);
+    Matrix B = A;
     EXPECT_EQ(B, A);
 }
 

@@ -4,8 +4,21 @@
 
 #include "Intersection.h"
 #include <cmath>
+#include <algorithm>
 
 Intersection::Intersection(float t, Sphere* object) : t(t), object(object) {}
+
+std::vector<Intersection> Intersection::IntersectWorld(World &w, Ray &r) {
+    std::vector<Intersection> world_xs;
+    for (auto& obj : w.objects){
+        std::vector<Intersection> object_xs = Intersect(obj, r);
+        for (auto& x : object_xs){
+            world_xs.push_back(x);
+        }
+    }
+    std::sort(world_xs.begin(), world_xs.end());
+    return world_xs;
+}
 
 std::vector<Intersection> Intersection::Intersect(Sphere &s, Ray &r) {
     /**
@@ -47,4 +60,20 @@ bool Intersection::operator==(const Intersection& other) const {
     if (t == other.t and object == other.object)
         return true;
     return false;
+}
+
+bool Intersection::operator<(const Intersection& other) const { return t < other.t; }
+bool Intersection::operator>(const Intersection& other) const { return t > other.t; }
+bool Intersection::operator<=(const Intersection& other) const { return t <= other.t; }
+bool Intersection::operator>=(const Intersection& other) const { return t >= other.t; }
+
+Precompute Intersection::PrepareComputations(Intersection &i, Ray &r) {
+    Precompute comps;
+    comps.t = i.t;
+    comps.object = i.object;
+    comps.point = Ray::Position(r, comps.t);
+    comps.eyev = -r.direction;
+    comps.normalv = comps.object->NormalAt( comps.point);
+
+    return comps;
 }

@@ -15,8 +15,15 @@ public:
     Matrix transformation = Matrix::Identity(4);
     Material material = Material();
     Sphere() = default;
-    Tuple NormalAt(Tuple world_point);
     explicit Sphere(Matrix transformation);
+    Sphere(const Sphere& other);                // Copy constructor
+    Sphere(Sphere&& other) noexcept;            // Move constructor
+    Sphere& operator=(const Sphere& other);     // Copy assignment operator
+    Sphere& operator=(Sphere&& other) noexcept; // Move assignment operator
+    ~Sphere();                                  // Destructor
+
+    Tuple NormalAt(Tuple world_point);
+
 };
 
 

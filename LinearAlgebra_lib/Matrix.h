@@ -14,9 +14,18 @@ private:
     float* data;
     int rows;
     int cols;
+
+    void copyData(const float* sourceData);
+    friend void swap(Matrix& first, Matrix& second);
+
 public:
     Matrix(int rows, int cols);
-    ~Matrix();
+    ~Matrix();                                  // Destructor
+    Matrix(const Matrix& other);                // Copy constructor
+    Matrix(Matrix&& other) noexcept;            // Move constructor
+    Matrix& operator=(const Matrix& other);     // Copy assignment operator
+    Matrix& operator=(Matrix&& other) noexcept; // Move assignment operator
+
     void Fill(const std::vector<float>& values);
     static Matrix Identity(int n);
     static Matrix Transpose(Matrix& m);
@@ -27,7 +36,6 @@ public:
     static float Cofactor(Matrix& m, int row, int col);
     static bool IsInvertible(Matrix& m);
     static Matrix Inverse(Matrix& m);
-    static Matrix copy(Matrix& m);
 
     class Row {
     private:
@@ -43,8 +51,6 @@ public:
     bool operator!=(const Matrix& other) const;
     Matrix operator*(const Matrix& other) const;
     Tuple operator*(const Tuple& t) const;
-    Matrix& operator=(Matrix other);
-    friend void swap(Matrix& first, Matrix& second);
 
     friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
 };
