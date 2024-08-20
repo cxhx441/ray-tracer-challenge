@@ -68,3 +68,20 @@ Ray Transformation::transform(Ray r, const Matrix& m) {
     Tuple d2 = m * r.direction;
     return Ray(o2, d2);
 }
+
+Matrix Transformation::view_transform(const Tuple &from, const Tuple &to, const Tuple &up) {
+
+    Tuple forward = Tuple::normalize(to - from);
+    Tuple left = Tuple::cross(forward, Tuple::normalize(up));
+    Tuple true_up = Tuple::cross(left, forward);
+
+    Matrix orientation = Matrix(4, 4);
+    orientation.Fill({
+        left.x,      left.y,     left.z,    0,
+        true_up.x,   true_up.y,  true_up.z, 0,
+        -forward.x, -forward.y, -forward.z, 0,
+        0,           0,          0,         1
+    });
+
+    return orientation * Transformation::translation(-from.x, -from.y, -from.z);
+}

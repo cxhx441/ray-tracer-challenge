@@ -3,6 +3,7 @@
 //
 
 #include "Canvas.h"
+#include "Intersection.h"
 #include <cmath>
 #include <iostream>
 #include <fstream>
@@ -107,4 +108,16 @@ std::ostream& operator<<(std::ostream& os, const Canvas& canvas) {
         os << std::endl;
     }
     return os;
+}
+
+Canvas Canvas::Render(Camera &c, World &w) {
+    Canvas image(c.hsize, c.vsize);
+    for (int y = 0; y < c.vsize; ++y){
+        for (int x = 0; x < c.hsize; ++x){
+            Ray r = Camera::RayForPixel(c, x, y);
+            Tuple color = Intersection::ColorAt(w, r);
+            image.WritePixel(x, y, color);
+        }
+    }
+    return image;
 }

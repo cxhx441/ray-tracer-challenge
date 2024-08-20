@@ -4,12 +4,10 @@
 
 #include "World.h"
 
-World::World() : light(Light::PointLight(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1)) ) {}
-
-
 World World::DefaultWorld() {
     World w;
-    w.light = Light::PointLight(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1) );
+    Light l = Light::PointLight(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1) );
+    w.lights.push_back(l);
 
     // Unit sphere at origin.
     Sphere s1;
@@ -19,7 +17,7 @@ World World::DefaultWorld() {
 
     // Half unit sphere at origin.
     Sphere s2;
-    s2.transformation = Transformation::scaling(0.5);
+    s2.transform = Transformation::scaling(0.5);
 
     w.objects.push_back(s1);
     w.objects.push_back(s2);

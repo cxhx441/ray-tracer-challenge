@@ -3,6 +3,7 @@
 //
 
 #include "Intersection.h"
+#include "Lighting.h"
 #include <cmath>
 #include <algorithm>
 
@@ -25,7 +26,7 @@ std::vector<Intersection> Intersection::Intersect(Sphere &s, Ray &r) {
         Return the times t when the ray intersects the sphere
     **/
     // use the sphere's inverse transformation matrix on the ray first
-    Ray trans_ray = Transformation::transform( r, Matrix::Inverse(s.transformation) );
+    Ray trans_ray = Transformation::transform( r, Matrix::Inverse(s.transform) );
     Tuple sphere_to_ray = trans_ray.origin - Tuple::point(0, 0,0); // sphere origin is always 000 for simplicity.
 
     float a = Tuple::dot(trans_ray.direction, trans_ray.direction);
@@ -74,6 +75,38 @@ Precompute Intersection::PrepareComputations(Intersection &i, Ray &r) {
     comps.point = Ray::Position(r, comps.t);
     comps.eyev = -r.direction;
     comps.normalv = comps.object->NormalAt( comps.point);
+    comps.inside = false;
 
+    // if the eye is inside the object, we still want to color it correctly.
+    if ( Tuple::dot(comps.eyev, comps.normalv) < 0 ){
+        comps.normalv *= -1;
+        comps.inside = true;
+    }
     return comps;
 }
+
+Tuple Intersection::ShadeHit(World &w, Precompute &comps) {
+    Tuple rendered_color(0, 0, 0, 0);
+    for (auto light : w.lights){
+        Tuple phong_color = Lighting::phong_lighting(comps.object->material,
+                                        light,
+                                        comps.point,
+                                        comps.eyev,
+                                        comps.normalv);
+        rendered_color += phong_color;
+    }
+    rendered_color.w = 1;
+    return rendered_color;
+}
+
+Tuple Intersection::ColorAt(World &w, Ray &r) {
+    std::vector<Intersection> xs = IntersectWorld(w, r);
+    std::optional<Intersection> hit = Hit(xs);
+    if (hit != std::nullopt){
+        Precompute comps = PrepareComputations(*hit, r);
+        Tuple rendered_color = ShadeHit(w, comps);
+        return rendered_color;
+    }
+    return Tuple::color(0, 0, 0, 1);
+}
+

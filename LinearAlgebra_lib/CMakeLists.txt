@@ -12,6 +12,7 @@ set(HEADER_FILES
         Material.h
         Lighting.h
         World.h
+        Camera.h
 )
 
 set(SOURCE_FILES
@@ -26,6 +27,7 @@ set(SOURCE_FILES
         Material.cpp
         Lighting.cpp
         World.cpp
+        Camera.cpp
 )
 
 add_library(LinearAlgebra_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})

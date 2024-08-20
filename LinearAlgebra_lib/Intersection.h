@@ -17,6 +17,7 @@ struct Precompute{
     Tuple point;
     Tuple eyev;
     Tuple normalv;
+    bool inside;
 };
 
 
@@ -34,6 +35,9 @@ public:
     static std::vector<Intersection> IntersectWorld(World& w, Ray& r);
     static std::vector<Intersection> Intersect(Sphere& s, Ray& r);
     static std::optional<Intersection> Hit(std::vector<Intersection> &xs);
+    static Tuple ShadeHit(World& w, Precompute& precompute);
+    static Tuple ColorAt(World& w, Ray& r);
+
 };
 
 

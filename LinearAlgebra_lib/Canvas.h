@@ -6,6 +6,8 @@
 #define RAYTRACERCHAELLENGE_CANVAS_H
 
 #include "Tuple.h"
+#include "Camera.h"
+#include "World.h"
 #include <string>
 
 class Canvas {
@@ -13,6 +15,7 @@ public:
     int width;
     int height;
     Tuple** pixels;
+    // TODO implement the big five or refactor for std::vector
 
     Canvas(int width, int height);
     ~Canvas();
@@ -22,6 +25,7 @@ public:
     void ToPPMFile(std::string filename);
     static int MapColorValue(float colorVal, int maxValue);
     friend std::ostream& operator<<(std::ostream& os, const Canvas& canvas); // for printing
+    static Canvas Render(Camera& c, World& w);
 };
 
 

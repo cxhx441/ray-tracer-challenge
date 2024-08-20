@@ -18,6 +18,7 @@ public:
     static Matrix rotation_z(float radians);
     static Matrix shearing(float xy, float xz, float yx, float yz, float zx, float zy);
     static Ray transform(Ray r, const Matrix& m);
+    static Matrix view_transform(const Tuple& from, const Tuple& to, const Tuple& up);
 };
 
 

@@ -15,6 +15,7 @@ add_executable(Google_Tests_run
         MaterialTest.cpp
         LightingAnObjectTest.cpp
         WorldTest.cpp
+        CameraTest.cpp
 )
 
 target_link_libraries(Google_Tests_run LinearAlgebra_lib)

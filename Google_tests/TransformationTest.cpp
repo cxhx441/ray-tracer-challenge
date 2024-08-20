@@ -159,3 +159,42 @@ TEST(TransformationTestSuite, ChainedTransformations){
     p = T*p;
     EXPECT_EQ(p, Tuple::point(15, 0, 7));
 }
+
+TEST(ViewTransformTestSuite, Default){
+    Tuple from = Tuple::point(0, 0, 0);
+    Tuple to = Tuple::point(0, 0, -1);
+    Tuple up = Tuple::vector(0, 1, 0);
+    Matrix t = Transformation::view_transform(from, to, up);
+    EXPECT_EQ(t, Matrix::Identity(4));
+}
+
+TEST(ViewwTransformTestSuite, LookInOppositeDirection){
+    Tuple from = Tuple::point(0, 0, 0);
+    Tuple to = Tuple::point(0, 0, 1);
+    Tuple up = Tuple::vector(0, 1, 0);
+    Matrix t = Transformation::view_transform(from, to, up);
+    EXPECT_EQ(t, Transformation::scaling(-1, 1, -1) );
+}
+
+TEST(ViewTransformTestSuite, MovesEyeNotWorld){
+    Tuple from = Tuple::point(0, 0, 8);
+    Tuple to = Tuple::point(0, 0, 0);
+    Tuple up = Tuple::vector(0, 1, 0);
+    Matrix t = Transformation::view_transform(from, to, up);
+    EXPECT_EQ(t, Transformation::translation(0, 0, -8) );
+}
+
+TEST(ViewTransformTestSuite, ArbitraryDirection){
+    Tuple from = Tuple::point(1, 3, 2);
+    Tuple to = Tuple::point(4, -2, 8);
+    Tuple up = Tuple::vector(1, 1, 0);
+    Matrix t = Transformation::view_transform(from, to, up);
+    Matrix m = Matrix(4, 4);
+    m.Fill({
+        -0.50709, 0.50709, 0.67612, -2.36643,
+         0.76772, 0.60609, 0.12122, -2.82843,
+        -0.35857, 0.59761, -0.71714, 0.00000,
+         0.00000, 0.00000, 0.00000, 1.00000 }
+        );
+    EXPECT_EQ(t, m);
+}

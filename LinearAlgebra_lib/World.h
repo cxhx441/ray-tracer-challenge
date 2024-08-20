@@ -10,10 +10,9 @@
 
 class World {
 public:
-    Light light;
+    std::vector<Light> lights;
     std::vector<Sphere> objects;
-    World();
-
+    World() = default;
     static World DefaultWorld();
 };
 

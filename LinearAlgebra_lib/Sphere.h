@@ -12,7 +12,7 @@
 
 class Sphere {
 public:
-    Matrix transformation = Matrix::Identity(4);
+    Matrix transform = Matrix::Identity(4);
     Material material = Material();
     Sphere() = default;
     explicit Sphere(Matrix transformation);

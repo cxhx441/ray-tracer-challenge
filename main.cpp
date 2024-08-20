@@ -99,7 +99,7 @@ void challenge_ray_to_sphere(){
     Matrix shear = Transformation::shearing(1, 0, 0, 0, 0, 0);
     Matrix rot = Transformation::rotation_y((355.f/113.f) / 2.f);
     Matrix scale = Transformation::scaling(0.75f);
-    s.transformation = scale * rot * shear;
+    s.transform = scale * rot * shear;
 
     Tuple origin = Tuple::point(0, 0, -5);
     Ray r(origin, Tuple::vector(0, 0, 0));
@@ -164,8 +164,71 @@ void challenge_ray_to_sphere_w_phong_lighting(){
     }
     canvas.ToPPMFile("../canvas");
 }
+
+void challenge_world_w_spheres(){
+    // Set Spheres
+    Sphere floor;
+    floor.transform = Transformation::scaling(10, 0.01, 10);
+    floor.material.color = Tuple::color(1, 0.9, 0.9, 1);
+    floor.material.specular = 0;
+
+    Sphere left_wall;
+    left_wall.transform =
+            Transformation::translation(0, 0, 5) *
+            Transformation::rotation_y(-M_PI_4) *
+            Transformation::rotation_x(M_PI_2) *
+            Transformation::scaling(10, 0.01, 10);
+    left_wall.material = floor.material;
+
+    Sphere right_wall;
+    right_wall.transform =
+            Transformation::translation(0, 0, 5) *
+            Transformation::rotation_y(M_PI_4) *
+            Transformation::rotation_x(M_PI_2) *
+            Transformation::scaling(10, 0.01, 10);
+    right_wall.material = floor.material;
+
+    Sphere middle;
+    middle.transform = Transformation::translation(-0.5, 1, 0.5);
+    middle.material.color = Tuple::color(0.1, 1, 0.5, 1);
+    middle.material.diffuse = 0.7;
+    middle.material.specular = 0.3;
+
+    Sphere right;
+    right.transform = Transformation::translation(1.5, 0.5, -0.5) * Transformation::scaling(0.5);
+    right.material.color = Tuple::color(0.5, 1, 0.1, 1);
+    right.material.diffuse = 0.7;
+    right.material.specular = 0.3;
+
+    Sphere left;
+    left.transform = Transformation::translation(-1.5, 0.33, -0.75) * Transformation::scaling(0.33);
+    left.material.color = Tuple::color(1, 0.8, 0.1, 1);
+    left.material.diffuse = 0.7;
+    left.material.specular = 0.3;
+
+    // Set Lighting
+    Light l1 = Light::PointLight(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
+
+    // Set World
+    World world;
+    world.objects.insert(world.objects.end(), {floor, left_wall, right_wall, middle, right, left} );
+    world.lights.push_back(l1);
+
+    // Set Camera
+    int factor = 20;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.transform = Transformation::view_transform(
+            Tuple::point(0, 1.5, -5),
+            Tuple::point(0, 1, 0),
+            Tuple::vector(0, 1, 0)
+    );
+
+    Canvas canvas = Canvas::Render(camera, world);
+    canvas.ToPPMFile("../canvas");
+}
+
 int main()
 {
-    challenge_ray_to_sphere_w_phong_lighting();
+    challenge_world_w_spheres();
     return 0;
 }
