@@ -84,6 +84,7 @@ std::string Canvas::ToPPMString() {
 void Canvas::ToPPMFile(std::string filename){
     // write to file
     std::string ppm = ToPPMString();
+    filename.append("_" + std::to_string(width) + "x"+ std::to_string(height));
     filename.append(".ppm");
     std::ofstream out(filename);
     out << ppm;

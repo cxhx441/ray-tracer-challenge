@@ -242,12 +242,12 @@ void challenge_world_w_spheres(){
     // Set World
     World world;
 //    world.objects.insert(world.objects.end(), {floor, left_wall, right_wall, middle, right, left} );
-//    world.objects.insert(world.objects.end(), {small, small2, floor, left_wall, right_wall, middle, right, left} );
-    world.objects.insert(world.objects.end(), {small, small2, middle, right, left} );
+    world.objects.insert(world.objects.end(), {small, small2, floor, left_wall, right_wall, middle, right, left} );
+//    world.objects.insert(world.objects.end(), {small, small2, middle, right, left} );
     world.lights.push_back(l1);
 
     // Set Camera
-    int factor = 10;
+    int factor = 2;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.transform = Transformation::view_transform(
             Tuple::point(0, 1.5, -5),
@@ -256,7 +256,9 @@ void challenge_world_w_spheres(){
     );
 
     Canvas canvas = Canvas::Render(camera, world);
-    canvas.ToPPMFile("../canvas");
+    std::string filename = "../canvas_";
+    filename.append(__FUNCTION__);
+    canvas.ToPPMFile(filename);
 }
 
 int main()
