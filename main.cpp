@@ -9,6 +9,7 @@
 #include "Lighting.h"
 #include <filesystem>
 #include <cmath>
+#include <chrono>
 
 struct Projectile
 {
@@ -263,6 +264,12 @@ void challenge_world_w_spheres(){
 
 int main()
 {
+    auto start = std::chrono::high_resolution_clock::now();
+
     challenge_world_w_spheres();
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "Time taken by function: " << duration.count() << " seconds" << std::endl;
     return 0;
 }
