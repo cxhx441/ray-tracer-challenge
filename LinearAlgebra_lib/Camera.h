@@ -21,8 +21,8 @@ public:
     float pixel_size;
     Camera(int hsize, int vsize, float fov);
     void setTransform(Matrix m);
-    Matrix* getTransform();
-    Matrix* getInverseTransform();
+    Matrix getTransform();
+    Matrix getInverseTransform();
     static Ray RayForPixel(Camera& c, int x, int y);
 
 };

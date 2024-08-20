@@ -26,7 +26,7 @@ std::vector<Intersection> Intersection::Intersect(Sphere &s, Ray &r) {
         Return the times t when the ray intersects the sphere
     **/
     // use the sphere's inverse transformation matrix on the ray first
-    Ray trans_ray = Transformation::transform( r, Matrix::Inverse(s.transform) );
+    Ray trans_ray = Transformation::transform( r, s.getInverseTransform() );
     Tuple sphere_to_ray = trans_ray.origin - Tuple::point(0, 0,0); // sphere origin is always 000 for simplicity.
 
     float a = Tuple::dot(trans_ray.direction, trans_ray.direction);

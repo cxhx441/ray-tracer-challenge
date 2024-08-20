@@ -17,7 +17,7 @@ World World::DefaultWorld() {
 
     // Half unit sphere at origin.
     Sphere s2;
-    s2.transform = Transformation::scaling(0.5);
+    s2.setTransform(Transformation::scaling(0.5));
 
     w.objects.push_back(s1);
     w.objects.push_back(s2);

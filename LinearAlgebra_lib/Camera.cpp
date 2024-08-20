@@ -39,8 +39,8 @@ Ray Camera::RayForPixel(Camera &c, int x, int y) {
     // Useing camera matrix, transform canvas point and origin.
     // Then compute the ray's direction vector.
     // REMEMBER canvas is at z = -1 (to make math simpler).
-    Tuple pixel = *c.getInverseTransform() * Tuple::point(worldx, worldy, -1);
-    Tuple origin = *c.getInverseTransform() * Tuple::point(0, 0, 0);
+    Tuple pixel = c.getInverseTransform() * Tuple::point(worldx, worldy, -1);
+    Tuple origin = c.getInverseTransform() * Tuple::point(0, 0, 0);
     Tuple direction = Tuple::normalize(pixel - origin);
     return Ray(origin, direction);
 }
@@ -50,10 +50,10 @@ void Camera::setTransform(Matrix m) {
     inverse_transform = Matrix::Inverse(m);
 }
 
-Matrix *Camera::getTransform() {
-    return &transform;
+Matrix Camera::getTransform() {
+    return transform;
 }
 
-Matrix *Camera::getInverseTransform() {
-    return &inverse_transform;
+Matrix Camera::getInverseTransform() {
+    return inverse_transform;
 }

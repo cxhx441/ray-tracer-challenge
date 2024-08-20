@@ -52,19 +52,19 @@ TEST(SphereTestSuite, IntersectSetsObjectOnTheIntersection){
 TEST(SphereTestSuite, ASpheresDefaultTransformationIsIdentity){
     Sphere s = Sphere();
     Matrix m = Matrix::Identity(4);
-    EXPECT_EQ(s.transform, m);
+    EXPECT_EQ(s.getTransform(), m);
 }
 
 TEST(SphereTestSuite, ChangeSpheresTransformation){
     Sphere s = Sphere();
-    s.transform = Transformation::translation(2, 3, 4);
-    EXPECT_EQ(s.transform, Transformation::translation(2, 3, 4));
+    s.setTransform( Transformation::translation(2, 3, 4) );
+    EXPECT_EQ(s.getTransform(), Transformation::translation(2, 3, 4));
 }
 
 TEST(SphereTestSuite, IntersectingAScaledSphereWithARay){
     Ray r(Tuple::point(0, 0, -5), Tuple::vector(0, 0, 1) );
     Sphere s = Sphere();
-    s.transform = Transformation::scaling(2);
+    s.setTransform( Transformation::scaling(2) );
     std::vector<Intersection> xs = Intersection::Intersect(s, r);
     EXPECT_EQ(xs.size(), 2);
     EXPECT_EQ(xs[0].t, 3);
@@ -74,7 +74,7 @@ TEST(SphereTestSuite, IntersectingAScaledSphereWithARay){
 TEST(SphereTestSuite, IntersectingATranslatedSphereWithARay){
     Ray r(Tuple::point(0, 0, -5), Tuple::vector(0, 0, 1) );
     Sphere s = Sphere();
-    s.transform = Transformation::translation(5, 0, 0);
+    s.setTransform( Transformation::translation(5, 0, 0) );
     std::vector<Intersection> xs = Intersection::Intersect(s, r);
     EXPECT_EQ(xs.size(), 0);
 }
@@ -111,7 +111,7 @@ TEST(SphereTestSuite, NormalIsNormalizedVector) {
 
 TEST(SphereTestSuite, ComputeNormalOnTranslatedSphere) {
     Sphere s = Sphere();
-    s.transform = Transformation::translation(0, 1, 0);
+    s.setTransform( Transformation::translation(0, 1, 0) );
     Tuple n = s.NormalAt(Tuple::point(0, 1.70711, -0.70711));
     EXPECT_EQ(n, Tuple::vector( 0, 0.70711, -0.70711));
 }
@@ -120,7 +120,7 @@ TEST(SphereTestSuite, ComputeNormalOnTransformedSphere) {
     Sphere s = Sphere();
     Matrix scale = Transformation::scaling(1, 0.5, 1);
     Matrix rotate = Transformation::rotation_z(M_PI/5);
-    s.transform = scale * rotate;
+    s.setTransform( scale * rotate );
 //    Tuple n = s.NormalAt(Tuple::point(0, 0.70711, -0.70711));
     Tuple n = s.NormalAt(Tuple::point(0, sqrt(2)/2.f, -sqrt(2)/2.f));
     EXPECT_EQ(n, Tuple::vector(0, 0.97014, -0.24254));

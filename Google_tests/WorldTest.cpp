@@ -19,7 +19,7 @@ TEST(WorldTestSuite, CreateDefaultWorld){
     EXPECT_FLOAT_EQ(w.objects[0].material.diffuse, 0.7);
     EXPECT_FLOAT_EQ(w.objects[0].material.specular, 0.2);
 
-    EXPECT_EQ(w.objects[1].transform, Transformation::scaling(0.5) );
+    EXPECT_EQ(w.objects[1].getTransform(), Transformation::scaling(0.5) );
 }
 
 TEST(WorldTestSuite, IntersectAWorldWithARay) {

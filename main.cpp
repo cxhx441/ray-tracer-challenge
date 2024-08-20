@@ -100,7 +100,7 @@ void challenge_ray_to_sphere(){
     Matrix shear = Transformation::shearing(1, 0, 0, 0, 0, 0);
     Matrix rot = Transformation::rotation_y((355.f/113.f) / 2.f);
     Matrix scale = Transformation::scaling(0.75f);
-    s.transform = scale * rot * shear;
+    s.setTransform( scale * rot * shear );
 
     Tuple origin = Tuple::point(0, 0, -5);
     Ray r(origin, Tuple::vector(0, 0, 0));
@@ -169,24 +169,26 @@ void challenge_ray_to_sphere_w_phong_lighting(){
 void challenge_world_w_spheres(){
     // Set Spheres
     Sphere floor;
-    floor.transform = Transformation::scaling(10, 0.01, 10);
+    floor.setTransform( Transformation::scaling(10, 0.01, 10) );
     floor.material.color = Tuple::color(1, 0.9, 0.9, 1);
     floor.material.specular = 0;
 
     Sphere left_wall;
-    left_wall.transform =
+    left_wall.setTransform(
             Transformation::translation(1, 0, 5) *
             Transformation::rotation_y(-M_PI_4) *
             Transformation::rotation_x(M_PI_2) *
-            Transformation::scaling(10, 0.01, 10);
+            Transformation::scaling(10, 0.01, 10)
+        );
     left_wall.material = floor.material;
 
     Sphere right_wall;
-    right_wall.transform =
+    right_wall.setTransform(
             Transformation::translation(1, 0, 5) *
             Transformation::rotation_y(M_PI_4) *
             Transformation::rotation_x(M_PI_2) *
-            Transformation::scaling(10, 0.01, 10);
+            Transformation::scaling(10, 0.01, 10)
+        );
     right_wall.material = floor.material;
 
 //    Sphere middle;
@@ -208,31 +210,31 @@ void challenge_world_w_spheres(){
 //    left.material.specular = 0.3;
 
     Sphere middle;
-    middle.transform = Transformation::translation(-.1, 1.6, -0.3) * Transformation::scaling(0.7);
+    middle.setTransform( Transformation::translation(-.1, 1.6, -0.3) * Transformation::scaling(0.7) );
     middle.material.color = Tuple::color(0.1, 1, 0.5, 1);
     middle.material.diffuse = 0.7;
     middle.material.specular = 0.3;
 
     Sphere right;
-    right.transform = Transformation::translation(.5, 0.7, -0.5) * Transformation::scaling(0.7);
+    right.setTransform( Transformation::translation(.5, 0.7, -0.5) * Transformation::scaling(0.7) );
     right.material.color = Tuple::color(0.5, 1, 0.1, 1);
     right.material.diffuse = 0.7;
     right.material.specular = 0.3;
 
     Sphere left;
-    left.transform = Transformation::translation(-.5, 0.7, -0.5) * Transformation::scaling(0.7);
+    left.setTransform( Transformation::translation(-.5, 0.7, -0.5) * Transformation::scaling(0.7) );
     left.material.color = Tuple::color(1, 0.8, 0.1, 1);
     left.material.diffuse = 0.7;
     left.material.specular = 0.3;
 
     Sphere small;
-    small.transform = Transformation::translation(-.7, 0.3, -0.8) * Transformation::scaling(0.3);
+    small.setTransform( Transformation::translation(-.7, 0.3, -0.8) * Transformation::scaling(0.3) );
     small.material.color = Tuple::color(1, 0.2, 0.1, 1);
     small.material.diffuse = 0.7;
     small.material.specular = 0.3;
 
     Sphere small2;
-    small2.transform = Transformation::translation(-.8, 1, -0.7) * Transformation::scaling(0.4);
+    small2.setTransform( Transformation::translation(-.8, 1, -0.7) * Transformation::scaling(0.4) );
     small2.material.color = Tuple::color(0.3, 0.2, 1, 1);
     small2.material.diffuse = 0.7;
     small2.material.specular = 0.3;
@@ -248,7 +250,7 @@ void challenge_world_w_spheres(){
     world.lights.push_back(l1);
 
     // Set Camera
-    int factor = 2;
+    int factor = 7;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.setTransform(
             Transformation::view_transform(
