@@ -191,24 +191,6 @@ void challenge_world_w_spheres(){
         );
     right_wall.material = floor.material;
 
-//    Sphere middle;
-//    middle.transform = Transformation::translation(-0.5, 1, 0.5);
-//    middle.material.color = Tuple::color(0.1, 1, 0.5, 1);
-//    middle.material.diffuse = 0.7;
-//    middle.material.specular = 0.3;
-
-//    Sphere right;
-//    right.transform = Transformation::translation(1.5, 0.5, -0.5) * Transformation::scaling(0.5);
-//    right.material.color = Tuple::color(0.5, 1, 0.1, 1);
-//    right.material.diffuse = 0.7;
-//    right.material.specular = 0.3;
-//
-//    Sphere left;
-//    left.transform = Transformation::translation(-1.5, 0.33, -0.75) * Transformation::scaling(0.33);
-//    left.material.color = Tuple::color(1, 0.8, 0.1, 1);
-//    left.material.diffuse = 0.7;
-//    left.material.specular = 0.3;
-
     Sphere middle;
     middle.setTransform( Transformation::translation(-.1, 1.6, -0.3) * Transformation::scaling(0.7) );
     middle.material.color = Tuple::color(0.1, 1, 0.5, 1);
@@ -286,8 +268,116 @@ void challenge_world_w_spheres(){
     canvas.ToPPMFile(filename);
 }
 
+void render_inside_a_sphere(){
+    Sphere floor;
+    floor.setTransform( Transformation::scaling(10, 0.01, 10) );
+    floor.material.color = Tuple::color(1, 0.9, 0.9, 1);
+    floor.material.specular = 0;
+
+    Sphere left_wall;
+    left_wall.setTransform(
+            Transformation::translation(1, 0, 5) *
+            Transformation::rotation_y(-M_PI_4) *
+            Transformation::rotation_x(M_PI_2) *
+            Transformation::scaling(10, 0.01, 10)
+    );
+    left_wall.material = floor.material;
+
+    Sphere right_wall;
+    right_wall.setTransform(
+            Transformation::translation(1, 0, 5) *
+            Transformation::rotation_y(M_PI_4) *
+            Transformation::rotation_x(M_PI_2) *
+            Transformation::scaling(10, 0.01, 10)
+    );
+    right_wall.material = floor.material;
+
+    Sphere redDome;
+    redDome.setTransform( Transformation::translation(-1.5, .8, 1) * Transformation::scaling(0.35) );
+    redDome.material.color = Tuple::color(1, 0.2, 0.1, 1);
+    redDome.material.diffuse = 0.7;
+    redDome.material.specular = 0.8;
+
+    Sphere blueDisk;
+    blueDisk.setTransform(
+    Transformation::translation(-1.5, .8, 1) *
+        Transformation::rotation_x(-M_PI_4) *
+        Transformation::rotation_z(-M_PI / 5) *
+        Transformation::scaling(0.8, 0.1, 0.8)
+    );
+    blueDisk.material.color = Tuple::color(0.3, 0.2, 1, 1);
+    blueDisk.material.diffuse = 0.7;
+    blueDisk.material.specular = 0.8;
+    blueDisk.material.shininess = 200;
+
+    Sphere blueDome;
+    blueDome.setTransform( Transformation::translation(1.5, 1.5, 1.3) * Transformation::scaling(0.35) );
+    blueDome.material.color = Tuple::color(0.3, 0.2, 1, 1);
+    blueDome.material.diffuse = 0.7;
+    blueDome.material.specular = 0.8;
+
+    Sphere redDisk;
+    redDisk.setTransform(
+            Transformation::translation(1.5, 1.5, 1.3) *
+            Transformation::rotation_y(-M_PI / 3) *
+            Transformation::rotation_z(M_PI / 2.5) *
+            Transformation::scaling(0.8, 0.1, 0.8)
+    );
+    redDisk.material.color = Tuple::color(1, 0.2, 0.1, 1);
+    redDisk.material.diffuse = 0.7;
+    redDisk.material.specular = 0.8;
+    redDisk.material.shininess = 200;
+
+    Sphere origin;
+    origin.setTransform(Transformation::scaling(0.05));
+
+    // Set Lighting
+    Light l1 = Light::PointLight(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
+    Light l2 = Light::PointLight(Tuple::point(-5, 10, -10), Tuple::color(1, 1, 1, 1));
+    Light l3 = Light::PointLight(Tuple::point(-0, 10, -10), Tuple::color(1, 1, 1, 1));
+    Light l4 = Light::PointLight(Tuple::point(5, 10, -10), Tuple::color(1, 1, 1, 1));
+
+    // Set World
+    World world;
+//        world.objects.insert(world.objects.end(), {small, small2} );
+//        world.objects.insert(world.objects.end(), {skysphere, small, small2} );
+//    world.objects.insert(world.objects.end(), {floor, ceiling, back_wall, left_wall, right_wall, small, small2} );
+    world.objects.insert(world.objects.end(), {origin, floor, left_wall, right_wall, redDome, blueDisk, blueDome, redDisk} );
+//        world.objects.insert(world.objects.end(), {skysphere} );
+    world.lights.push_back(l1);
+//    world.lights.push_back(l2);
+//    world.lights.push_back(l3);
+//    world.lights.push_back(l4);
+
+    // Set Camera
+    int factor = 20;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.setTransform(
+        Transformation::view_transform(
+                Tuple::point(0, 1.5, -5),
+                Tuple::point(0, 1, 0),
+                Tuple::vector(0, 1, 0)
+        )
+    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::Render(camera, world);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "Render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.ToPPMFile(filename);
+
+};
+
 int main()
 {
-    challenge_world_w_spheres();
+//    challenge_world_w_spheres();
+    render_inside_a_sphere();
     return 0;
 }
