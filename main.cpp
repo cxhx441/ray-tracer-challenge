@@ -250,7 +250,7 @@ void challenge_world_w_spheres(){
     world.lights.push_back(l1);
 
     // Set Camera
-    int factor = 7;
+    int factor = 80;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.setTransform(
             Transformation::view_transform(
@@ -260,20 +260,22 @@ void challenge_world_w_spheres(){
             )
         );
 
+    auto start = std::chrono::high_resolution_clock::now();
+
     Canvas canvas = Canvas::Render(camera, world);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "Render Time: " << duration.count() << " seconds" << std::endl;
+
     std::string filename = "../canvas_";
     filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
     canvas.ToPPMFile(filename);
 }
 
 int main()
 {
-    auto start = std::chrono::high_resolution_clock::now();
-
     challenge_world_w_spheres();
-
-    auto stop = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> duration = stop - start;
-    std::cout << "Time taken by function: " << duration.count() << " seconds" << std::endl;
     return 0;
 }
