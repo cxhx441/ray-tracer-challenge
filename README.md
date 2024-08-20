@@ -18,3 +18,7 @@ Implemented in C++ and tested with Google tests.
 ### Chapter 6: Phong Lighting on Sphere 
 
 <img src="example_imgs/3_phong_lit_sphere.png" height="200"></br>
+
+### Chapter 7: Making A Scene
+
+<img src="example_imgs/4_making_a_scene.png" height="200"></br>
