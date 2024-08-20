@@ -37,7 +37,6 @@ public:
     static std::optional<Intersection> Hit(std::vector<Intersection> &xs);
     static Tuple ShadeHit(World& w, Precompute& precompute);
     static Tuple ColorAt(World& w, Ray& r);
-
 };
 
 

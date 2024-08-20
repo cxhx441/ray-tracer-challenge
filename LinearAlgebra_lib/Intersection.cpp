@@ -95,6 +95,10 @@ Tuple Intersection::ShadeHit(World &w, Precompute &comps) {
                                         comps.normalv);
         rendered_color += phong_color;
     }
+
+    // average lights
+    rendered_color /= (float) w.lights.size();
+
     rendered_color.w = 1;
     return rendered_color;
 }
