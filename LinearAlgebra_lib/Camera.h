@@ -9,6 +9,9 @@
 #include "Ray.h"
 
 class Camera {
+private:
+    Matrix transform = Matrix::Identity(4); // typically like a view_matrix.
+    Matrix inverse_transform = Matrix::Inverse(transform); // saving transform for use later.
 public:
     int hsize; // width of canvas in pixels
     int vsize; // height of canvas in pixels
@@ -16,8 +19,10 @@ public:
     float half_width;
     float half_height;
     float pixel_size;
-    Matrix transform = Matrix::Identity(4); // typically like a view_matrix.
     Camera(int hsize, int vsize, float fov);
+    void setTransform(Matrix m);
+    Matrix* getTransform();
+    Matrix* getInverseTransform();
     static Ray RayForPixel(Camera& c, int x, int y);
 
 };

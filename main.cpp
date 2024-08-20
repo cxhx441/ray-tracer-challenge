@@ -250,11 +250,13 @@ void challenge_world_w_spheres(){
     // Set Camera
     int factor = 2;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
-    camera.transform = Transformation::view_transform(
-            Tuple::point(0, 1.5, -5),
-            Tuple::point(0, 1, 0),
-            Tuple::vector(0, 1, 0)
-    );
+    camera.setTransform(
+            Transformation::view_transform(
+                Tuple::point(0, 1.5, -5),
+                Tuple::point(0, 1, 0),
+                Tuple::vector(0, 1, 0)
+            )
+        );
 
     Canvas canvas = Canvas::Render(camera, world);
     std::string filename = "../canvas_";
