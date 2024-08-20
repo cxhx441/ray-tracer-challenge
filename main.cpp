@@ -225,13 +225,13 @@ void challenge_world_w_spheres(){
     left.setTransform( Transformation::translation(-.5, 0.7, -0.5) * Transformation::scaling(0.7) );
     left.material.color = Tuple::color(1, 0.8, 0.1, 1);
     left.material.diffuse = 0.7;
-    left.material.specular = 0.3;
+    left.material.specular = 0.8;
 
     Sphere small;
     small.setTransform( Transformation::translation(-.7, 0.3, -0.8) * Transformation::scaling(0.3) );
     small.material.color = Tuple::color(1, 0.2, 0.1, 1);
     small.material.diffuse = 0.7;
-    small.material.specular = 0.3;
+    small.material.specular = 0.8;
 
     Sphere small2;
     small2.setTransform(
@@ -241,20 +241,28 @@ void challenge_world_w_spheres(){
             );
     small2.material.color = Tuple::color(0.3, 0.2, 1, 1);
     small2.material.diffuse = 0.7;
-    small2.material.specular = 0.3;
+    small2.material.specular = 0.8;
+    small2.material.shininess = 200;
 
     // Set Lighting
     Light l1 = Light::PointLight(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
+    Light l2 = Light::PointLight(Tuple::point(-10, 0, -10), Tuple::color(1, 1, 1, 1));
+    Light l3 = Light::PointLight(Tuple::point(0, 10, -10), Tuple::color(1, 1, 1, 1));
+    Light l4 = Light::PointLight(Tuple::point(0, 0, -10), Tuple::color(1, 1, 1, 1));
 
     // Set World
     World world;
 //    world.objects.insert(world.objects.end(), {floor, left_wall, right_wall, middle, right, left} );
     world.objects.insert(world.objects.end(), {small, small2, floor, left_wall, right_wall, middle, right, left} );
 //    world.objects.insert(world.objects.end(), {small, small2, middle, right, left} );
+//    world.objects.insert(world.objects.end(), {small});
     world.lights.push_back(l1);
+    world.lights.push_back(l2);
+    world.lights.push_back(l3);
+    world.lights.push_back(l4);
 
     // Set Camera
-    int factor = 15;
+    int factor = 10;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.setTransform(
             Transformation::view_transform(
