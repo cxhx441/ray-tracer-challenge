@@ -113,6 +113,7 @@ std::ostream& operator<<(std::ostream& os, const Canvas& canvas) {
 Canvas Canvas::Render(Camera &c, World &w) {
     Canvas image(c.hsize, c.vsize);
     for (int y = 0; y < c.vsize; ++y){
+        std::cout << y << " / " << c.vsize << std::endl;
         for (int x = 0; x < c.hsize; ++x){
             Ray r = Camera::RayForPixel(c, x, y);
             Tuple color = Intersection::ColorAt(w, r);
