@@ -234,7 +234,11 @@ void challenge_world_w_spheres(){
     small.material.specular = 0.3;
 
     Sphere small2;
-    small2.setTransform( Transformation::translation(-.8, 1, -0.7) * Transformation::scaling(0.4) );
+    small2.setTransform(
+            Transformation::translation(-.8, 1, -0.7) *
+            Transformation::scaling(0.4) *
+            Transformation::shearing(2, 0, 0, 0 ,0, 0)
+            );
     small2.material.color = Tuple::color(0.3, 0.2, 1, 1);
     small2.material.diffuse = 0.7;
     small2.material.specular = 0.3;
@@ -250,7 +254,7 @@ void challenge_world_w_spheres(){
     world.lights.push_back(l1);
 
     // Set Camera
-    int factor = 80;
+    int factor = 15;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.setTransform(
             Transformation::view_transform(
