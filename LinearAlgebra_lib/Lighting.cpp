@@ -6,7 +6,7 @@
 #include <cmath>
 
 Tuple Lighting::phong_lighting(const Material &material, const Light &light, const Tuple &point, const Tuple &eyev,
-                         const Tuple &normalv) {
+                         const Tuple &normalv, bool is_shadowed) {
     Tuple effective_color = material.color * light.intensity;
     Tuple ambient = Tuple();
     Tuple diffuse = Tuple();
@@ -15,6 +15,11 @@ Tuple Lighting::phong_lighting(const Material &material, const Light &light, con
     // point to light. Ambient is always added.
     Tuple lightv = Tuple::normalize(light.position - point);
     ambient = effective_color * material.ambient;
+
+    if (is_shadowed){
+        ambient.w = 1;
+        return ambient;
+    }
 
     // if the angle between light and normal is greater than 90 degrees, no diffuse or specular because light is on other side of surface.
     float light_dot_normal = Tuple::dot(lightv, normalv);

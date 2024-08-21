@@ -82,17 +82,22 @@ Precompute Intersection::PrepareComputations(Intersection &i, Ray &r) {
         comps.normalv *= -1;
         comps.inside = true;
     }
+
+    // Adjust the point *slightly* in the direction of the normal. This stops "acne" aka shapes shadowing themselves due to floating point error.
+    comps.over_point = comps.point + comps.normalv * SHADOW_EPSILON;
+
     return comps;
 }
 
 Tuple Intersection::ShadeHit(World &w, Precompute &comps) {
     Tuple rendered_color(0, 0, 0, 0);
     for (auto light : w.lights){
+        bool is_shadowed = IsShadowed(w, light, comps.over_point);
         Tuple phong_color = Lighting::phong_lighting(comps.object->material,
                                         light,
                                         comps.point,
                                         comps.eyev,
-                                        comps.normalv);
+                                        comps.normalv, is_shadowed);
         rendered_color += phong_color;
     }
 
@@ -113,4 +118,17 @@ Tuple Intersection::ColorAt(World &w, Ray &r) {
     }
     return Tuple::color(0, 0, 0, 1);
 }
+
+bool Intersection::IsShadowed(World &w, Light &l, Tuple &p) {
+    Tuple p_to_light = l.position - p;
+    float distance = Tuple::magnitude(p_to_light);
+    Tuple direction = Tuple::normalize(p_to_light);
+    Ray r(p, direction);
+    std::vector<Intersection> xs = IntersectWorld(w, r);
+    std::optional<Intersection> hit = Hit(xs);
+    if (hit != std::nullopt && hit->t < distance)
+        return true;
+    return false;
+}
+
 

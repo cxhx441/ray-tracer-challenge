@@ -157,7 +157,7 @@ void challenge_ray_to_sphere_w_phong_lighting(){
                 Tuple point = Ray::Position(ray, hit->t);
                 Tuple normalv = sphere.NormalAt(point);
                 Tuple eyev = -ray.direction;
-                color = Lighting::phong_lighting(hit->object->material, light, point, eyev, normalv);
+                color = Lighting::phong_lighting(hit->object->material, light, point, eyev, normalv, false);
                 try { canvas.WritePixel(x, y, color); }
                 catch (std::invalid_argument const &ex) { std::cout << ex.what() << std::endl; };
             }
@@ -230,7 +230,7 @@ void challenge_world_w_spheres(){
     Light l1 = Light::PointLight(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
     Light l2 = Light::PointLight(Tuple::point(-10, 0, -10), Tuple::color(1, 1, 1, 1));
     Light l3 = Light::PointLight(Tuple::point(0, 10, -10), Tuple::color(1, 1, 1, 1));
-    Light l4 = Light::PointLight(Tuple::point(0, 0, -10), Tuple::color(1, 1, 1, 1));
+    Light l4 = Light::PointLight(Tuple::point(10, 0, -10), Tuple::color(1, 1, 1, 1));
 
     // Set World
     World world;
@@ -244,7 +244,7 @@ void challenge_world_w_spheres(){
     world.lights.push_back(l4);
 
     // Set Camera
-    int factor = 10;
+    int factor = 160;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.setTransform(
             Transformation::view_transform(
@@ -268,7 +268,7 @@ void challenge_world_w_spheres(){
     canvas.ToPPMFile(filename);
 }
 
-void render_inside_a_sphere(){
+void custom_scene(){
     Sphere floor;
     floor.setTransform( Transformation::scaling(10, 0.01, 10) );
     floor.material.color = Tuple::color(1, 0.9, 0.9, 1);
@@ -345,12 +345,12 @@ void render_inside_a_sphere(){
     world.objects.insert(world.objects.end(), {origin, floor, left_wall, right_wall, redDome, blueDisk, blueDome, redDisk} );
 //        world.objects.insert(world.objects.end(), {skysphere} );
     world.lights.push_back(l1);
-//    world.lights.push_back(l2);
+    world.lights.push_back(l2);
 //    world.lights.push_back(l3);
 //    world.lights.push_back(l4);
 
     // Set Camera
-    int factor = 20;
+    int factor = 160;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.setTransform(
         Transformation::view_transform(
@@ -378,6 +378,6 @@ void render_inside_a_sphere(){
 int main()
 {
 //    challenge_world_w_spheres();
-    render_inside_a_sphere();
+    custom_scene();
     return 0;
 }

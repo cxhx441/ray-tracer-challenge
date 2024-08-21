@@ -73,7 +73,7 @@ TEST(WorldTestSuite, ShadeHitWith2Lights) {
     Intersection x = Intersection(4, &s);
     Precompute comps = Intersection::PrepareComputations(x, r);
     Tuple rendered_color = Intersection::ShadeHit(w, comps);
-    EXPECT_EQ(rendered_color, Tuple::color(0.38066*2, 0.47583*2, 0.2855*2, 1) );
+    EXPECT_EQ(rendered_color, Tuple::color(0.38066, 0.47583, 0.2855, 1) );
 }
 
 TEST(WorldTestSuite, ShadeHitWith3Lights) {
@@ -85,6 +85,23 @@ TEST(WorldTestSuite, ShadeHitWith3Lights) {
     Intersection x = Intersection(4, &s);
     Precompute comps = Intersection::PrepareComputations(x, r);
     Tuple rendered_color = Intersection::ShadeHit(w, comps);
-    EXPECT_EQ(rendered_color, Tuple::color(0.38066 * 3, 0.47583 * 3, 0.2855 * 3, 1));
+    EXPECT_EQ(rendered_color, Tuple::color(0.38066, 0.47583, 0.2855, 1));
+}
+
+TEST(WorldTestSuite, ShadeHitIsGivenAnIntersectionInShadow) {
+    World w;
+    Light l1 = Light::PointLight(Tuple::point(0, 0, -10), Tuple::color(1, 1, 1, 1));
+    w.lights.push_back(l1);
+    Sphere s1;
+    Sphere s2;
+    s2.setTransform( Transformation::translation(0, 0, 10));
+    w.objects.push_back(s1);
+    w.objects.push_back(s2);
+
+    Ray r = Ray(Tuple::point(0, 0, 5), Tuple::vector(0, 0, 1));
+    Intersection i = Intersection(4, &s2);
+    Precompute comps = Intersection::PrepareComputations(i, r);
+    Tuple rendered_color = Intersection::ShadeHit(w, comps);
+    EXPECT_EQ( rendered_color, Tuple::color(0.1, 0.1, 0.1, 1) );
 }
 

@@ -11,6 +11,8 @@
 #include <vector>
 #include <optional>
 
+#define SHADOW_EPSILON 0.001
+
 struct Precompute{
     float t = 0;
     Sphere* object = nullptr;
@@ -18,6 +20,7 @@ struct Precompute{
     Tuple eyev;
     Tuple normalv;
     bool inside;
+    Tuple over_point;
 };
 
 
@@ -37,6 +40,7 @@ public:
     static std::optional<Intersection> Hit(std::vector<Intersection> &xs);
     static Tuple ShadeHit(World& w, Precompute& precompute);
     static Tuple ColorAt(World& w, Ray& r);
+    static bool IsShadowed(World &w, Light &l, Tuple &p) ;
 };
 
 

@@ -119,3 +119,37 @@ TEST(WorldTestSuite, ColorWithIntersectionBehindSphere) {
     Tuple rendered_color = Intersection::ColorAt(w, r);
     EXPECT_EQ(rendered_color, inner->material.color);
 }
+
+TEST(ShadowTestSuite, NoShadowWhenNothingIsCollinearWithPointAndLight) {
+    World w = World::DefaultWorld();
+    Tuple p = Tuple::point(0, 10, 0);
+    EXPECT_FALSE(Intersection::IsShadowed(w, w.lights[0], p));
+}
+
+TEST(ShadowTestSuite, ShadowWhenObjectBetweenPointAndLight) {
+    World w = World::DefaultWorld();
+    Tuple p = Tuple::point(10, -10, 10);
+    EXPECT_TRUE(Intersection::IsShadowed(w, w.lights[0], p));
+}
+
+TEST(ShadowTestSuite, NoShadowWhenObjectObjectBehindLight) {
+    World w = World::DefaultWorld();
+    Tuple p = Tuple::point(-20, 20, -20);
+    EXPECT_FALSE(Intersection::IsShadowed(w,w.lights[0],  p));
+}
+
+TEST(ShadowTestSuite, NoShadowWhenObjectIsBehindPoint) {
+    World w = World::DefaultWorld();
+    Tuple p = Tuple::point(-2, 2, -2);
+    EXPECT_FALSE(Intersection::IsShadowed(w, w.lights[0], p));
+}
+
+TEST(ShadowTestSuite, HitShouldOffsetThePoint) {
+    Ray r(Tuple::point(0, 0, -5), Tuple::vector(0, 0, 1) );
+    Sphere shape;
+    shape.setTransform(Transformation::translation(0, 0, 1));
+    Intersection i = Intersection(5, &shape);
+    Precompute comps = Intersection::PrepareComputations(i, r);
+    EXPECT_LT(comps.over_point.z , -SHADOW_EPSILON/2 ) ;
+    EXPECT_GT(comps.point.z , comps.over_point.z);
+}
