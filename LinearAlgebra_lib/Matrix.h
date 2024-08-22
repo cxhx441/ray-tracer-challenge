@@ -18,14 +18,14 @@ public:
     Matrix(int rows, int cols);
     void Fill(const std::vector<float>& values);
     static Matrix Identity(int n);
-    static Matrix Transpose(Matrix& m);
-    static float Determinant(Matrix& m);
-    static Matrix Submatrix(Matrix& m, int row, int col);
-    static Matrix NormalMatrix(Matrix& m);
-    static float Minor(Matrix& m, int row, int col);
-    static float Cofactor(Matrix& m, int row, int col);
-    static bool IsInvertible(Matrix& m);
-    static Matrix Inverse(Matrix& m);
+    static Matrix Transpose(const Matrix &m);
+    static float Determinant(const Matrix &m);
+    static Matrix Submatrix(const Matrix &m, int row, int col);
+    static Matrix NormalMatrix(const Matrix &m);
+    static float Minor(const Matrix &m, int row, int col);
+    static float Cofactor(const Matrix &m, int row, int col);
+    static bool IsInvertible(const Matrix &m);
+    static Matrix Inverse(const Matrix &m);
 
     bool operator==(const Matrix& other) const;
     bool operator!=(const Matrix& other) const;
@@ -37,7 +37,7 @@ public:
         std::vector<float>& row_data;
         int cols;
     public:
-        Row(std::vector<float>& row_data, int cols);
+        Row(std::vector<float>& row_data, int cols) ;
         float& operator[](int col);
     };
 

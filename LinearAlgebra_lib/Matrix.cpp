@@ -36,7 +36,7 @@ Matrix Matrix::Identity(int n){
     return m;
 }
 
-Matrix Matrix::Transpose(Matrix &m) {
+Matrix Matrix::Transpose(const Matrix &m) {
     Matrix mT = m;
     for (int r = 0; r < mT.rows; ++r){
         for (int c = r+1; c < mT.cols; ++c) {
@@ -46,22 +46,22 @@ Matrix Matrix::Transpose(Matrix &m) {
     return mT;
 }
 
-float Matrix::Determinant(Matrix &m) {
+float Matrix::Determinant(const Matrix &m) {
     if (m.rows != m.cols)
         throw std::invalid_argument("operation only valid for square matrices");
 
     if (m.rows == 2 && m.cols == 2)
-        return (m[0][0] * m[1][1]) - (m[0][1] * m[1][0]);
+        return (m.data[0][0] * m.data[1][1]) - (m.data[0][1] * m.data[1][0]);
 
     // if not 2x2, recursively find determinant.
     float sub_det = 0;
     for (int c = 0; c < m.cols; ++c){
-        sub_det += m[0][c] * Cofactor(m, 0, c);
+        sub_det += m.data[0][c] * Cofactor(m, 0, c);
     }
     return sub_det;
 }
 
-Matrix Matrix::Submatrix(Matrix& m, int row, int col){
+Matrix Matrix::Submatrix(const Matrix &m, int row, int col){
     // Returns a matrix with the given row and col removed.
     if (row >= m.rows || col >= m.cols)
         throw std::invalid_argument("given row or col greater than the size of the matrix.");
@@ -74,31 +74,30 @@ Matrix Matrix::Submatrix(Matrix& m, int row, int col){
         for (int c = 0; c < m.cols; ++c) {
             if (r == row || c == col)
                 continue;
-            subm_data.push_back(m[r][c]);
-//            subm_data.push_back(m.data[r * m.cols + c]);
+            subm_data.push_back(m.data[r][c]);
         }
     }
     subm.Fill(subm_data);
     return subm;
 }
 
-float Matrix::Minor(Matrix& m, int row, int col){
+float Matrix::Minor(const Matrix &m, int row, int col){
     Matrix subm = Matrix::Submatrix(m, row, col);
     return Matrix::Determinant(subm);
 }
 
-float Matrix::Cofactor(Matrix& m, int row, int col){
+float Matrix::Cofactor(const Matrix &m, int row, int col){
     Matrix subm = Matrix::Submatrix(m, row, col);
     if ((row + col) % 2 == 0)
         return Matrix::Determinant(subm);
     return -1 * Matrix::Determinant(subm);
 }
 
-bool Matrix::IsInvertible(Matrix &m) {
+bool Matrix::IsInvertible(const Matrix &m) {
     return Determinant(m) != 0;
 }
 
-Matrix Matrix::Inverse(Matrix& m){
+Matrix Matrix::Inverse(const Matrix &m){
     // Compute the Inverse Matrix of cofactors.
     //     Transpose the matrix of cofactors.
     //     Divide each element by the original matrix's determinant.
@@ -116,7 +115,7 @@ Matrix Matrix::Inverse(Matrix& m){
     return inverse_mat;
 }
 
-Matrix Matrix::NormalMatrix(Matrix& m){
+Matrix Matrix::NormalMatrix(const Matrix &m){
     Matrix n3 = Matrix::Submatrix(m, 3, 3);
     Matrix inverse = Matrix::Inverse(n3);
     Matrix transpose_inverse = Matrix::Transpose(inverse);
