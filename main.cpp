@@ -244,7 +244,7 @@ void challenge_world_w_spheres(){
     world.lights.push_back(l4);
 
     // Set Camera
-    int factor = 160;
+    int factor = 10;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.setTransform(
             Transformation::view_transform(
@@ -350,7 +350,7 @@ void custom_scene(){
 //    world.lights.push_back(l4);
 
     // Set Camera
-    int factor = 160;
+    int factor = 10;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.setTransform(
         Transformation::view_transform(

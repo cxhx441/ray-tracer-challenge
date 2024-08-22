@@ -21,4 +21,10 @@ Implemented in C++ and tested with Google tests.
 
 ### Chapter 7: Making A Scene
 
-<img src="example_imgs/4_making_a_scene.png" height="200"></br>
+<img src="example_imgs/4_making_a_scene.png" width="400"></br>
+<img src="example_imgs/4_making_a_scene2.png" width="400"></br>
+
+### Chapter 8: Shadows
+
+<img src="example_imgs/5_making_a_scene_shadows.png" height="200"></br>
+<img src="example_imgs/5_making_a_scene_shadows2.png" height="200"></br>
