@@ -262,7 +262,7 @@ void challenge_world_w_spheres(){
     std::chrono::duration<double> duration = stop - start;
     std::cout << "Render Time: " << duration.count() << " seconds" << std::endl;
 
-    std::string filename = "../canvas_";
+    std::string filename = "../exported_images/canvas_";
     filename.append(__FUNCTION__);
     filename.append("_" + std::to_string(duration.count()) + "s");
     canvas.ToPPMFile(filename);
@@ -350,7 +350,7 @@ void custom_scene(){
 //    world.lights.push_back(l4);
 
     // Set Camera
-    int factor = 10;
+    int factor = 1;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.setTransform(
         Transformation::view_transform(
@@ -368,7 +368,7 @@ void custom_scene(){
     std::chrono::duration<double> duration = stop - start;
     std::cout << "Render Time: " << duration.count() << " seconds" << std::endl;
 
-    std::string filename = "../canvas_";
+    std::string filename = "../exported_images/canvas_";
     filename.append(__FUNCTION__);
     filename.append("_" + std::to_string(duration.count()) + "s");
     canvas.ToPPMFile(filename);
