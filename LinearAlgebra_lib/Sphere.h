@@ -8,6 +8,7 @@
 #include "Ray.h"
 #include "Transformation.h"
 #include "Material.h"
+#include "Intersection.h"
 #include <vector>
 
 class Sphere {
@@ -16,9 +17,10 @@ class Sphere {
     Matrix normal_transform = Matrix::NormalMatrix(transform);
 public:
     Material material = Material();
+
     Sphere() = default;
-    explicit Sphere(Matrix transformation);
     ~Sphere();                                  // Destructor
+
     void setTransform(Matrix m);
     Matrix getTransform();
     Matrix getInverseTransform();
@@ -30,7 +32,7 @@ public:
 //    Sphere& operator=(Sphere&& other) noexcept; // Move assignment operator
 
     Tuple NormalAt(Tuple world_point);
-
+    std::vector<Intersection> Intersect(Ray& r);
 };
 
 

@@ -118,7 +118,7 @@ Canvas Canvas::Render(Camera &c, World &w) {
             std::cout << y << " / " << c.vsize << std::endl;
         for (int x = 0; x < c.hsize; ++x){
             Ray r = Camera::RayForPixel(c, x, y);
-            Tuple color = Intersection::ColorAt(w, r);
+            Tuple color = w.ColorAt(r);
             image.WritePixel(x, y, color);
         }
     }

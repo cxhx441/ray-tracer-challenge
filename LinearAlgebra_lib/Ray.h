@@ -11,7 +11,9 @@ class Ray {
 public:
     Tuple origin;
     Tuple direction;
+
     Ray(Tuple origin, Tuple direction);
+
     static Tuple Position(Ray& r, float t);
 };
 

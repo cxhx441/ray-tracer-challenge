@@ -19,13 +19,16 @@ public:
 
     Canvas(int width, int height);
     ~Canvas();
+
     void FillPixels(const Tuple& color);
     void WritePixel(int x, int y, const Tuple& color);
+    static Canvas Render(Camera& c, World& w);
+    static int MapColorValue(float colorVal, int maxValue);
+
     std::string ToPPMString();
     void ToPPMFile(std::string filename);
-    static int MapColorValue(float colorVal, int maxValue);
+
     friend std::ostream& operator<<(std::ostream& os, const Canvas& canvas); // for printing
-    static Canvas Render(Camera& c, World& w);
 };
 
 

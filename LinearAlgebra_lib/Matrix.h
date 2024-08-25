@@ -16,6 +16,7 @@ private:
     int cols;
 public:
     Matrix(int rows, int cols);
+
     void Fill(const std::vector<float>& values);
     static Matrix Identity(int n);
     static Matrix Transpose(const Matrix &m);

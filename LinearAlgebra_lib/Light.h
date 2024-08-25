@@ -11,7 +11,9 @@ class Light {
 public:
     Tuple position;
     Tuple intensity;
+
     Light(Tuple position, Tuple intensity);
+
     static Light PointLight(Tuple position, Tuple intensity);
 };
 
