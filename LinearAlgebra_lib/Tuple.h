@@ -26,14 +26,14 @@ public:
     void b(float b_val);
     void a(float a_val);
 
-    static float magnitude(const Tuple &v);
-    static Tuple normalize(const Tuple &v);
-    static float dot(const Tuple& a, const Tuple& b);
-    static Tuple cross(const Tuple& a, const Tuple& b);
-    static Tuple reflect(const Tuple &v, const Tuple &n);
-
+    float magnitude() const;
     [[nodiscard]] bool isPoint() const;
     [[nodiscard]] bool isVector() const;
+
+    static Tuple normalized(const Tuple &v);
+    static float dot(const Tuple& a, const Tuple& b);
+    static Tuple cross(const Tuple& a, const Tuple& b);
+    static Tuple reflected(const Tuple &v, const Tuple &n);
 
     bool operator==(const Tuple& other) const;
     bool operator!=(const Tuple& other) const;

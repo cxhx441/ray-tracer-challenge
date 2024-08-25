@@ -12,7 +12,6 @@ Ray::Ray(Tuple origin, Tuple direction) {
     this->direction = direction;
 }
 
-Tuple Ray::Position(Ray &r, float t) {
-    // Return the position of the point after time t.
-    return r.origin + ( r.direction * t );
+Tuple Ray::position(Ray &r, float time) {
+    return r.origin + (r.direction * time );
 }

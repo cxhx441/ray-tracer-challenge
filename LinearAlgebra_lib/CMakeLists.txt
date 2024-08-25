@@ -8,11 +8,12 @@ set(HEADER_FILES
         Ray.h
         Sphere.h
         Intersection.h
-        Light.h
+        PointLight.h
         Material.h
         Lighting.h
         World.h
         Camera.h
+        PreparedComputation.h
 )
 
 set(SOURCE_FILES
@@ -23,11 +24,12 @@ set(SOURCE_FILES
         Ray.cpp
         Sphere.cpp
         Intersection.cpp
-        Light.cpp
+        PointLight.cpp
         Material.cpp
         Lighting.cpp
         World.cpp
         Camera.cpp
+        PreparedComputation.cpp
 )
 
 add_library(LinearAlgebra_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})

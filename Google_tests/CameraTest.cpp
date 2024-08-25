@@ -17,7 +17,7 @@ TEST(CameraTestSuite, ConstructingACamera){
     EXPECT_EQ(h, c.hsize);
     EXPECT_EQ(v, c.vsize);
     EXPECT_FLOAT_EQ(field_of_view, c.fov);
-    EXPECT_EQ(Matrix::Identity(4), c.getTransform());
+    EXPECT_EQ(Matrix::identity(4), c.get_transform());
 }
 
 TEST(CameraTestSuite, PixelSizeForHorizontalCanvas){
@@ -32,22 +32,22 @@ TEST(CameraTestSuite, PixelSizeForVerticalCanvas){
 
 TEST(CameraTestSuite, ConstructRayThroughCenterOfCanvas){
     Camera c(201, 101, M_PI/2.f);
-    Ray r = Camera::RayForPixel(c, 100, 50);
+    Ray r = Camera::ray_for_pixel(c, 100, 50);
     EXPECT_EQ(r.origin, Tuple::point(0, 0, 0));
     EXPECT_EQ(r.direction, Tuple::vector(0, 0, -1));
 }
 
 TEST(CameraTestSuite, ConstructRayThroughCornerOfCanvas){
     Camera c(201, 101, M_PI/2.f);
-    Ray r = Camera::RayForPixel(c, 0, 0);
+    Ray r = Camera::ray_for_pixel(c, 0, 0);
     EXPECT_EQ(r.origin, Tuple::point(0, 0, 0));
     EXPECT_EQ(r.direction, Tuple::vector(0.66519, 0.33259, -0.66851) );
 }
 
 TEST(CameraTestSuite, ConstructRayWhenCameraIsTransformed){
     Camera c(201, 101, M_PI/2.f);
-    c.setTransform(Transformation::rotation_y(M_PI/4.f) * Transformation::translation(0, -2, 5) );
-    Ray r = Camera::RayForPixel(c, 100, 50);
+    c.set_transform(Transformation::rotation_y(M_PI / 4.f) * Transformation::translation(0, -2, 5));
+    Ray r = Camera::ray_for_pixel(c, 100, 50);
     EXPECT_EQ(r.origin, Tuple::point(0, 2, -5));
     EXPECT_EQ(r.direction, Tuple::vector(sqrtf(2)/2.f, 0, -sqrtf(2)/2.f));
 }
@@ -59,8 +59,8 @@ TEST(CameraTestSuite, RenderingAWorldWithACamera){
     Tuple from = Tuple::point(0, 0, -5);
     Tuple to = Tuple::point(0, 0, 0);
     Tuple up = Tuple::vector(0, 1, 0);
-    c.setTransform(Transformation::view_transform(from, to, up));
+    c.set_transform(Transformation::view_transform(from, to, up));
 
-    Canvas image = Canvas::Render(c, w);
+    Canvas image = Canvas::render(c, w);
     EXPECT_EQ(image.pixels[5][5], Tuple::color(0.38066, 0.47583, 0.2855, 1) );
 }

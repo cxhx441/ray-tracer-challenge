@@ -31,12 +31,12 @@ void Tuple::a(float a) { w = a; }
 bool Tuple::isPoint() const { return w != 0.0f; }
 bool Tuple::isVector() const { return w == 0.0f; }
 
-float Tuple::magnitude(const Tuple& v) {
-    return std:: sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+float Tuple::magnitude() const {
+    return std:: sqrt(x * x + y * y + z * z);
 }
 
-Tuple Tuple::normalize(const Tuple& v) {
-    return vector(v.x, v.y, v.z) / magnitude(v);
+Tuple Tuple::normalized(const Tuple& v) {
+    return vector(v.x, v.y, v.z) / v.magnitude();
 }
 
 float Tuple::dot(const Tuple& a, const Tuple& b){
@@ -54,7 +54,7 @@ Tuple Tuple::cross(const Tuple& a, const Tuple& b){
     );
 }
 
-Tuple Tuple::reflect(const Tuple &v, const Tuple &n) {
+Tuple Tuple::reflected(const Tuple &v, const Tuple &n) {
     return v - ( n * 2 * dot(v, n) );
 }
 

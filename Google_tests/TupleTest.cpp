@@ -112,37 +112,37 @@ TEST(TupleTestSuite, DivideExisting) {
 
 TEST(TupleTestSuite, MagnitudeOfVec100) {
     Tuple v = Tuple::vector(1, 0, 0);
-    EXPECT_EQ( Tuple::magnitude(v), 1);
+    EXPECT_EQ( v.magnitude(), 1);
 }
 
 TEST(TupleTestSuite, MagnitudeOfVec010) {
     Tuple v = Tuple::vector(0, 1, 0);
-    EXPECT_EQ( Tuple::magnitude(v), 1);
+    EXPECT_EQ( v.magnitude(), 1);
 }
 
 TEST(TupleTestSuite, MagnitudeOfVec001) {
     Tuple v = Tuple::vector(0, 0, 1);
-    EXPECT_EQ( Tuple::magnitude(v), 1);
+    EXPECT_EQ( v.magnitude(), 1);
 }
 
 TEST(TupleTestSuite, MagnitudeOfVec123) {
     Tuple v = Tuple::vector(1, 2, 3);
-    EXPECT_FLOAT_EQ( Tuple::magnitude(v), std::sqrt(14));
+    EXPECT_FLOAT_EQ( v.magnitude(), std::sqrt(14));
 }
 
 TEST(TupleTestSuite, MagnitudeOfVecNeg123) {
     Tuple v = Tuple::vector(-1, -2, -3);
-    EXPECT_FLOAT_EQ( Tuple::magnitude(v), std::sqrt(14));
+    EXPECT_FLOAT_EQ( v.magnitude(), std::sqrt(14));
 }
 
 TEST(TupleTestSuite, Normalize400) {
     Tuple v = Tuple::vector(4, 0, 0);
-    EXPECT_EQ( Tuple::normalize(v), Tuple::vector(1, 0, 0));
+    EXPECT_EQ(Tuple::normalized(v), Tuple::vector(1, 0, 0));
 }
 
 TEST(TupleTestSuite, Normalize123) {
     Tuple v = Tuple::vector(1, 2, 3);
-    Tuple n = Tuple::normalize(v);
+    Tuple n = Tuple::normalized(v);
     EXPECT_FLOAT_EQ(n.x, 1.f / std::sqrt(14));
     EXPECT_FLOAT_EQ(n.y, 2.f / std::sqrt(14));
     EXPECT_FLOAT_EQ(n.z, 3.f / std::sqrt(14));
@@ -150,8 +150,8 @@ TEST(TupleTestSuite, Normalize123) {
 
 TEST(TupleTestSuite, MagnitudeOfNormalizedVector) {
     Tuple v = Tuple::vector(1, 2, 3);
-    Tuple n = Tuple::normalize(v);
-    EXPECT_FLOAT_EQ(Tuple::magnitude(n), 1.f);
+    Tuple n = Tuple::normalized(v);
+    EXPECT_FLOAT_EQ(n.magnitude(), 1.f);
 }
 
 TEST(TupleTestSuite, DotProductOfTwoTuples) {
@@ -201,13 +201,13 @@ TEST(TupleTestSuite, ColorEqualityAfterMultiplication) {
 TEST(TupleTestSuite, ReflectVectorApproachingAt45Deg) {
     Tuple inV = Tuple::vector(1, -1, 0);
     Tuple n = Tuple::vector(0, 1, 0);
-    Tuple outV = Tuple::reflect(inV, n);
+    Tuple outV = Tuple::reflected(inV, n);
     EXPECT_EQ(outV, Tuple::vector(1, 1, 0));
 }
 
 TEST(TupleTestSuite, ReflectVectorOffSlantedSurface) {
     Tuple inV = Tuple::vector(0, -1, 0);
     Tuple n = Tuple::vector(sqrt(2)/2.f, sqrt(2)/2.f, 0);
-    Tuple outV = Tuple::reflect(inV, n);
+    Tuple outV = Tuple::reflected(inV, n);
     EXPECT_EQ(outV, Tuple::vector(1, 0, 0));
 }

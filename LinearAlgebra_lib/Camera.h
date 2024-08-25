@@ -10,8 +10,8 @@
 
 class Camera {
 private:
-    Matrix transform = Matrix::Identity(4); // typically like a view_matrix.
-    Matrix inverse_transform = Matrix::Inverse(transform); // saving transform for use later.
+    Matrix transform = Matrix::identity(4); // typically like a view_matrix.
+    Matrix inverse_transform = Matrix::inverse(transform); // saving transform for use later.
 public:
     int hsize; // width of canvas in pixels
     int vsize; // height of canvas in pixels
@@ -19,11 +19,14 @@ public:
     float half_width;
     float half_height;
     float pixel_size;
+
     Camera(int hsize, int vsize, float fov);
-    void setTransform(Matrix m);
-    Matrix getTransform();
-    Matrix getInverseTransform();
-    static Ray RayForPixel(Camera& c, int x, int y);
+
+    void set_transform(Matrix m);
+    Matrix get_transform();
+    Matrix get_inverse_transform();
+
+    static Ray ray_for_pixel(Camera& c, int x, int y);
 
 };
 

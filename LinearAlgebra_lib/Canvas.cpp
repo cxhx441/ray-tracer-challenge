@@ -14,7 +14,7 @@ Canvas::Canvas(int width, int height) : width(width), height(height){
     for (int h = 0; h < height; ++h){
         pixels[h] = new Tuple[width];
     }
-    FillPixels(Tuple(0, 0, 0, 1));
+    fill_pixels(Tuple(0, 0, 0, 1));
 };
 
 Canvas::~Canvas() {
@@ -25,7 +25,7 @@ Canvas::~Canvas() {
     delete[] pixels;
 }
 
-void Canvas::FillPixels(const Tuple& color){
+void Canvas::fill_pixels(const Tuple& color){
     for (int h = 0; h < height; ++h){
         for (int w = 0; w < width; ++w){
             pixels[h][w] = color;
@@ -33,14 +33,14 @@ void Canvas::FillPixels(const Tuple& color){
     }
 }
 
-void Canvas::WritePixel(int x, int y, const Tuple& color){
+void Canvas::write_pixel(int x, int y, const Tuple& color){
     if (x > width - 1 || x < 0 || y > height - 1 || y < 0) {
         throw std::invalid_argument("X or y exceeds the limits of the canvas");
     }
     pixels[y][x] = color;
 }
 
-std::string Canvas::ToPPMString() {
+std::string Canvas::to_ppm_str() {
     /**
     P3\n
     width height\n
@@ -56,9 +56,9 @@ std::string Canvas::ToPPMString() {
         std::string s_row;
         for (int w = 0; w < width; ++w) {
             Tuple &color = pixels[h][w];
-            int r = MapColorValue(color.r(), 255);
-            int g = MapColorValue(color.g(), 255);
-            int b = MapColorValue(color.b(), 255);
+            int r = map_color_value(color.r(), 255);
+            int g = map_color_value(color.g(), 255);
+            int b = map_color_value(color.b(), 255);
             int colorRGB[3] = {r, g, b};
             for (int i: colorRGB) {
                 std::string s_color_val = std::to_string(i);
@@ -81,16 +81,16 @@ std::string Canvas::ToPPMString() {
     return ppm;
 }
 
-void Canvas::ToPPMFile(std::string filename){
+void Canvas::to_ppm_file(std::string filename){
     // write to file
-    std::string ppm = ToPPMString();
+    std::string ppm = to_ppm_str();
     filename.append("_" + std::to_string(width) + "x"+ std::to_string(height));
     filename.append(".ppm");
     std::ofstream out(filename);
     out << ppm;
 }
 
-int Canvas::MapColorValue(float colorVal, int maxValue){
+int Canvas::map_color_value(float colorVal, int maxValue){
     int MappedColorVal = (int) std::round( colorVal * (float) maxValue );
 
     if (MappedColorVal <= 0)
@@ -111,15 +111,15 @@ std::ostream& operator<<(std::ostream& os, const Canvas& canvas) {
     return os;
 }
 
-Canvas Canvas::Render(Camera &c, World &w) {
+Canvas Canvas::render(Camera &c, World &w) {
     Canvas image(c.hsize, c.vsize);
     for (int y = 0; y < c.vsize; ++y){
         if (y % 100 == 0)
             std::cout << y << " / " << c.vsize << std::endl;
         for (int x = 0; x < c.hsize; ++x){
-            Ray r = Camera::RayForPixel(c, x, y);
-            Tuple color = Intersection::ColorAt(w, r);
-            image.WritePixel(x, y, color);
+            Ray r = Camera::ray_for_pixel(c, x, y);
+            Tuple color = w.color_at(r);
+            image.write_pixel(x, y, color);
         }
     }
     return image;
