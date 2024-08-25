@@ -7,67 +7,87 @@
 
 TEST(MatrixTestSuite, ConstructAndInspectMat4) {
     Matrix m(4, 4);
-    m[0][0] = 1;
-    m[0][1] = 2;
-    m[0][2] = 3;
-    m[0][3] = 4;
-    m[1][0] = 5.5;
-    m[1][1] = 6.5;
-    m[1][2] = 7.5;
-    m[1][3] = 8.5;
-    m[2][0] = 9;
-    m[2][1] = 10;
-    m[2][2] = 11;
-    m[2][3] = 12;
-    m[3][0] = 13.5;
-    m[3][1] = 14.5;
-    m[3][2] = 15.5;
-    m[3][3] = 16.5;
-    EXPECT_EQ(m[0][0], 1);
-    EXPECT_EQ(m[0][3], 4);
-    EXPECT_EQ(m[1][0], 5.5);
-    EXPECT_EQ(m[1][2], 7.5);
-    EXPECT_EQ(m[2][2], 11);
-    EXPECT_EQ(m[3][0], 13.5);
-    EXPECT_EQ(m[3][2], 15.5);
+    m.fill(std::vector<float>{1, 2, 3, 4, 5.5, 6.5, 7.5, 8.5, 9, 10, 11, 12, 13.5, 14.5, 15.5, 16.5});
+//    m[0][0] = 1;
+//    m[0][1] = 2;
+//    m[0][2] = 3;
+//    m[0][3] = 4;
+//    m[1][0] = 5.5;
+//    m[1][1] = 6.5;
+//    m[1][2] = 7.5;
+//    m[1][3] = 8.5;
+//    m[2][0] = 9;
+//    m[2][1] = 10;
+//    m[2][2] = 11;
+//    m[2][3] = 12;
+//    m[3][0] = 13.5;
+//    m[3][1] = 14.5;
+//    m[3][2] = 15.5;
+//    m[3][3] = 16.5;
+    EXPECT_EQ(m.get_data(0, 0), 1);
+    EXPECT_EQ(m.get_data(0, 3), 4);
+    EXPECT_EQ(m.get_data(1, 0), 5.5);
+    EXPECT_EQ(m.get_data(1, 2), 7.5);
+    EXPECT_EQ(m.get_data(2, 2), 11);
+    EXPECT_EQ(m.get_data(3, 0), 13.5);
+    EXPECT_EQ(m.get_data(3, 2), 15.5);
 }
 
 TEST(MatrixTestSuite, ConstructAndInspectMat3) {
     Matrix m(3, 3);
-    m[0][0] = 1;
-    m[0][1] = 2;
-    m[0][2] = 3;
-    m[1][0] = 5.5;
-    m[1][1] = 6.5;
-    m[1][2] = 7.5;
-    m[2][0] = 9;
-    m[2][1] = 10;
-    m[2][2] = 11;
-    EXPECT_EQ(m[0][0], 1);
-    EXPECT_EQ(m[0][2], 3);
-    EXPECT_EQ(m[1][0], 5.5);
-    EXPECT_EQ(m[1][2], 7.5);
-    EXPECT_EQ(m[2][2], 11);
-    EXPECT_EQ(m[2][0], 9);
+    m.fill(std::vector<float>{1, 2, 3, 5.5, 6.5, 7.5, 9, 10, 11});
+//    m[0][0] = 1;
+//    m[0][1] = 2;
+//    m[0][2] = 3;
+//    m[1][0] = 5.5;
+//    m[1][1] = 6.5;
+//    m[1][2] = 7.5;
+//    m[2][0] = 9;
+//    m[2][1] = 10;
+//    m[2][2] = 11;
+    EXPECT_EQ(m.get_data(0, 0), 1);
+    EXPECT_EQ(m.get_data(0, 2), 3);
+    EXPECT_EQ(m.get_data(1, 0), 5.5);
+    EXPECT_EQ(m.get_data(1, 2), 7.5);
+    EXPECT_EQ(m.get_data(2, 2), 11);
+    EXPECT_EQ(m.get_data(2, 0), 9);
+//    EXPECT_EQ(m[0][0], 1);
+//    EXPECT_EQ(m[0][2], 3);
+//    EXPECT_EQ(m[1][0], 5.5);
+//    EXPECT_EQ(m[1][2], 7.5);
+//    EXPECT_EQ(m[2][2], 11);
+//    EXPECT_EQ(m[2][0], 9);
 }
 
 TEST(MatrixTestSuite, ConstructAndInspectMat2) {
     Matrix m(3, 3);
-    m[0][0] = 1;
-    m[0][1] = 2;
-    m[1][0] = 5.5;
-    m[1][1] = 6.5;
-    EXPECT_EQ(m[0][0], 1);
-    EXPECT_EQ(m[1][0], 5.5);
+    m.set_data(0, 0, 1);
+    m.set_data(0, 1, 2);
+    m.set_data(1, 0, 5.5);
+    m.set_data(1, 1, 6.5);
+    EXPECT_EQ(m.get_data(0, 0), 1);
+    EXPECT_EQ(m.get_data(1, 0), 5.5);
+
+//    m[0][0] = 1;
+//    m[0][1] = 2;
+//    m[1][0] = 5.5;
+//    m[1][1] = 6.5;
+//    EXPECT_EQ(m[0][0], 1);
+//    EXPECT_EQ(m[1][0], 5.5);
 }
 
 TEST(MatrixTestSuite, MatrixOperandOutOfRange) {
     Matrix m(3, 3);
-    m[0][0] = 1;
-    EXPECT_EQ(m[0][0], 1);
-    EXPECT_THROW(m[5][0], std::out_of_range);
-    EXPECT_THROW(m[0][5], std::out_of_range);
-    EXPECT_THROW(m[5][5], std::out_of_range);
+    m.set_data(0, 0, 1);
+    EXPECT_EQ(m.get_data(0, 0), 1);
+    EXPECT_THROW(m.get_data(5, 0), std::out_of_range);
+    EXPECT_THROW(m.get_data(0, 5), std::out_of_range);
+    EXPECT_THROW(m.get_data(5, 5), std::out_of_range);
+//    m[0][0] = 1;
+//    EXPECT_EQ(m[0][0], 1);
+//    EXPECT_THROW(m[5][0], std::out_of_range);
+//    EXPECT_THROW(m[0][5], std::out_of_range);
+//    EXPECT_THROW(m[5][5], std::out_of_range);
 }
 
 TEST(MatrixTestSuite, MatrixEquality){
@@ -76,8 +96,8 @@ TEST(MatrixTestSuite, MatrixEquality){
     float n = 1.f/3;
     for (int r = 0; r < 4; ++r){
         for (int c = 0; c < 4; ++c) {
-            a[r][c] = n;
-            b[r][c] = n;
+            a.set_data(r, c, n);
+            b.set_data(r, c, n);
             ++n;
         }
     }
@@ -90,12 +110,12 @@ TEST(MatrixTestSuite, MatrixInequality){
     float n = 1.f/3;
     for (int r = 0; r < 4; ++r){
         for (int c = 0; c < 4; ++c) {
-            a[r][c] = n;
-            b[r][c] = n;
+            a.set_data(r, c, n);
+            b.set_data(r, c, n);
             ++n;
         }
     }
-    a[2][2] = -10.2;
+    a.set_data(2, 2, -10.2);
     EXPECT_NE(a, b);
 }
 
@@ -271,10 +291,10 @@ TEST(MatrixTestSuite, InverseMatrix){
 
     EXPECT_FLOAT_EQ(Matrix::determinant(A), 532);
     EXPECT_FLOAT_EQ(Matrix::cofactor(A, 2, 3), -160);
-    EXPECT_FLOAT_EQ(B[3][2], -160.f/532.f);
+    EXPECT_FLOAT_EQ(B.get_data(3, 2), -160.f/532.f);
 
     EXPECT_FLOAT_EQ(Matrix::cofactor(A, 3, 2), 105);
-    EXPECT_FLOAT_EQ(B[2][3], 105.f/532.f);
+    EXPECT_FLOAT_EQ(B.get_data(2, 3), 105.f/532.f);
     EXPECT_EQ(B, Correct_Inverse_A);
 }
 

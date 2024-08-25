@@ -9,6 +9,18 @@ Matrix::Matrix(int rows, int cols): rows(rows), cols(cols) {
     data = std::vector<std::vector<float>> (rows, std::vector<float>(cols, 0));
 }
 
+float Matrix::get_data(int r, int c) {
+    if (r >= rows || r < 0 || c >= cols || c < 0)
+        throw std::out_of_range("Invalid Index!");
+    return data[r][c];
+}
+
+void Matrix::set_data(int r, int c, float val) {
+    if (r >= rows || r < 0 || c >= cols || c < 0)
+        throw std::out_of_range("Invalid Index!");
+    data[r][c] = val;
+}
+
 void Matrix::fill(const std::vector<float>& values){
     if (values.size() != this->rows * this->cols){
         throw std::invalid_argument("size of input array doesn't match size of matrix");
@@ -28,9 +40,9 @@ Matrix Matrix::identity(int n){
     for (int r = 0; r < n; ++r){
         for (int c = 0; c < n; ++c){
             if (r == c)
-                m[r][c] = 1.f;
+                m.data[r][c] = 1.f;
             else
-                m[r][c] = 0.f;
+                m.data[r][c] = 0.f;
         }
     }
     return m;
@@ -40,7 +52,7 @@ Matrix Matrix::transpose(const Matrix &m) {
     Matrix mT = m;
     for (int r = 0; r < mT.rows; ++r){
         for (int c = r+1; c < mT.cols; ++c) {
-            std::swap(mT[r][c], mT[c][r]);
+            std::swap(mT.data[r][c], mT.data[c][r]);
         }
     }
     return mT;
@@ -109,7 +121,7 @@ Matrix Matrix::inverse(const Matrix &m){
     for (int r = 0; r < m.rows; ++r) {
         for (int c = 0; c < m.cols; ++c) {
             // [c][r] instead of [r][c] to handle transposition.
-            inverse_mat[c][r] = cofactor(m, r, c) / m_det;
+            inverse_mat.data[c][r] = cofactor(m, r, c) / m_det;
         }
     }
     return inverse_mat;
@@ -162,7 +174,7 @@ Matrix Matrix::operator*(const Matrix& other) const{
                 val += a_rc * b_cr;
             }
 
-            m[r][c] = val;
+            m.data[r][c] = val;
         }
     }
     return m;
@@ -179,7 +191,7 @@ Tuple Matrix::operator*(const Tuple& t) const{
         }
         return Tuple(newTupData[0], newTupData[1], newTupData[2], newTupData[3]);
     }
-    else if (this-> rows == 3 and this->cols == 3) {
+    else if (this->rows == 3 and this->cols == 3) {
         float newTupData[3] = {0, 0, 0};
         for (int i = 0; i < 3; ++i) {
             newTupData[i] = data[i][0] * t.x +
@@ -193,21 +205,21 @@ Tuple Matrix::operator*(const Tuple& t) const{
     }
 }
 
-Matrix::Row::Row(std::vector<float>& row_data, int cols) : row_data(row_data), cols(cols) {}
-
-float& Matrix::Row::operator[](int col){
-    if (col < 0 || col >= this->cols) {
-        throw std::out_of_range("col input is out of range");
-    }
-    return row_data[col];
-}
-
-Matrix::Row Matrix::operator[](int row){
-    if (row < 0 || row >= this->rows) {
-        throw std::out_of_range("row input is out of range");
-    }
-    return Row(data[row], cols);
-}
+//Matrix::Row::Row(std::vector<float>& row_data, int cols) : row_data(row_data), cols(cols) {}
+//
+//float& Matrix::Row::operator[](int col){
+//    if (col < 0 || col >= this->cols) {
+//        throw std::out_of_range("col input is out of range");
+//    }
+//    return row_data[col];
+//}
+//
+//Matrix::Row Matrix::operator[](int row){
+//    if (row < 0 || row >= this->rows) {
+//        throw std::out_of_range("row input is out of range");
+//    }
+//    return Row(data[row], cols);
+//}
 
 std::ostream& operator<<(std::ostream& os, const Matrix& m) {
     for (int r = 0; r < m.rows; ++r) {
@@ -219,4 +231,5 @@ std::ostream& operator<<(std::ostream& os, const Matrix& m) {
     }
     return os;
 }
+
 

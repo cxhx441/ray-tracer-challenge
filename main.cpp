@@ -111,7 +111,7 @@ void challenge_ray_to_sphere(){
             float world_x = -backdrop_half_size + ( pixel_size * x );
             Tuple target = Tuple::point(world_x, world_y, backdrop_z);
             r.direction = Tuple::normalized(target - r.origin);
-            std::vector<Intersection> xs = Intersection::Intersect(s, r);
+            std::vector<Intersection> xs = s.intersect(r);
             std::optional<Intersection> h = Intersection::get_hit(xs);
             if (h) {
                 try { canvas.write_pixel(x, y, color); }
@@ -140,7 +140,7 @@ void challenge_ray_to_sphere_w_phong_lighting(){
 //    sphere.transformation = scale * rot * shear;
 //    sphere.transformation = scale * shear;
 
-    PointLight light = PointLight::PointLight(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight light(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
 
     Tuple origin = Tuple::point(0, 0, -5);
     Ray ray(origin, Tuple::vector(0, 0, 0));
@@ -151,13 +151,13 @@ void challenge_ray_to_sphere_w_phong_lighting(){
             float world_x = -backdrop_half_size + ( pixel_size * x );
             Tuple target = Tuple::point(world_x, world_y, backdrop_z);
             ray.direction = Tuple::normalized(target - ray.origin);
-            std::vector<Intersection> intersections = Intersection::Intersect(sphere, ray);
+            std::vector<Intersection> intersections = sphere.intersect(ray);
             std::optional<Intersection> hit = Intersection::get_hit(intersections);
             if (hit) {
                 Tuple point = Ray::position(ray, hit->t);
                 Tuple normalv = sphere.normal_at(point);
                 Tuple eyev = -ray.direction;
-                color = Lighting::phong_lighting(hit->object->material, light, point, eyev, normalv, false);
+                color = Lighting::phong_lighting(((Sphere *) hit->object)->material, light, point, eyev, normalv, false);
                 try { canvas.write_pixel(x, y, color); }
                 catch (std::invalid_argument const &ex) { std::cout << ex.what() << std::endl; };
             }
@@ -227,10 +227,10 @@ void challenge_world_w_spheres(){
     small2.material.shininess = 200;
 
     // Set Lighting
-    PointLight l1 = PointLight::PointLight(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l2 = PointLight::PointLight(Tuple::point(-10, 0, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l3 = PointLight::PointLight(Tuple::point(0, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l4 = PointLight::PointLight(Tuple::point(10, 0, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l1(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l2(Tuple::point(-10, 0, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l3(Tuple::point(0, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l4(Tuple::point(10, 0, -10), Tuple::color(1, 1, 1, 1));
 
     // Set World
     World world;
@@ -332,10 +332,12 @@ void custom_scene(){
     origin.set_transform(Transformation::scaling(0.05));
 
     // Set Lighting
-    PointLight l1 = PointLight::PointLight(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l2 = PointLight::PointLight(Tuple::point(-5, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l3 = PointLight::PointLight(Tuple::point(-0, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l4 = PointLight::PointLight(Tuple::point(5, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l1(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l2(Tuple::point(-5, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l3(Tuple::point(-0, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l4(Tuple::point(5, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l5(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+    PointLight l6(Tuple::point(0, 10, -1), Tuple::color(1, 1, 1, 1));
 
     // Set World
     World world;
@@ -346,11 +348,13 @@ void custom_scene(){
 //        world.objects.insert(world.objects.end(), {skysphere} );
     world.lights.push_back(l1);
     world.lights.push_back(l2);
-//    world.lights.push_back(l3);
-//    world.lights.push_back(l4);
+    world.lights.push_back(l3);
+    world.lights.push_back(l4);
+    world.lights.push_back(l5);
+    world.lights.push_back(l6);
 
     // Set Camera
-    int factor = 1;
+    int factor = 8;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.set_transform(
             Transformation::view_transform(

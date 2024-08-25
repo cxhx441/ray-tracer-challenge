@@ -17,6 +17,8 @@ private:
 public:
     Matrix(int rows, int cols);
 
+    float get_data(int r, int c);
+    void set_data(int r, int c, float val);
     void fill(const std::vector<float>& values);
     static Matrix identity(int n);
     static Matrix transpose(const Matrix &m);
@@ -33,16 +35,16 @@ public:
     Matrix operator*(const Matrix& other) const;
     Tuple operator*(const Tuple& t) const;
 
-    class Row {
-    private:
-        std::vector<float>& row_data;
-        int cols;
-    public:
-        Row(std::vector<float>& row_data, int cols) ;
-        float& operator[](int col);
-    };
-
-    Row operator[](int row);
+//    class Row {
+//    private:
+//        std::vector<float>& row_data;
+//        int cols;
+//    public:
+//        Row(std::vector<float>& row_data, int cols) ;
+//        float& operator[](int col);
+//    };
+//
+//    Row operator[](int row);
 
     friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
 };
