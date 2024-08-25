@@ -14,7 +14,8 @@ public:
 
     Ray(Tuple origin, Tuple direction);
 
-    static Tuple Position(Ray& r, float t);
+    /** @Return the point of the Ray after time time. */
+    static Tuple position(Ray& r, float time);
 };
 
 

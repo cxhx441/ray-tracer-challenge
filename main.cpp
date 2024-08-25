@@ -5,7 +5,7 @@
 #include "Sphere.h"
 #include "Intersection.h"
 #include "Transformation.h"
-#include "Light.h"
+#include "PointLight.h"
 #include "Lighting.h"
 #include <filesystem>
 #include <cmath>
@@ -34,7 +34,7 @@ void challenge_projectile(){
     Canvas canvas(900, 550);
 
     Tuple initialPosition = Tuple::vector(0, 1, 0);
-    Tuple initialVelocity = Tuple::normalize(Tuple::vector(1, 1.8, 0)) * 11.25;
+    Tuple initialVelocity = Tuple::normalized(Tuple::vector(1, 1.8, 0)) * 11.25;
     Projectile proj(initialPosition, initialVelocity);
 
     Tuple gravity = Tuple::vector(0, -0.1, 0);
@@ -46,18 +46,18 @@ void challenge_projectile(){
         tick(&proj, &env);
         std::cout << "Projectile Pos: " << proj.position << " Projectile Vel: " << proj.velocity << std::endl;
         try{
-            canvas.WritePixel(proj.position.x, canvas.height - proj.position.y, Tuple::color(1, 1, 1, 1));
-            canvas.WritePixel(proj.position.x+1, canvas.height - proj.position.y, Tuple::color(1, 1, 1, 1));
-            canvas.WritePixel(proj.position.x-1, canvas.height - proj.position.y, Tuple::color(1, 1, 1, 1));
-            canvas.WritePixel(proj.position.x, canvas.height - proj.position.y+1, Tuple::color(1, 1, 1, 1));
-            canvas.WritePixel(proj.position.x, canvas.height - proj.position.y-1, Tuple::color(1, 1, 1, 1));
+            canvas.write_pixel(proj.position.x, canvas.height - proj.position.y, Tuple::color(1, 1, 1, 1));
+            canvas.write_pixel(proj.position.x + 1, canvas.height - proj.position.y, Tuple::color(1, 1, 1, 1));
+            canvas.write_pixel(proj.position.x - 1, canvas.height - proj.position.y, Tuple::color(1, 1, 1, 1));
+            canvas.write_pixel(proj.position.x, canvas.height - proj.position.y + 1, Tuple::color(1, 1, 1, 1));
+            canvas.write_pixel(proj.position.x, canvas.height - proj.position.y - 1, Tuple::color(1, 1, 1, 1));
         }
         catch(std::invalid_argument const& ex){
             std::cout << ex.what() << std::endl;
         };
 
     }
-    canvas.ToPPMFile("../canvas");
+    canvas.to_ppm_file("../canvas");
 
 }
 
@@ -79,11 +79,11 @@ void challenge_clock(){
         Tuple Sp = S * p;
         std::cout << "Point Pos: " << Sp << std::endl;
         Tuple cp = canvas_transform * Sp;
-        try{ canvas.WritePixel(cp.x, cp.y, Tuple::color(1, 1, 1, 1)); }
+        try{ canvas.write_pixel(cp.x, cp.y, Tuple::color(1, 1, 1, 1)); }
         catch(std::invalid_argument const& ex){ std::cout << ex.what() << std::endl; };
 
     }
-    canvas.ToPPMFile("../canvas");
+    canvas.to_ppm_file("../canvas");
 
 }
 
@@ -100,7 +100,7 @@ void challenge_ray_to_sphere(){
     Matrix shear = Transformation::shearing(1, 0, 0, 0, 0, 0);
     Matrix rot = Transformation::rotation_y((355.f/113.f) / 2.f);
     Matrix scale = Transformation::scaling(0.75f);
-    s.setTransform( scale * rot * shear );
+    s.set_transform(scale * rot * shear);
 
     Tuple origin = Tuple::point(0, 0, -5);
     Ray r(origin, Tuple::vector(0, 0, 0));
@@ -110,16 +110,16 @@ void challenge_ray_to_sphere(){
         for (int x = 0; x < canvas_size; ++x) {
             float world_x = -backdrop_half_size + ( pixel_size * x );
             Tuple target = Tuple::point(world_x, world_y, backdrop_z);
-            r.direction = Tuple::normalize(target - r.origin);
+            r.direction = Tuple::normalized(target - r.origin);
             std::vector<Intersection> xs = Intersection::Intersect(s, r);
-            std::optional<Intersection> h = Intersection::Hit(xs);
+            std::optional<Intersection> h = Intersection::get_hit(xs);
             if (h) {
-                try { canvas.WritePixel(x, y, color); }
+                try { canvas.write_pixel(x, y, color); }
                 catch (std::invalid_argument const &ex) { std::cout << ex.what() << std::endl; };
             }
         }
     }
-    canvas.ToPPMFile("../canvas");
+    canvas.to_ppm_file("../canvas");
 }
 
 void challenge_ray_to_sphere_w_phong_lighting(){
@@ -140,7 +140,7 @@ void challenge_ray_to_sphere_w_phong_lighting(){
 //    sphere.transformation = scale * rot * shear;
 //    sphere.transformation = scale * shear;
 
-    Light light = Light::PointLight(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight light = PointLight::PointLight(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
 
     Tuple origin = Tuple::point(0, 0, -5);
     Ray ray(origin, Tuple::vector(0, 0, 0));
@@ -150,73 +150,73 @@ void challenge_ray_to_sphere_w_phong_lighting(){
         for (int x = 0; x < canvas_size; ++x) {
             float world_x = -backdrop_half_size + ( pixel_size * x );
             Tuple target = Tuple::point(world_x, world_y, backdrop_z);
-            ray.direction = Tuple::normalize(target - ray.origin);
+            ray.direction = Tuple::normalized(target - ray.origin);
             std::vector<Intersection> intersections = Intersection::Intersect(sphere, ray);
-            std::optional<Intersection> hit = Intersection::Hit(intersections);
+            std::optional<Intersection> hit = Intersection::get_hit(intersections);
             if (hit) {
-                Tuple point = Ray::Position(ray, hit->t);
-                Tuple normalv = sphere.NormalAt(point);
+                Tuple point = Ray::position(ray, hit->t);
+                Tuple normalv = sphere.normal_at(point);
                 Tuple eyev = -ray.direction;
                 color = Lighting::phong_lighting(hit->object->material, light, point, eyev, normalv, false);
-                try { canvas.WritePixel(x, y, color); }
+                try { canvas.write_pixel(x, y, color); }
                 catch (std::invalid_argument const &ex) { std::cout << ex.what() << std::endl; };
             }
         }
     }
-    canvas.ToPPMFile("../canvas");
+    canvas.to_ppm_file("../canvas");
 }
 
 void challenge_world_w_spheres(){
     // Set Spheres
     Sphere floor;
-    floor.setTransform( Transformation::scaling(10, 0.01, 10) );
+    floor.set_transform(Transformation::scaling(10, 0.01, 10));
     floor.material.color = Tuple::color(1, 0.9, 0.9, 1);
     floor.material.specular = 0;
 
     Sphere left_wall;
-    left_wall.setTransform(
+    left_wall.set_transform(
             Transformation::translation(1, 0, 5) *
             Transformation::rotation_y(-M_PI_4) *
             Transformation::rotation_x(M_PI_2) *
             Transformation::scaling(10, 0.01, 10)
-        );
+    );
     left_wall.material = floor.material;
 
     Sphere right_wall;
-    right_wall.setTransform(
+    right_wall.set_transform(
             Transformation::translation(1, 0, 5) *
             Transformation::rotation_y(M_PI_4) *
             Transformation::rotation_x(M_PI_2) *
             Transformation::scaling(10, 0.01, 10)
-        );
+    );
     right_wall.material = floor.material;
 
     Sphere middle;
-    middle.setTransform( Transformation::translation(-.1, 1.6, -0.3) * Transformation::scaling(0.7) );
+    middle.set_transform(Transformation::translation(-.1, 1.6, -0.3) * Transformation::scaling(0.7));
     middle.material.color = Tuple::color(0.1, 1, 0.5, 1);
     middle.material.diffuse = 0.7;
     middle.material.specular = 0.3;
 
     Sphere right;
-    right.setTransform( Transformation::translation(.5, 0.7, -0.5) * Transformation::scaling(0.7) );
+    right.set_transform(Transformation::translation(.5, 0.7, -0.5) * Transformation::scaling(0.7));
     right.material.color = Tuple::color(0.5, 1, 0.1, 1);
     right.material.diffuse = 0.7;
     right.material.specular = 0.3;
 
     Sphere left;
-    left.setTransform( Transformation::translation(-.5, 0.7, -0.5) * Transformation::scaling(0.7) );
+    left.set_transform(Transformation::translation(-.5, 0.7, -0.5) * Transformation::scaling(0.7));
     left.material.color = Tuple::color(1, 0.8, 0.1, 1);
     left.material.diffuse = 0.7;
     left.material.specular = 0.8;
 
     Sphere small;
-    small.setTransform( Transformation::translation(-.7, 0.3, -0.8) * Transformation::scaling(0.3) );
+    small.set_transform(Transformation::translation(-.7, 0.3, -0.8) * Transformation::scaling(0.3));
     small.material.color = Tuple::color(1, 0.2, 0.1, 1);
     small.material.diffuse = 0.7;
     small.material.specular = 0.8;
 
     Sphere small2;
-    small2.setTransform(
+    small2.set_transform(
             Transformation::translation(-.8, 1, -0.7) *
             Transformation::scaling(0.4) *
             Transformation::shearing(2, 0, 0, 0 ,0, 0)
@@ -227,10 +227,10 @@ void challenge_world_w_spheres(){
     small2.material.shininess = 200;
 
     // Set Lighting
-    Light l1 = Light::PointLight(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
-    Light l2 = Light::PointLight(Tuple::point(-10, 0, -10), Tuple::color(1, 1, 1, 1));
-    Light l3 = Light::PointLight(Tuple::point(0, 10, -10), Tuple::color(1, 1, 1, 1));
-    Light l4 = Light::PointLight(Tuple::point(10, 0, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l1 = PointLight::PointLight(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l2 = PointLight::PointLight(Tuple::point(-10, 0, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l3 = PointLight::PointLight(Tuple::point(0, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l4 = PointLight::PointLight(Tuple::point(10, 0, -10), Tuple::color(1, 1, 1, 1));
 
     // Set World
     World world;
@@ -246,36 +246,36 @@ void challenge_world_w_spheres(){
     // Set Camera
     int factor = 10;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
-    camera.setTransform(
+    camera.set_transform(
             Transformation::view_transform(
-                Tuple::point(0, 1.5, -5),
-                Tuple::point(0, 1, 0),
-                Tuple::vector(0, 1, 0)
+                    Tuple::point(0, 1.5, -5),
+                    Tuple::point(0, 1, 0),
+                    Tuple::vector(0, 1, 0)
             )
-        );
+    );
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    Canvas canvas = Canvas::Render(camera, world);
+    Canvas canvas = Canvas::render(camera, world);
 
     auto stop = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = stop - start;
-    std::cout << "Render Time: " << duration.count() << " seconds" << std::endl;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
 
     std::string filename = "../exported_images/canvas_";
     filename.append(__FUNCTION__);
     filename.append("_" + std::to_string(duration.count()) + "s");
-    canvas.ToPPMFile(filename);
+    canvas.to_ppm_file(filename);
 }
 
 void custom_scene(){
     Sphere floor;
-    floor.setTransform( Transformation::scaling(10, 0.01, 10) );
+    floor.set_transform(Transformation::scaling(10, 0.01, 10));
     floor.material.color = Tuple::color(1, 0.9, 0.9, 1);
     floor.material.specular = 0;
 
     Sphere left_wall;
-    left_wall.setTransform(
+    left_wall.set_transform(
             Transformation::translation(1, 0, 5) *
             Transformation::rotation_y(-M_PI_4) *
             Transformation::rotation_x(M_PI_2) *
@@ -284,7 +284,7 @@ void custom_scene(){
     left_wall.material = floor.material;
 
     Sphere right_wall;
-    right_wall.setTransform(
+    right_wall.set_transform(
             Transformation::translation(1, 0, 5) *
             Transformation::rotation_y(M_PI_4) *
             Transformation::rotation_x(M_PI_2) *
@@ -293,17 +293,17 @@ void custom_scene(){
     right_wall.material = floor.material;
 
     Sphere redDome;
-    redDome.setTransform( Transformation::translation(-1.5, .8, 1) * Transformation::scaling(0.35) );
+    redDome.set_transform(Transformation::translation(-1.5, .8, 1) * Transformation::scaling(0.35));
     redDome.material.color = Tuple::color(1, 0.2, 0.1, 1);
     redDome.material.diffuse = 0.7;
     redDome.material.specular = 0.8;
 
     Sphere blueDisk;
-    blueDisk.setTransform(
-    Transformation::translation(-1.5, .8, 1) *
-        Transformation::rotation_x(-M_PI_4) *
-        Transformation::rotation_z(-M_PI / 5) *
-        Transformation::scaling(0.8, 0.1, 0.8)
+    blueDisk.set_transform(
+            Transformation::translation(-1.5, .8, 1) *
+            Transformation::rotation_x(-M_PI_4) *
+            Transformation::rotation_z(-M_PI / 5) *
+            Transformation::scaling(0.8, 0.1, 0.8)
     );
     blueDisk.material.color = Tuple::color(0.3, 0.2, 1, 1);
     blueDisk.material.diffuse = 0.7;
@@ -311,13 +311,13 @@ void custom_scene(){
     blueDisk.material.shininess = 200;
 
     Sphere blueDome;
-    blueDome.setTransform( Transformation::translation(1.5, 1.5, 1.3) * Transformation::scaling(0.35) );
+    blueDome.set_transform(Transformation::translation(1.5, 1.5, 1.3) * Transformation::scaling(0.35));
     blueDome.material.color = Tuple::color(0.3, 0.2, 1, 1);
     blueDome.material.diffuse = 0.7;
     blueDome.material.specular = 0.8;
 
     Sphere redDisk;
-    redDisk.setTransform(
+    redDisk.set_transform(
             Transformation::translation(1.5, 1.5, 1.3) *
             Transformation::rotation_y(-M_PI / 3) *
             Transformation::rotation_z(M_PI / 2.5) *
@@ -329,13 +329,13 @@ void custom_scene(){
     redDisk.material.shininess = 200;
 
     Sphere origin;
-    origin.setTransform(Transformation::scaling(0.05));
+    origin.set_transform(Transformation::scaling(0.05));
 
     // Set Lighting
-    Light l1 = Light::PointLight(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
-    Light l2 = Light::PointLight(Tuple::point(-5, 10, -10), Tuple::color(1, 1, 1, 1));
-    Light l3 = Light::PointLight(Tuple::point(-0, 10, -10), Tuple::color(1, 1, 1, 1));
-    Light l4 = Light::PointLight(Tuple::point(5, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l1 = PointLight::PointLight(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l2 = PointLight::PointLight(Tuple::point(-5, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l3 = PointLight::PointLight(Tuple::point(-0, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l4 = PointLight::PointLight(Tuple::point(5, 10, -10), Tuple::color(1, 1, 1, 1));
 
     // Set World
     World world;
@@ -352,26 +352,26 @@ void custom_scene(){
     // Set Camera
     int factor = 1;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
-    camera.setTransform(
-        Transformation::view_transform(
-                Tuple::point(0, 1.5, -5),
-                Tuple::point(0, 1, 0),
-                Tuple::vector(0, 1, 0)
-        )
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 1.5, -5),
+                    Tuple::point(0, 1, 0),
+                    Tuple::vector(0, 1, 0)
+            )
     );
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    Canvas canvas = Canvas::Render(camera, world);
+    Canvas canvas = Canvas::render(camera, world);
 
     auto stop = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = stop - start;
-    std::cout << "Render Time: " << duration.count() << " seconds" << std::endl;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
 
     std::string filename = "../exported_images/canvas_";
     filename.append(__FUNCTION__);
     filename.append("_" + std::to_string(duration.count()) + "s");
-    canvas.ToPPMFile(filename);
+    canvas.to_ppm_file(filename);
 
 };
 

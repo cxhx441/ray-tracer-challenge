@@ -20,7 +20,7 @@ TEST(CanvasTestSuite, CreateACanvasAllBlack) {
 TEST(CanvasTestSuite, WriteToPixel) {
     Canvas c(10, 20);
     Tuple red = Tuple::color(1, 0, 0, 1);
-    c.WritePixel(2, 3, red);
+    c.write_pixel(2, 3, red);
     for (int h = 0; h < c.height; ++h){
         for (int w = 0; w < c.width; ++w) {
             if (h == 3 && w == 2){
@@ -34,7 +34,7 @@ TEST(CanvasTestSuite, WriteToPixel) {
 
 TEST(CanvasTestSUite, ConstructPPMHeader){
     Canvas c(5, 3);
-    std::string ppm = c.ToPPMString();
+    std::string ppm = c.to_ppm_str();
     std::istringstream stream(ppm);
     std::string line;
     std::string header;
@@ -54,11 +54,11 @@ TEST(CanvasTestSUite, ConstructPPMPixelData){
     Tuple c2 = Tuple::color(0.0, 0.5, 0.0, 1.0);
     Tuple c3 = Tuple::color(-0.5, 0.0, 1.0, 1.0);
 
-    c.WritePixel(0, 0, c1);
-    c.WritePixel(2, 1, c2);
-    c.WritePixel(4, 2, c3);
+    c.write_pixel(0, 0, c1);
+    c.write_pixel(2, 1, c2);
+    c.write_pixel(4, 2, c3);
 
-    std::string ppm = c.ToPPMString();
+    std::string ppm = c.to_ppm_str();
     std::istringstream stream(ppm);
     std::string line;
     std::string header;
@@ -79,9 +79,9 @@ TEST(CanvasTestSUite, PPMSplitLongLines){
     Canvas c(10, 2);
 
     Tuple c1 = Tuple::color(1, 0.8, 0.6, 1);
-    c.FillPixels(c1);
+    c.fill_pixels(c1);
 
-    std::string ppm = c.ToPPMString();
+    std::string ppm = c.to_ppm_str();
     std::istringstream stream(ppm);
     std::string line;
     std::string header;

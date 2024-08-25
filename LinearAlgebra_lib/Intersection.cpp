@@ -18,8 +18,7 @@ bool Intersection::operator>(const Intersection& other) const { return t > other
 bool Intersection::operator<=(const Intersection& other) const { return t <= other.t; }
 bool Intersection::operator>=(const Intersection& other) const { return t >= other.t; }
 
-std::optional<Intersection> Intersection::Hit(std::vector<Intersection> &xs) {
-    /** return the Intersection object with the lowest positive t **/
+std::optional<Intersection> Intersection::get_hit(std::vector<Intersection> &xs) {
     std::optional<Intersection> nearest = std::nullopt;
     for (auto& x : xs){
         if (x.t >= 0 and (!nearest or x.t < nearest->t))

@@ -14,7 +14,7 @@ TEST(TransformationTestSuite, MultiplyByTranslationMatrix){
 
 TEST(TransformationTestSuite, MultiplyByInverseOfTranslationMatrix){
     Matrix T = Transformation::translation(5, -3, 2);
-    T = Matrix::Inverse(T);
+    T = Matrix::inverse(T);
     Tuple p = Tuple::point(-3, 4, 5);
     EXPECT_EQ(T * p, Tuple::point(-8, 7, 3));
 }
@@ -39,7 +39,7 @@ TEST(TransformationTestSuite, ScaleMatrixAppliedToVector){
 
 TEST(TransformationTestSuite, MultByInverseOfScalingMatrix){
     Matrix T = Transformation::scaling(2, 3, 4);
-    T = Matrix::Inverse(T);
+    T = Matrix::inverse(T);
     Tuple v = Tuple::vector(-4, 6, 8);
     EXPECT_EQ(T * v, Tuple::vector(-2, 2, 2));
 }
@@ -61,7 +61,7 @@ TEST(TransformationTestSuite, RotationX_onPoint){
 TEST(TransformationTestSuite, RotationX_onPoint_Inverse){
     Tuple p = Tuple::point(0, 1, 0);
     Matrix half_quarter = Transformation::rotation_x(M_PI / 4);
-    Matrix inverse_half_quarter = Matrix::Inverse(half_quarter);
+    Matrix inverse_half_quarter = Matrix::inverse(half_quarter);
     EXPECT_EQ(inverse_half_quarter * p, Tuple::point(0, sqrt(2) / 2.f, -sqrt(2) / 2.f));
 }
 
@@ -78,8 +78,8 @@ TEST(TransformationTestSuite, RotationY_onPoint_Inverse){
     Matrix half_quarter = Transformation::rotation_y(M_PI / 4);
     Matrix full_quarter = Transformation::rotation_y(M_PI / 2);
 
-    Matrix inverse_half_quarter = Matrix::Inverse(half_quarter);
-    Matrix inverse_full_quarter = Matrix::Inverse(full_quarter);
+    Matrix inverse_half_quarter = Matrix::inverse(half_quarter);
+    Matrix inverse_full_quarter = Matrix::inverse(full_quarter);
 
     EXPECT_EQ(inverse_half_quarter * p, Tuple::point(-sqrt(2) / 2.f, 0, sqrt(2) / 2.f));
     EXPECT_EQ(inverse_full_quarter * p, Tuple::point(-1, 0, 0));
@@ -165,7 +165,7 @@ TEST(ViewTransformTestSuite, Default){
     Tuple to = Tuple::point(0, 0, -1);
     Tuple up = Tuple::vector(0, 1, 0);
     Matrix t = Transformation::view_transform(from, to, up);
-    EXPECT_EQ(t, Matrix::Identity(4));
+    EXPECT_EQ(t, Matrix::identity(4));
 }
 
 TEST(ViewwTransformTestSuite, LookInOppositeDirection){
@@ -190,11 +190,11 @@ TEST(ViewTransformTestSuite, ArbitraryDirection){
     Tuple up = Tuple::vector(1, 1, 0);
     Matrix t = Transformation::view_transform(from, to, up);
     Matrix m = Matrix(4, 4);
-    m.Fill({
-        -0.50709, 0.50709, 0.67612, -2.36643,
-         0.76772, 0.60609, 0.12122, -2.82843,
-        -0.35857, 0.59761, -0.71714, 0.00000,
-         0.00000, 0.00000, 0.00000, 1.00000 }
-        );
+    m.fill({
+                   -0.50709, 0.50709, 0.67612, -2.36643,
+                   0.76772, 0.60609, 0.12122, -2.82843,
+                   -0.35857, 0.59761, -0.71714, 0.00000,
+                   0.00000, 0.00000, 0.00000, 1.00000}
+    );
     EXPECT_EQ(t, m);
 }

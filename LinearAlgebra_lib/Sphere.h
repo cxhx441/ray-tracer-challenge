@@ -12,27 +12,27 @@
 #include <vector>
 
 class Sphere {
-    Matrix transform = Matrix::Identity(4);
-    Matrix inverse_transform = Matrix::Inverse(transform);
-    Matrix normal_transform = Matrix::NormalMatrix(transform);
+    Matrix transform = Matrix::identity(4);
+    Matrix inverse_transform = Matrix::inverse(transform);
+    Matrix normal_transform = Matrix::normal_matrix(transform);
 public:
     Material material = Material();
 
     Sphere() = default;
     ~Sphere();                                  // Destructor
 
-    void setTransform(Matrix m);
-    Matrix getTransform();
-    Matrix getInverseTransform();
-    Matrix getNormalTransform();
+    void set_transform(Matrix m);
+    Matrix get_transform();
+    Matrix get_inverse_transform();
+    Matrix get_normal_transform();
 
 //    Sphere(const Sphere& other);                // Copy constructor
 //    Sphere(Sphere&& other) noexcept;            // Move constructor
 //    Sphere& operator=(const Sphere& other);     // Copy assignment operator
 //    Sphere& operator=(Sphere&& other) noexcept; // Move assignment operator
 
-    Tuple NormalAt(Tuple world_point);
-    std::vector<Intersection> Intersect(Ray& r);
+    Tuple normal_at(Tuple world_point);
+    std::vector<Intersection> intersect(Ray& r);
 };
 
 

@@ -24,7 +24,8 @@ public:
     bool operator<=(const Intersection& other) const;
     bool operator>=(const Intersection& other) const;
 
-    static std::optional<Intersection> Hit(std::vector<Intersection> &xs);
+    /** @return the Intersection object with the lowest positive t */
+    static std::optional<Intersection> get_hit(std::vector<Intersection> &xs);
 };
 
 

@@ -7,9 +7,9 @@
 PreparedComputation::PreparedComputation(Intersection &i, Ray &r) {
     t = i.t;
     object = (Sphere *) i.object;
-    point = Ray::Position(r, t);
+    point = Ray::position(r, t);
     eyev = -r.direction;
-    normalv = object->NormalAt( point);
+    normalv = object->normal_at(point);
     inside = false;
 
     // if the eye is inside the object, we still want to color it correctly.

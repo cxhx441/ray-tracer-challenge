@@ -5,15 +5,15 @@
 #include "Lighting.h"
 #include <cmath>
 
-Tuple Lighting::phong_lighting(const Material &material, const Light &light, const Tuple &point, const Tuple &eyev,
-                         const Tuple &normalv, bool is_shadowed) {
-    Tuple effective_color = material.color * light.intensity;
+Tuple Lighting::phong_lighting(const Material &material, const PointLight &light, const Tuple &point, const Tuple &eyev,
+                               const Tuple &normalv, bool is_shadowed) {
+    Tuple effective_color = material.color * light.color;
     Tuple ambient = Tuple();
     Tuple diffuse = Tuple();
     Tuple specular = Tuple();
 
     // point to light. Ambient is always added.
-    Tuple lightv = Tuple::normalize(light.position - point);
+    Tuple lightv = Tuple::normalized(light.point - point);
     ambient = effective_color * material.ambient;
 
     if (is_shadowed){
@@ -30,7 +30,7 @@ Tuple Lighting::phong_lighting(const Material &material, const Light &light, con
     else{
         diffuse = effective_color * material.diffuse * light_dot_normal;
 
-        Tuple reflectv = Tuple::reflect(-lightv, normalv);
+        Tuple reflectv = Tuple::reflected(-lightv, normalv);
 
         // if the angle between reflected ray and the eye vector is greater than or equal to 90 degrees, no specular because light is reflected away from the eye.
         float reflect_dot_eye = Tuple::dot(reflectv, eyev);
@@ -38,7 +38,7 @@ Tuple Lighting::phong_lighting(const Material &material, const Light &light, con
             specular = Tuple::color(0, 0, 0, 1);
         else{
             float factor = pow(reflect_dot_eye, material.shininess);
-            specular = light.intensity * material.specular * factor;
+            specular = light.color * material.specular * factor;
         }
     }
     Tuple lit_color = ambient + diffuse + specular;

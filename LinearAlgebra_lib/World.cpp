@@ -6,7 +6,7 @@
 
 World World::DefaultWorld() {
     World w;
-    Light l = Light::PointLight(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1) );
+    PointLight l(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1) );
     w.lights.push_back(l);
 
     // Unit sphere at origin.
@@ -17,17 +17,17 @@ World World::DefaultWorld() {
 
     // Half unit sphere at origin.
     Sphere s2;
-    s2.setTransform(Transformation::scaling(0.5));
+    s2.set_transform(Transformation::scaling(0.5));
 
     w.objects.push_back(s1);
     w.objects.push_back(s2);
     return w;
 }
 
-std::vector<Intersection> World::IntersectWorld(Ray &r) {
+std::vector<Intersection> World::intersect_world(Ray &r) {
     std::vector<Intersection> world_xs;
     for (auto& sphere : objects){
-        std::vector<Intersection> object_xs = sphere.Intersect(r);
+        std::vector<Intersection> object_xs = sphere.intersect(r);
         for (auto& x : object_xs){
             world_xs.push_back(x);
         }
@@ -36,15 +36,16 @@ std::vector<Intersection> World::IntersectWorld(Ray &r) {
     return world_xs;
 }
 
-Tuple World::ShadeHit(PreparedComputation &comps) {
+Tuple World::shade_hit(PreparedComputation &precompute) {
     Tuple rendered_color(0, 0, 0, 0);
     for (auto light : lights){
-        bool is_shadowed = IsShadowed(light, comps.over_point);
-        Tuple phong_color = Lighting::phong_lighting(comps.object->material,
+        Tuple phong_color = Lighting::phong_lighting(precompute.object->material,
                                                      light,
-                                                     comps.point,
-                                                     comps.eyev,
-                                                     comps.normalv, is_shadowed);
+                                                     precompute.point,
+                                                     precompute.eyev,
+                                                     precompute.normalv,
+                                                     is_shadowed(light, precompute.over_point)
+                                                     );
         rendered_color += phong_color;
     }
 
@@ -55,24 +56,24 @@ Tuple World::ShadeHit(PreparedComputation &comps) {
     return rendered_color;
 }
 
-Tuple World::ColorAt(Ray &r) {
-    std::vector<Intersection> xs = IntersectWorld(r);
-    std::optional<Intersection> hit = Intersection::Hit(xs);
+Tuple World::color_at(Ray &r) {
+    std::vector<Intersection> xs = intersect_world(r);
+    std::optional<Intersection> hit = Intersection::get_hit(xs);
     if (hit != std::nullopt){
         auto comps = PreparedComputation(*hit, r);
-        Tuple rendered_color = ShadeHit(comps);
+        Tuple rendered_color = shade_hit(comps);
         return rendered_color;
     }
     return Tuple::color(0, 0, 0, 1);
 }
 
-bool World::IsShadowed(Light &l, Tuple &p) {
-    Tuple p_to_light = l.position - p;
-    float distance = Tuple::magnitude(p_to_light);
-    Tuple direction = Tuple::normalize(p_to_light);
+bool World::is_shadowed(PointLight &l, Tuple &p) {
+    Tuple p_to_light = l.point - p;
+    float distance = p_to_light.magnitude();
+    Tuple direction = Tuple::normalized(p_to_light);
     Ray r(p, direction);
-    std::vector<Intersection> xs = IntersectWorld(r);
-    std::optional<Intersection> hit = Intersection::Hit(xs);
+    std::vector<Intersection> xs = intersect_world(r);
+    std::optional<Intersection> hit = Intersection::get_hit(xs);
     if (hit != std::nullopt && hit->t < distance)
         return true;
     return false;
