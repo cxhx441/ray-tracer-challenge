@@ -510,9 +510,15 @@ void non_transformed_patterns(){
     redDisk.material.shininess = 200;
 
     //set patterns
-    StripedPattern p(Tuple::color(1, 0, 1, 1), Tuple::color(0, 1, 0, 1));
-    redDisk.material.set_pattern(&p);
-    blueDome.material.set_pattern(&p);
+    StripedPattern p1(Tuple::color(1, 0, 1, 1), Tuple::color(0, 1, 0, 1));
+    redDisk.material.set_pattern(&p1);
+    blueDisk.material.set_pattern(&p1);
+
+    StripedPattern p2(Tuple::color(1, 1, 1, 1), Tuple::color(0, 1, 1, 1));
+    floor.material.set_pattern(&p2);
+
+    StripedPattern p3(Tuple::color(0, 1, 1, 1), Tuple::color(1, 1, 1, 1));
+    back_wall.material.set_pattern(&p3);
 
     Sphere origin;
     origin.set_transform(Transformation::scaling(0.05));
@@ -568,7 +574,7 @@ int main()
 {
 //    challenge_world_w_spheres();
 //    custom_scene();
-    challenge_plane();
-//    non_transformed_patterns();
+//    challenge_plane();
+    non_transformed_patterns();
     return 0;
 }
