@@ -28,3 +28,8 @@ Implemented in C++ and tested with Google tests.
 
 <img src="example_imgs/5_making_a_scene_shadows.png" height="200"></br>
 <img src="example_imgs/5_making_a_scene_shadows2.png" height="200"></br>
+
+### Chapter 9: Planes
+<img src="example_imgs/9_planes_1.jpg" height="200"></br>
+<img src="example_imgs/9_planes_2.jpg" height="200"></br>
+<img src="example_imgs/9_planes_3.jpg" height="200"></br>

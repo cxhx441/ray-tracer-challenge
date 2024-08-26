@@ -7,6 +7,7 @@
 
 #include "PointLight.h"
 #include "Sphere.h"
+#include "Plane.h"
 #include "PreparedComputation.h"
 #include "Lighting.h"
 #include "Intersection.h"
@@ -14,7 +15,8 @@
 class World {
 public:
     std::vector<PointLight> lights;
-    std::vector<Sphere> objects;
+    std::vector<Sphere> spheres;
+    std::vector<Plane> planes;
 
     World() = default;
     static World DefaultWorld();

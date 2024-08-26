@@ -19,19 +19,29 @@ World World::DefaultWorld() {
     Sphere s2;
     s2.set_transform(Transformation::scaling(0.5));
 
-    w.objects.push_back(s1);
-    w.objects.push_back(s2);
+    w.spheres.push_back(s1);
+    w.spheres.push_back(s2);
     return w;
 }
 
 std::vector<Intersection> World::intersect_world(Ray &r) {
     std::vector<Intersection> world_xs;
-    for (auto& sphere : objects){
+    // Iterate over Spheres.
+    for (auto& sphere : spheres){
         std::vector<Intersection> object_xs = sphere.intersect(r);
         for (auto& x : object_xs){
             world_xs.push_back(x);
         }
     }
+
+    // Iterate over Planes.
+    for (auto& plane : planes){
+        std::vector<Intersection> object_xs = plane.intersect(r);
+        for (auto& x : object_xs){
+            world_xs.push_back(x);
+        }
+    }
+
     std::sort(world_xs.begin(), world_xs.end());
     return world_xs;
 }

@@ -111,8 +111,8 @@ TEST(WorldTestSuite, ColorWhenRayHits) {
 
 TEST(WorldTestSuite, ColorWithIntersectionBehindSphere) {
     World w = World::DefaultWorld();
-    Sphere* outer = &w.objects[0];
-    Sphere* inner = &w.objects[1];
+    Sphere* outer = &w.spheres[0];
+    Sphere* inner = &w.spheres[1];
     outer->material.ambient = 1;
     inner->material.ambient = 1;
     Ray r = Ray(Tuple::point(0, 0, 0.75), Tuple::vector(0, 0, -1));
