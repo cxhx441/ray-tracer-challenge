@@ -11,29 +11,19 @@
 #include "Intersection.h"
 #include <vector>
 
-class Sphere {
-    Matrix transform = Matrix::identity(4);
-    Matrix inverse_transform = Matrix::inverse(transform);
-    Matrix normal_transform = Matrix::normal_matrix(transform);
+#include "Shape.h"
+
+class Sphere : public Shape{
 public:
-    Material material = Material();
-
     Sphere() = default;
-    ~Sphere();                                  // Destructor
+    ~Sphere() override = default;
 
-    void set_transform(Matrix m);
-    Matrix get_transform();
-    Matrix get_inverse_transform();
-    Matrix get_normal_transform();
+//    Shape* clone() const override{ return new Sphere(*this); };
 
-//    Sphere(const Sphere& other);                // Copy constructor
-//    Sphere(Sphere&& other) noexcept;            // Move constructor
-//    Sphere& operator=(const Sphere& other);     // Copy assignment operator
-//    Sphere& operator=(Sphere&& other) noexcept; // Move assignment operator
-
-    Tuple normal_at(Tuple world_point);
-    std::vector<Intersection> intersect(Ray& r);
+    std::vector<Intersection> model_intersect(const Ray& model_ray) const override;
+    Tuple model_normal_at(const Tuple& model_point) const override;
 };
+
 
 
 #endif //RAYTRACERCHAELLENGE_SPHERE_H

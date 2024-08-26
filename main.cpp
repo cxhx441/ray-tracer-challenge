@@ -239,12 +239,12 @@ void challenge_world_w_spheres(){
 //    world.objects.insert(world.objects.end(), {small, small2, middle, right, left} );
 //    world.objects.insert(world.objects.end(), {small});
     world.lights.push_back(l1);
-    world.lights.push_back(l2);
-    world.lights.push_back(l3);
-    world.lights.push_back(l4);
+//    world.lights.push_back(l2);
+//    world.lights.push_back(l3);
+//    world.lights.push_back(l4);
 
     // Set Camera
-    int factor = 10;
+    int factor = 1;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.set_transform(
             Transformation::view_transform(
@@ -332,7 +332,7 @@ void custom_scene(){
     origin.set_transform(Transformation::scaling(0.05));
 
     // Set Lighting
-    PointLight l1(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l1(Tuple::point(-10, 10, -10), Tuple::color(1, 0, 1, 1));
     PointLight l2(Tuple::point(-5, 10, -10), Tuple::color(1, 1, 1, 1));
     PointLight l3(Tuple::point(-0, 10, -10), Tuple::color(1, 1, 1, 1));
     PointLight l4(Tuple::point(5, 10, -10), Tuple::color(1, 1, 1, 1));
@@ -347,14 +347,14 @@ void custom_scene(){
     world.objects.insert(world.objects.end(), {origin, floor, left_wall, right_wall, redDome, blueDisk, blueDome, redDisk} );
 //        world.objects.insert(world.objects.end(), {skysphere} );
     world.lights.push_back(l1);
-    world.lights.push_back(l2);
-    world.lights.push_back(l3);
-    world.lights.push_back(l4);
-    world.lights.push_back(l5);
-    world.lights.push_back(l6);
+//    world.lights.push_back(l2);
+//    world.lights.push_back(l3);
+//    world.lights.push_back(l4);
+//    world.lights.push_back(l5);
+//    world.lights.push_back(l6);
 
     // Set Camera
-    int factor = 8;
+    int factor = 1;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.set_transform(
             Transformation::view_transform(

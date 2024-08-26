@@ -14,6 +14,7 @@ set(HEADER_FILES
         World.h
         Camera.h
         PreparedComputation.h
+        Shape.h
 )
 
 set(SOURCE_FILES
@@ -30,6 +31,7 @@ set(SOURCE_FILES
         World.cpp
         Camera.cpp
         PreparedComputation.cpp
+        Shape.cpp
 )
 
 add_library(GraphicsLibrary_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})
