@@ -16,6 +16,8 @@ set(HEADER_FILES
         PreparedComputation.h
         Shape.h
         Plane.h
+        Pattern.h
+        StripedPattern.h
 )
 
 set(SOURCE_FILES
@@ -34,6 +36,8 @@ set(SOURCE_FILES
         PreparedComputation.cpp
         Shape.cpp
         Plane.cpp
+        Pattern.cpp
+        StripedPattern.cpp
 )
 
 add_library(GraphicsLibrary_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})

@@ -6,6 +6,7 @@
 #define RAYTRACERCHAELLENGE_MATERIAL_H
 
 #include "Tuple.h"
+#include "Pattern.h"
 
 class Material {
 public:
@@ -14,9 +15,12 @@ public:
     float diffuse;
     float specular;
     float shininess;
+    Pattern* pattern = nullptr;
 
     Material();
     Material(Tuple color, float ambient, float diffuse, float specular, float shininess);
+
+    void set_pattern(Pattern* in_pattern) { pattern = in_pattern; };
 
     bool operator==(const Material& other) const;
     bool operator!=(const Material& other) const;

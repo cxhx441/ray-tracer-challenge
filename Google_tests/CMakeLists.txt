@@ -18,6 +18,7 @@ add_executable(Google_Tests_run
         CameraTest.cpp
         ShapeTest.cpp
         PlaneTest.cpp
+        PatternTest.cpp
 )
 
 target_link_libraries(Google_Tests_run GraphicsLibrary_lib)

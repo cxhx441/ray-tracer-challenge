@@ -3,11 +3,17 @@
 //
 
 #include "Lighting.h"
+#include "Pattern.h"
 #include <cmath>
 
 Tuple Lighting::phong_lighting(const Material &material, const PointLight &light, const Tuple &point, const Tuple &eyev,
                                const Tuple &normalv, bool is_shadowed) {
-    Tuple effective_color = material.color * light.color;
+
+    Tuple base_color = material.color;
+    if ( material.pattern != nullptr )
+        base_color = material.pattern->stripe_at(point);
+
+    Tuple effective_color = base_color * light.color;
     Tuple ambient = Tuple();
     Tuple diffuse = Tuple();
     Tuple specular = Tuple();

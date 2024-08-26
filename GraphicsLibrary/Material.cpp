@@ -25,6 +25,7 @@ Material::Material(){
     shininess = 200.0;
 }
 
+
 bool Material::operator==(const Material &other) const {
     if (color != other.color ||
         ambient != other.ambient ||
