@@ -5,12 +5,6 @@
 #ifndef RAYTRACERCHAELLENGE_SPHERE_H
 #define RAYTRACERCHAELLENGE_SPHERE_H
 
-#include "Ray.h"
-#include "Transformation.h"
-#include "Material.h"
-#include "Intersection.h"
-#include <vector>
-
 #include "Shape.h"
 
 class Sphere : public Shape{

@@ -16,6 +16,8 @@ add_executable(Google_Tests_run
         LightingAnObjectTest.cpp
         WorldTest.cpp
         CameraTest.cpp
+        ShapeTest.cpp
+        PlaneTest.cpp
 )
 
 target_link_libraries(Google_Tests_run GraphicsLibrary_lib)
