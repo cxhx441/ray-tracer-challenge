@@ -1,4 +1,4 @@
-project(LinearAlgebra)
+project(GraphicsLibrary)
 
 set(HEADER_FILES
         Tuple.h
@@ -32,4 +32,4 @@ set(SOURCE_FILES
         PreparedComputation.cpp
 )
 
-add_library(LinearAlgebra_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})
+add_library(GraphicsLibrary_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})

@@ -18,6 +18,6 @@ add_executable(Google_Tests_run
         CameraTest.cpp
 )
 
-target_link_libraries(Google_Tests_run LinearAlgebra_lib)
+target_link_libraries(Google_Tests_run GraphicsLibrary_lib)
 
 target_link_libraries(Google_Tests_run gtest gtest_main)
