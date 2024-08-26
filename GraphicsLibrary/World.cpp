@@ -3,6 +3,7 @@
 //
 
 #include "World.h"
+#include <algorithm>
 
 World World::DefaultWorld() {
     World w;

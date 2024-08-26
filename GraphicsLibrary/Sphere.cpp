@@ -3,7 +3,7 @@
 //
 
 #include "Sphere.h"
-
+#include <cmath>
 #include <utility>
 
 Tuple Sphere::model_normal_at(const Tuple &model_point) const {
