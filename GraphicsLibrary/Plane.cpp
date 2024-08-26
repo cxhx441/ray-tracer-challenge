@@ -12,7 +12,7 @@ std::vector<Intersection> Plane::model_intersect(const Ray &model_ray) const {
     /**
         Return the time t when the ray intersects the plane.
     **/
-    if (abs(model_ray.direction.y) < PLANE_EPSILON){
+    if (std::abs(model_ray.direction.y) < PLANE_EPSILON){
         return {};
     }
     float t = -model_ray.origin.y / model_ray.direction.y;

@@ -442,7 +442,7 @@ void challenge_plane(){
 //    world.lights.push_back(l6);
 
     // Set Camera
-    int factor = 8;
+    int factor = 2;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.set_transform(
             Transformation::view_transform(
