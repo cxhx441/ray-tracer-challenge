@@ -7,6 +7,7 @@
 #include "StripedPattern.h"
 #include "PointLight.h"
 #include "Lighting.h"
+#include "Sphere.h"
 
 TEST(MaterialTestSuite, DefaultMaterial){
     Material m = Material();
@@ -19,17 +20,17 @@ TEST(MaterialTestSuite, DefaultMaterial){
 }
 
 TEST(MaterialTestSuite, LightingWithPatternApplied){
-    Material m = Material();
+    Sphere s;
     Pattern *p = new StripedPattern(Tuple::color(1, 1, 1, 1), Tuple::color(0, 0, 0, 1));
-    m.set_pattern(p);
-    m.ambient = 1;
-    m.diffuse = 0;
-    m.specular = 0;
+    s.material.set_pattern(p);
+    s.material.ambient = 1;
+    s.material.diffuse = 0;
+    s.material.specular = 0;
     Tuple eyev = Tuple::vector(0, 0, -1);
     Tuple normalv = Tuple::vector(0, 0, -1);
     PointLight light(Tuple::point(0, 0, -10), Tuple::color(1, 1, 1, 1));
-    Tuple c1 = Lighting::phong_lighting(m, light, Tuple::point(0.9, 0, 0), eyev, normalv, false);
-    Tuple c2 = Lighting::phong_lighting(m, light, Tuple::point(1.1, 0, 0), eyev, normalv, false);
+    Tuple c1 = Lighting::phong_lighting(s.material, s, light, Tuple::point(0.9, 0, 0), eyev, normalv, false);
+    Tuple c2 = Lighting::phong_lighting(s.material, s, light, Tuple::point(1.1, 0, 0), eyev, normalv, false);
     EXPECT_EQ(c1, Tuple::color(1, 1, 1, 1));
     EXPECT_EQ(c2, Tuple::color(0, 0, 0, 1));
 }

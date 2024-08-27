@@ -14,7 +14,7 @@ public:
 
     StripedPattern(Tuple color_a, Tuple color_b);
 
-    Tuple stripe_at(Tuple world_point) const override;
+    Tuple pattern_color_at(const Tuple &pattern_point) const override;
 };
 
 

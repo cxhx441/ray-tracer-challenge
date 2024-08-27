@@ -3,15 +3,15 @@
 //
 
 #include "Lighting.h"
-#include "Pattern.h"
 #include <cmath>
 
-Tuple Lighting::phong_lighting(const Material &material, const PointLight &light, const Tuple &point, const Tuple &eyev,
+Tuple Lighting::phong_lighting(const Material &material, const Shape &shape, const PointLight &light, const Tuple &point, const Tuple &eyev,
                                const Tuple &normalv, bool is_shadowed) {
 
+    // TODO i think this could be simplified by calling a "color_at" function on the shape.
     Tuple base_color = material.color;
     if ( material.pattern != nullptr )
-        base_color = material.pattern->stripe_at(point);
+        base_color = shape.pattern_at(point);
 
     Tuple effective_color = base_color * light.color;
     Tuple ambient = Tuple();

@@ -8,11 +8,12 @@
 #include "Tuple.h"
 #include "Material.h"
 #include "PointLight.h"
+#include "Shape.h"
 
 
 class Lighting {
 public:
-    static Tuple phong_lighting(const Material &material, const PointLight &light, const Tuple &point, const Tuple &eyev, const Tuple &normalv, bool is_shadowed);
+    static Tuple phong_lighting(const Material &material, const Shape& shape, const PointLight &light, const Tuple &point, const Tuple &eyev, const Tuple &normalv, bool is_shadowed);
 };
 
 
