@@ -3,6 +3,9 @@
 #include "Sphere.h"
 #include "Plane.h"
 #include "StripedPattern.h"
+#include "RingPattern.h"
+#include "GradientPattern.h"
+#include "CheckerPattern.h"
 #include <filesystem>
 #include <cmath>
 #include <chrono>
@@ -675,12 +678,423 @@ void transformed_patterns(){
     filename.append("_" + std::to_string(duration.count()) + "s");
     canvas.to_ppm_file(filename);
 }
+
+void basic_sphere_patterns_example(){
+    // colors
+    Tuple orange = Tuple::color(1, .27, 0, 1);
+    Tuple blue = Tuple::color(0, 0, 1, 1);
+
+    // patterns
+    StripedPattern stripes(orange, blue);
+    GradientPattern gradient(orange, blue);
+    RingPattern rings(orange, blue);
+    CheckerPattern checkers(orange, blue);
+
+    stripes.set_transform(Transformation::scaling(0.1));
+    gradient.set_transform(Transformation::scaling(2, 1, 1) * Transformation::translation(0.5, 0, 0));
+    rings.set_transform(Transformation::scaling(0.085));
+    checkers.set_transform(Transformation::scaling(0.25));
+
+    // Shapes
+    Sphere striped_sphere;
+    Sphere gradient_sphere;
+    Sphere ring_sphere;
+    Sphere checkered_sphere;
+
+    Plane regular_plane;
+    Plane striped_plane;
+    Plane gradient_plane;
+    Plane ring_plane;
+    Plane checkered_plane;
+
+    striped_sphere.set_transform(Transformation::translation(-2.25, 0, 1) * Transformation::scaling(.6));
+    gradient_sphere.set_transform(Transformation::translation(-0.75, 0, 1) * Transformation::scaling(.6));
+    ring_sphere.set_transform(Transformation::translation(.75, 0, 1) * Transformation::scaling(.6));
+    checkered_sphere.set_transform(Transformation::translation(2.25, 0, 1) * Transformation::scaling(.6));
+
+    striped_sphere.material.set_pattern(&stripes);
+    gradient_sphere.material.set_pattern(&gradient);
+    ring_sphere.material.set_pattern(&rings);
+    checkered_sphere.material.set_pattern(&checkers);
+
+    regular_plane.set_transform(Transformation::translation(0, -1, 0));
+    striped_plane;
+    gradient_plane;
+    ring_plane;
+    checkered_plane;
+
+    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+
+    World world;
+    world.spheres.insert(world.spheres.end(), {striped_sphere, gradient_sphere, ring_sphere, checkered_sphere} );
+    world.planes.push_back(regular_plane);
+//    world.planes.insert(world.planes.end(), {striped_plane, gradient_plane, ring_plane, checkered_plane} );
+    world.lights.push_back(light);
+
+    int factor = 60;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+            Tuple::point(0, 4., -5),
+            Tuple::point(0, 1, 0),
+            Tuple::vector(0, 1, 0)
+    )
+    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, world);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+}
+
+void basic_stripe_patterns_plane_example(){
+    // colors
+    Tuple orange = Tuple::color(1, .27, 0, 1);
+    Tuple blue = Tuple::color(0, 0, 1, 1);
+
+    // patterns
+    StripedPattern stripes(orange, blue);
+    Plane striped_plane;
+    striped_plane.material.set_pattern(&stripes);
+
+    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+
+    World world;
+    world.planes.insert(world.planes.end(), {striped_plane} );
+    world.lights.push_back(light);
+
+    int factor = 6;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 10.5, 0),
+                    Tuple::point(0, 0, 0),
+                    Tuple::vector(0, 0, 1)
+            )
+    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, world);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+}
+
+void basic_gradient_patterns_plane_example(){
+    // colors
+    Tuple orange = Tuple::color(1, .27, 0, 1);
+    Tuple blue = Tuple::color(0, 0, 1, 1);
+
+    // patterns
+    GradientPattern gradient(orange, blue);
+    Plane gradient_plane;
+    gradient_plane.material.set_pattern(&gradient);
+
+    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+
+    World world;
+    world.planes.insert(world.planes.end(), {gradient_plane} );
+    world.lights.push_back(light);
+
+    int factor = 8;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 10.5, 0),
+                    Tuple::point(0, 0, 0),
+                    Tuple::vector(0, 0, 1)
+            )
+    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, world);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+}
+
+void basic_ring_patterns_plane_example(){
+    // colors
+    Tuple orange = Tuple::color(1, .27, 0, 1);
+    Tuple blue = Tuple::color(0, 0, 1, 1);
+
+    // patterns
+    RingPattern rings(orange, blue);
+    Plane ring_plane;
+    ring_plane.material.set_pattern(&rings);
+
+    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+
+    World world;
+    world.planes.insert(world.planes.end(), {ring_plane} );
+    world.lights.push_back(light);
+
+    int factor = 8;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 10.5, 0),
+                    Tuple::point(0, 0, 0),
+                    Tuple::vector(0, 0, 1)
+            )
+    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, world);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+}
+
+void basic_checker_pattern_plane_example(){
+    // colors
+    Tuple orange = Tuple::color(1, .27, 0, 1);
+    Tuple blue = Tuple::color(0, 0, 1, 1);
+
+    // patterns
+    CheckerPattern checkers(orange, blue);
+    Plane checkered_plane;
+    checkered_plane.material.set_pattern(&checkers);
+
+    // light
+    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+
+    // world
+    World world;
+    world.planes.insert(world.planes.end(), {checkered_plane} );
+    world.lights.push_back(light);
+
+    int factor = 8;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 20, -10),
+                    Tuple::point(0, 0, 0),
+                    Tuple::vector(0, 1, 0)
+            )
+    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, world);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+}
+
+void basic_stripe_patterns_sphere_example(){
+    // colors
+    Tuple orange = Tuple::color(1, .27, 0, 1);
+    Tuple blue = Tuple::color(0, 0, 1, 1);
+
+    // patterns
+    StripedPattern stripes(orange, blue);
+    Sphere striped_sphere;
+    striped_sphere.material.set_pattern(&stripes);
+
+    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+
+    World world;
+    world.spheres.push_back(striped_sphere);
+    world.lights.push_back(light);
+
+    int factor = 8;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 10.5, 0),
+                    Tuple::point(0, 0, 0),
+                    Tuple::vector(0, 0, 1)
+            )
+    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, world);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+}
+
+void basic_gradient_patterns_sphere_example(){
+    // colors
+    Tuple orange = Tuple::color(1, .27, 0, 1);
+    Tuple blue = Tuple::color(0, 0, 1, 1);
+
+    // patterns
+    GradientPattern gradient(orange, blue);
+    Sphere gradient_sphere;
+    gradient_sphere.material.set_pattern(&gradient);
+
+    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+
+    World world;
+    world.spheres.push_back(gradient_sphere);
+    world.lights.push_back(light);
+
+    int factor = 8;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 10.5, 0),
+                    Tuple::point(0, 0, 0),
+                    Tuple::vector(0, 0, 1)
+            )
+    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, world);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+}
+
+void basic_ring_patterns_sphere_example(){
+    // colors
+    Tuple orange = Tuple::color(1, .27, 0, 1);
+    Tuple blue = Tuple::color(0, 0, 1, 1);
+
+    // patterns
+    RingPattern ring(orange, blue);
+    ring.set_transform(Transformation::scaling(0.1));
+    Sphere ring_sphere;
+    ring_sphere.material.set_pattern(&ring);
+
+    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+
+    World world;
+    world.spheres.push_back(ring_sphere);
+    world.lights.push_back(light);
+
+    int factor = 8;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 10.5, 0),
+                    Tuple::point(0, 0, 0),
+                    Tuple::vector(0, 0, 1)
+            )
+    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, world);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+}
+
+void basic_checker_pattern_sphere_example(){
+    // colors
+    Tuple orange = Tuple::color(1, .27, 0, 1);
+    Tuple blue = Tuple::color(0, 0, 1, 1);
+
+    // patterns
+    CheckerPattern checker(orange, blue);
+    Sphere checker_sphere;
+    checker_sphere.material.set_pattern(&checker);
+
+    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+
+    World world;
+    world.spheres.push_back(checker_sphere);
+    world.lights.push_back(light);
+
+    int factor = 8;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 10.5, 0),
+                    Tuple::point(0, 0, 0),
+                    Tuple::vector(0, 1, 0)
+            )
+    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, world);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+}
 int main()
 {
 //    challenge_world_w_spheres();
 //    custom_scene();
 //    challenge_plane();
 //    non_transformed_patterns();
-    transformed_patterns();
+//    transformed_patterns();
+
+    basic_sphere_patterns_example();
+
+//    basic_stripe_patterns_plane_example();
+//    basic_gradient_patterns_plane_example();
+//    basic_ring_patterns_plane_example();
+    basic_checker_pattern_plane_example();
+
+//    basic_stripe_patterns_sphere_example();
+//    basic_gradient_patterns_sphere_example();
+//    basic_ring_patterns_sphere_example();
+//    basic_checker_pattern_sphere_example();
     return 0;
 }

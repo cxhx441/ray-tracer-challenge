@@ -20,7 +20,7 @@ public:
     Material();
     Material(Tuple color, float ambient, float diffuse, float specular, float shininess);
 
-    void set_pattern(Pattern* in_pattern) { pattern = in_pattern; };
+    void set_pattern(Pattern* in_pattern) { pattern = in_pattern; }; // TODO set through shape? why pointer?
 
     bool operator==(const Material& other) const;
     bool operator!=(const Material& other) const;
