@@ -18,6 +18,9 @@ set(HEADER_FILES
         Plane.h
         Pattern.h
         StripedPattern.h
+        GradientPattern.h
+        RingPattern.h
+        CheckerPattern.h
 )
 
 set(SOURCE_FILES
@@ -38,6 +41,9 @@ set(SOURCE_FILES
         Plane.cpp
         Pattern.cpp
         StripedPattern.cpp
+        GradientPattern.cpp
+        RingPattern.cpp
+        CheckerPattern.cpp
 )
 
 add_library(GraphicsLibrary_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})

@@ -652,7 +652,7 @@ void transformed_patterns(){
 //    world.lights.push_back(l6);
 
     // Set Camera
-    int factor = 70;
+    int factor = 160;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.set_transform(
             Transformation::view_transform(

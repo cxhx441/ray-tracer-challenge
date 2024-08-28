@@ -4,6 +4,9 @@
 
 #include "gtest/gtest.h"
 #include "StripedPattern.h"
+#include "GradientPattern.h"
+#include "CheckerPattern.h"
+#include "RingPattern.h"
 #include "Sphere.h"
 
 class PatternFixture : public ::testing::Test {
@@ -93,7 +96,42 @@ TEST_F(PatternFixture, StripesWithObjectAndPatternTransformation){
     EXPECT_EQ(s.pattern_at(world_point), white);
 }
 
+TEST_F(PatternFixture, GradiatentPatternLinearlyInterpolatesBetweenColors){
+    GradientPattern p(white, black);
+    EXPECT_EQ(p.pattern_color_at(Tuple::point(0, 0, 0)), white);
+    EXPECT_EQ(p.pattern_color_at(Tuple::point(0.25, 0, 0)), Tuple::color(0.75, 0.75, 0.75, 1));
+    EXPECT_EQ(p.pattern_color_at(Tuple::point(0.5, 0, 0)), Tuple::color(0.5, 0.5, 0.5, 1));
+    EXPECT_EQ(p.pattern_color_at(Tuple::point(0.75, 0, 0)), Tuple::color(0.25, 0.25, 0.25, 1));
+}
 
+TEST_F(PatternFixture, RingShouldExtendInBothXAndZ){
+    RingPattern p(white, black);
+    EXPECT_EQ(p.pattern_color_at(Tuple::point(0, 0, 0)), white);
+    EXPECT_EQ(p.pattern_color_at(Tuple::point(1, 0, 0)), black);
+    EXPECT_EQ(p.pattern_color_at(Tuple::point(0, 0, 1)), black);
+    EXPECT_EQ(p.pattern_color_at(Tuple::point(0.708, 0, 0.708)), black);
+}
+
+TEST_F(PatternFixture, CheckersRepeatInX){
+    CheckerPattern p(white, black);
+    EXPECT_EQ(p.pattern_color_at(Tuple::point(0, 0, 0)), white);
+    EXPECT_EQ(p.pattern_color_at(Tuple::point(0.99, 0, 0)), white);
+    EXPECT_EQ(p.pattern_color_at(Tuple::point(1.01, 0, 0)), black);
+}
+
+TEST_F(PatternFixture, CheckersRepeatInY){
+    CheckerPattern p(white, black);
+    EXPECT_EQ(p.pattern_color_at(Tuple::point(0, 0, 0)), white);
+    EXPECT_EQ(p.pattern_color_at(Tuple::point(0, 0.99, 0)), white);
+    EXPECT_EQ(p.pattern_color_at(Tuple::point(0, 1.01, 0)), black);
+}
+
+TEST_F(PatternFixture, CheckersRepeatInZ){
+    CheckerPattern p(white, black);
+    EXPECT_EQ(p.pattern_color_at(Tuple::point(0, 0, 0)), white);
+    EXPECT_EQ(p.pattern_color_at(Tuple::point(0, 0, 0.99)), white);
+    EXPECT_EQ(p.pattern_color_at(Tuple::point(0, 0, 1.01)), black);
+}
 
 
 TEST(TestPatternFixture, TestPatternDefaultTransform){
@@ -135,3 +173,4 @@ TEST(TestPatternFixture, TestPatternWithBothObjectAndPatternTranformation){
     Tuple c = s.pattern_at(Tuple::point(2.5, 3, 3.5));
     EXPECT_EQ(c, Tuple::color(0.75, .5, .25, 1));
 }
+
