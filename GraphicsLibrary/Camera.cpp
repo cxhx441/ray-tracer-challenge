@@ -27,6 +27,8 @@ Camera::Camera(int hsize, int vsize, float fov) {
 }
 
 Ray Camera::ray_for_pixel(Camera &c, int x, int y) {
+    /** @brief Generates a worldspace ray through the center of the pixel at the xy coordinate of the canvas **/
+
     // Offset from edge of canvas to pixel's center
     float xoffset = ( x + 0.5f ) * c.pixel_size;
     float yoffset = ( y + 0.5f) * c.pixel_size;
@@ -36,13 +38,13 @@ Ray Camera::ray_for_pixel(Camera &c, int x, int y) {
     float worldx = c.half_width - xoffset;
     float worldy = c.half_height - yoffset;
 
-    // Useing camera matrix, transform canvas point and origin.
+    // Using camera matrix, transform canvas point and origin.
     // Then compute the ray's direction vector.
     // REMEMBER canvas is at z = -1 (to make math simpler).
     Tuple pixel = c.get_inverse_transform() * Tuple::point(worldx, worldy, -1);
     Tuple origin = c.get_inverse_transform() * Tuple::point(0, 0, 0);
     Tuple direction = Tuple::normalized(pixel - origin);
-    return Ray(origin, direction);
+    return {origin, direction};
 }
 
 void Camera::set_transform(Matrix m) {
