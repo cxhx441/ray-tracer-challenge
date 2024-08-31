@@ -34,7 +34,7 @@ Implemented in C++ and tested with Google tests.
 <img src="example_imgs/9_planes_2.jpg" height="200"></br>
 <img src="example_imgs/9_planes_3.jpg" height="200"></br>
 
-### Chapter 10: Pattern
+### Chapter 10: Patterns
 
 [//]: # (<img src="example_imgs/10_patterns_checkered_plane.png" height="150"> <img src="example_imgs/10_patterns_gradient_plane.png" height="150"></br>)
 
