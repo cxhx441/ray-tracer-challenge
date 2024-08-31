@@ -3,9 +3,9 @@
 //
 
 #include "gtest/gtest.h"
-#include "Camera.h"
-#include "Transformation.h"
-#include "World.h"
+#include "scene/Camera.h"
+#include "primitives/Transformation.h"
+#include "scene/World.h"
 #include "Canvas.h"
 #include <cmath>
 

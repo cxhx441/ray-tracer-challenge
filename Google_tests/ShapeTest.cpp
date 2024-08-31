@@ -3,8 +3,8 @@
 //
 
 #include "gtest/gtest.h"
-#include "Intersection.h"
-#include "Shape.h"
+#include "primitives/Intersection.h"
+#include "shapes/Shape.h"
 #include <cmath>
 
 TEST(ShapeTestSuite, AShapesDefaultTransformationIsIdentity){

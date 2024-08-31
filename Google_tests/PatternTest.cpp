@@ -3,11 +3,11 @@
 //
 
 #include "gtest/gtest.h"
-#include "StripedPattern.h"
-#include "GradientPattern.h"
-#include "CheckerPattern.h"
-#include "RingPattern.h"
-#include "Sphere.h"
+#include "patterns/StripedPattern.h"
+#include "patterns/GradientPattern.h"
+#include "patterns/CheckerPattern.h"
+#include "patterns/RingPattern.h"
+#include "shapes/Sphere.h"
 
 class PatternFixture : public ::testing::Test {
 

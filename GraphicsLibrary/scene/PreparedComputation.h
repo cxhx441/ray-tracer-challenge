@@ -5,8 +5,8 @@
 #ifndef RAYTRACERCHAELLENGE_PREPAREDCOMPUTATION_H
 #define RAYTRACERCHAELLENGE_PREPAREDCOMPUTATION_H
 
-#include "Sphere.h"
-#include "Intersection.h"
+#include "../shapes/Sphere.h"
+#include "../primitives/Intersection.h"
 
 class PreparedComputation{
 public:

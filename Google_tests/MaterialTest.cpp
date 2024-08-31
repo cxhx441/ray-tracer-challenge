@@ -4,10 +4,10 @@
 
 #include "gtest/gtest.h"
 #include "Material.h"
-#include "StripedPattern.h"
+#include "patterns/StripedPattern.h"
 #include "PointLight.h"
 #include "Lighting.h"
-#include "Sphere.h"
+#include "shapes/Sphere.h"
 
 TEST(MaterialTestSuite, DefaultMaterial){
     Material m = Material();

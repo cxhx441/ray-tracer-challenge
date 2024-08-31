@@ -5,9 +5,9 @@
 #ifndef RAYTRACERCHAELLENGE_CANVAS_H
 #define RAYTRACERCHAELLENGE_CANVAS_H
 
-#include "Tuple.h"
-#include "Camera.h"
-#include "World.h"
+#include "primitives/Tuple.h"
+#include "scene/Camera.h"
+#include "scene/World.h"
 #include <string>
 
 class Canvas {

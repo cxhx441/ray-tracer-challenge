@@ -3,9 +3,9 @@
 //
 
 #include "gtest/gtest.h"
-#include "World.h"
-#include "Ray.h"
-#include "Intersection.h"
+#include "scene/World.h"
+#include "primitives/Ray.h"
+#include "primitives/Intersection.h"
 
 TEST(WorldTestSuite, CreateDefaultWorld){
     World w = World::DefaultWorld();

@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "Transformation.h"
+#include "primitives/Transformation.h"
 #include <cmath>
 
 TEST(TransformationTestSuite, MultiplyByTranslationMatrix){

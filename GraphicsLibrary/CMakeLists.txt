@@ -1,49 +1,31 @@
-project(GraphicsLibrary)
+cmake_minimum_required(VERSION 3.26)
 
 set(HEADER_FILES
-        Tuple.h
         Canvas.h
-        Matrix.h
-        Transformation.h
-        Ray.h
-        Sphere.h
-        Intersection.h
         PointLight.h
-        Material.h
         Lighting.h
-        World.h
-        Camera.h
-        PreparedComputation.h
-        Shape.h
-        Plane.h
-        Pattern.h
-        StripedPattern.h
-        GradientPattern.h
-        RingPattern.h
-        CheckerPattern.h
+        scene/World.h
+        scene/Camera.h
+        scene/PreparedComputation.h
 )
 
 set(SOURCE_FILES
-        Tuple.cpp
         Canvas.cpp
-        Matrix.cpp
-        Transformation.cpp
-        Ray.cpp
-        Sphere.cpp
-        Intersection.cpp
         PointLight.cpp
-        Material.cpp
         Lighting.cpp
-        World.cpp
-        Camera.cpp
-        PreparedComputation.cpp
-        Shape.cpp
-        Plane.cpp
-        Pattern.cpp
-        StripedPattern.cpp
-        GradientPattern.cpp
-        RingPattern.cpp
-        CheckerPattern.cpp
+        scene/World.cpp
+        scene/Camera.cpp
+        scene/PreparedComputation.cpp
 )
 
+add_subdirectory(primitives)
+add_subdirectory(patterns)
+add_subdirectory(shapes)
+
 add_library(GraphicsLibrary_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})
+
+target_link_libraries(GraphicsLibrary_lib PUBLIC
+        primitives
+        patterns
+        shapes
+)

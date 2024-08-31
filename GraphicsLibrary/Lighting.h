@@ -5,10 +5,10 @@
 #ifndef RAYTRACERCHAELLENGE_LIGHTING_H
 #define RAYTRACERCHAELLENGE_LIGHTING_H
 
-#include "Tuple.h"
+#include "primitives/Tuple.h"
 #include "Material.h"
 #include "PointLight.h"
-#include "Shape.h"
+#include "shapes/Shape.h"
 
 
 class Lighting {

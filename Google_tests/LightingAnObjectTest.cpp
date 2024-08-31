@@ -4,7 +4,7 @@
 
 #include "gtest/gtest.h"
 #include "Lighting.h"
-#include "Sphere.h"
+#include "shapes/Sphere.h"
 #include <cmath>
 
 class LightingFixture : public ::testing::Test {

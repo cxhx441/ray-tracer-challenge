@@ -5,8 +5,8 @@
 #ifndef RAYTRACERCHAELLENGE_SHAPE_H
 #define RAYTRACERCHAELLENGE_SHAPE_H
 
-#include "Transformation.h"
-#include "Intersection.h"
+#include "../primitives/Transformation.h"
+#include "../primitives/Intersection.h"
 #include "Material.h"
 
 

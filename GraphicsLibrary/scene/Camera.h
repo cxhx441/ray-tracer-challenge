@@ -5,8 +5,8 @@
 #ifndef RAYTRACERCHAELLENGE_CAMERA_H
 #define RAYTRACERCHAELLENGE_CAMERA_H
 
-#include "Matrix.h"
-#include "Ray.h"
+#include "../primitives/Matrix.h"
+#include "../primitives/Ray.h"
 
 class Camera {
 private:

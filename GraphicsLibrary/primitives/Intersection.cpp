@@ -3,7 +3,6 @@
 //
 
 #include "Intersection.h"
-#include "Sphere.h"
 
 Intersection::Intersection(float t, void* object) : t(t), object(object) {}
 

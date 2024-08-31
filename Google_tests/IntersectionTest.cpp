@@ -3,8 +3,8 @@
 //
 
 #include "gtest/gtest.h"
-#include "Ray.h"
-#include "World.h"
+#include "primitives/Ray.h"
+#include "scene/World.h"
 
 
 TEST(IntersectionTestSuite, IntersectionEncapsulatesTandShape){

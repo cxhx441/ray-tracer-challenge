@@ -5,8 +5,8 @@
 #ifndef RAYTRACERCHALLENGE_PATTERN_H
 #define RAYTRACERCHALLENGE_PATTERN_H
 
-#include "Tuple.h"
-#include "Matrix.h"
+#include "../primitives/Tuple.h"
+#include "../primitives/Matrix.h"
 
 class Pattern {
 private:
