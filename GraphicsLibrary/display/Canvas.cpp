@@ -3,7 +3,7 @@
 //
 
 #include "Canvas.h"
-#include "primitives/Intersection.h"
+#include "../primitives/Intersection.h"
 #include <cmath>
 #include <iostream>
 #include <fstream>

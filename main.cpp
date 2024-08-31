@@ -1,12 +1,11 @@
 #include <iostream>
-#include "GraphicsLibrary/Canvas.h"
+#include "GraphicsLibrary/display/Canvas.h"
 #include "GraphicsLibrary/shapes/Sphere.h"
 #include "GraphicsLibrary/shapes/Plane.h"
 #include "GraphicsLibrary/patterns/StripedPattern.h"
 #include "GraphicsLibrary/patterns/RingPattern.h"
 #include "GraphicsLibrary/patterns/GradientPattern.h"
 #include "GraphicsLibrary/patterns/CheckerPattern.h"
-#include <filesystem>
 #include <cmath>
 #include <chrono>
 
@@ -158,7 +157,7 @@ void challenge_ray_to_sphere_w_phong_lighting(){
                 Tuple eyev = -ray.direction;
 //                color = Lighting::phong_lighting(((Sphere *) hit->object)->material, light, point, eyev, normalv, false);
                 auto *s = (Sphere*) hit->object;
-                color = Lighting::phong_lighting(s->material, *s, light, point, eyev, normalv, false);
+                color = LightingModels::phong_lighting(s->material, *s, light, point, eyev, normalv, false);
                 try { canvas.write_pixel(x, y, color); }
                 catch (std::invalid_argument const &ex) { std::cout << ex.what() << std::endl; };
             }

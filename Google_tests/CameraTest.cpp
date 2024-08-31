@@ -6,7 +6,7 @@
 #include "scene/Camera.h"
 #include "primitives/Transformation.h"
 #include "scene/World.h"
-#include "Canvas.h"
+#include "display/Canvas.h"
 #include <cmath>
 
 TEST(CameraTestSuite, ConstructingACamera){

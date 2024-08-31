@@ -5,11 +5,11 @@
 #ifndef RAYTRACERCHAELLENGE_WORLD_H
 #define RAYTRACERCHAELLENGE_WORLD_H
 
-#include "../PointLight.h"
-#include "Sphere.h"
-#include "Plane.h"
+#include "../lights/PointLight.h"
+#include "../shapes/Sphere.h"
+#include "../shapes/Plane.h"
 #include "PreparedComputation.h"
-#include "../Lighting.h"
+#include "LightingModels.h"
 #include "../primitives/Intersection.h"
 
 class World {

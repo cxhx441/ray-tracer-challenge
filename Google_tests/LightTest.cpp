@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "PointLight.h"
+#include "lights/PointLight.h"
 
 TEST(LightTestSuite, PointLightHasPositionAndIntensity){
     Tuple inten = Tuple::color(1, 1, 1, 1);

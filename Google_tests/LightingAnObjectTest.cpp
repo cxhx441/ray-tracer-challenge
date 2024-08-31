@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "Lighting.h"
+#include "LightingModels.h"
 #include "shapes/Sphere.h"
 #include <cmath>
 
@@ -34,7 +34,7 @@ TEST_F(LightingFixture, LightingWithEyeBetweenLightAndSurface){
     Tuple normalv = Tuple::vector(0, 0, -1);
     PointLight light(Tuple::point(0, 0, -10), Tuple::color(1, 1, 1, 1));
     bool in_shadow = false;
-    Tuple result = Lighting::phong_lighting(s.material, s, light, *position, eyev, normalv, in_shadow);
+    Tuple result = LightingModels::phong_lighting(s.material, s, light, *position, eyev, normalv, in_shadow);
     EXPECT_EQ( result, Tuple::color(1.9, 1.9, 1.9, 1));
 }
 
@@ -43,7 +43,7 @@ TEST_F(LightingFixture, LightingWithEyeBetweenLightAndSurface_EyeOffset45Deg){
     Tuple normalv = Tuple::vector(0, 0, -1);
     PointLight light(Tuple::point(0, 0, -10), Tuple::color(1, 1, 1, 1));
     bool in_shadow = false;
-    Tuple result = Lighting::phong_lighting(s.material, s, light, *position, eyev, normalv, in_shadow);
+    Tuple result = LightingModels::phong_lighting(s.material, s, light, *position, eyev, normalv, in_shadow);
     EXPECT_EQ( result, Tuple::color(1.0, 1.0, 1.0, 1));
 }
 
@@ -52,7 +52,7 @@ TEST_F(LightingFixture, LightingWithEyeOppositeSurface_LightOffset45Deg){
     Tuple normalv = Tuple::vector(0, 0, -1);
     PointLight light(Tuple::point(0, 10, -10), Tuple::color(1, 1, 1, 1));
     bool in_shadow = false;
-    Tuple result = Lighting::phong_lighting(s.material, s, light, *position, eyev, normalv, in_shadow);
+    Tuple result = LightingModels::phong_lighting(s.material, s, light, *position, eyev, normalv, in_shadow);
     EXPECT_EQ( result, Tuple::color(0.7364, 0.7364, 0.7364, 1));
 }
 
@@ -61,7 +61,7 @@ TEST_F(LightingFixture, LightingWithEyeInPathOfReflectionVector){
     Tuple normalv = Tuple::vector(0, 0, -1);
     PointLight light(Tuple::point(0, 10, -10), Tuple::color(1, 1, 1, 1));
     bool in_shadow = false;
-    Tuple result = Lighting::phong_lighting(s.material, s, light, *position, eyev, normalv, in_shadow);
+    Tuple result = LightingModels::phong_lighting(s.material, s, light, *position, eyev, normalv, in_shadow);
     EXPECT_EQ( result, Tuple::color(1.6364, 1.6364, 1.6364, 1) );
 }
 
@@ -70,7 +70,7 @@ TEST_F(LightingFixture, LightingWithLightBehindSurface){
     Tuple normalv = Tuple::vector(0, 0, -1);
     PointLight light(Tuple::point(0, 0, 10), Tuple::color(1, 1, 1, 1));
     bool in_shadow = false;
-    Tuple result = Lighting::phong_lighting(s.material, s, light, *position, eyev, normalv, in_shadow);
+    Tuple result = LightingModels::phong_lighting(s.material, s, light, *position, eyev, normalv, in_shadow);
     EXPECT_EQ( result, Tuple::color(0.1, 0.1, 0.1, 1) ); // just ambient since diff and spec go to 0. default material amb is 0.1
 }
 
@@ -79,6 +79,6 @@ TEST_F(LightingFixture, LightingWithSurfaceInShadow){
     Tuple normalv = Tuple::vector(0, 0, -1);
     PointLight light(Tuple::point(0, 0, -10), Tuple::color(1, 1, 1, 1));
     bool in_shadow = true;
-    Tuple result = Lighting::phong_lighting(s.material, s, light, *position, eyev, normalv, in_shadow);
+    Tuple result = LightingModels::phong_lighting(s.material, s, light, *position, eyev, normalv, in_shadow);
     EXPECT_EQ( result, Tuple::color(0.1, 0.1, 0.1, 1));
 }
