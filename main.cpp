@@ -707,10 +707,22 @@ void basic_sphere_patterns_example(){
     Plane ring_plane;
     Plane checkered_plane;
 
-    striped_sphere.set_transform(Transformation::translation(-2.25, 0, 1) * Transformation::scaling(.6));
-    gradient_sphere.set_transform(Transformation::translation(-0.75, 0, 1) * Transformation::scaling(.6));
-    ring_sphere.set_transform(Transformation::translation(.75, 0, 1) * Transformation::scaling(.6));
-    checkered_sphere.set_transform(Transformation::translation(2.25, 0, 1) * Transformation::scaling(.6));
+//    striped_sphere.set_transform(Transformation::translation(-2.25, 0, 1) * Transformation::scaling(.6));
+//    gradient_sphere.set_transform(Transformation::translation(-0.75, 0, 1) * Transformation::scaling(.6));
+//    ring_sphere.set_transform(Transformation::translation(.75, 0, 1) * Transformation::scaling(.6));
+//    checkered_sphere.set_transform(Transformation::translation(2.25, 0, 1) * Transformation::scaling(.6));
+    float sphere_size = .9;
+    float delta = 2.2;
+    float two = -delta / 2;
+    float three = delta / 2;
+    float one = two - delta;
+    float four = three + delta;
+
+    float y_up = 0;
+    striped_sphere.set_transform(Transformation::translation(one, y_up, 1) * Transformation::scaling(sphere_size));
+    gradient_sphere.set_transform(Transformation::translation(two, y_up, 1) * Transformation::scaling(sphere_size));
+    ring_sphere.set_transform(Transformation::translation(three, y_up, 1) * Transformation::scaling(sphere_size));
+    checkered_sphere.set_transform(Transformation::translation(four, y_up, 1) * Transformation::scaling(sphere_size));
 
     striped_sphere.material.set_pattern(&stripes);
     gradient_sphere.material.set_pattern(&gradient);
@@ -731,7 +743,7 @@ void basic_sphere_patterns_example(){
 //    world.planes.insert(world.planes.end(), {striped_plane, gradient_plane, ring_plane, checkered_plane} );
     world.lights.push_back(light);
 
-    int factor = 60;
+    int factor = 40;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.set_transform(
             Transformation::view_transform(
@@ -771,13 +783,13 @@ void basic_stripe_patterns_plane_example(){
     world.planes.insert(world.planes.end(), {striped_plane} );
     world.lights.push_back(light);
 
-    int factor = 6;
+    int factor = 20;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.set_transform(
             Transformation::view_transform(
-                    Tuple::point(0, 10.5, 0),
+                    Tuple::point(0, 10, -10),
                     Tuple::point(0, 0, 0),
-                    Tuple::vector(0, 0, 1)
+                    Tuple::vector(0, 1, 0)
             )
     );
 
@@ -811,15 +823,16 @@ void basic_gradient_patterns_plane_example(){
     world.planes.insert(world.planes.end(), {gradient_plane} );
     world.lights.push_back(light);
 
-    int factor = 8;
+    int factor = 20;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.set_transform(
             Transformation::view_transform(
-                    Tuple::point(0, 10.5, 0),
+                    Tuple::point(0, 10, -10),
                     Tuple::point(0, 0, 0),
-                    Tuple::vector(0, 0, 1)
+                    Tuple::vector(0, 1, 0)
             )
     );
+
 
     auto start = std::chrono::high_resolution_clock::now();
 
@@ -851,15 +864,16 @@ void basic_ring_patterns_plane_example(){
     world.planes.insert(world.planes.end(), {ring_plane} );
     world.lights.push_back(light);
 
-    int factor = 8;
+    int factor = 20;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.set_transform(
             Transformation::view_transform(
-                    Tuple::point(0, 10.5, 0),
+                    Tuple::point(0, 10, -10),
                     Tuple::point(0, 0, 0),
-                    Tuple::vector(0, 0, 1)
+                    Tuple::vector(0, 1, 0)
             )
     );
+
 
     auto start = std::chrono::high_resolution_clock::now();
 
@@ -893,11 +907,11 @@ void basic_checker_pattern_plane_example(){
     world.planes.insert(world.planes.end(), {checkered_plane} );
     world.lights.push_back(light);
 
-    int factor = 8;
+    int factor = 20;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.set_transform(
             Transformation::view_transform(
-                    Tuple::point(0, 20, -10),
+                    Tuple::point(0, 10, -10),
                     Tuple::point(0, 0, 0),
                     Tuple::vector(0, 1, 0)
             )
@@ -1054,13 +1068,13 @@ void basic_checker_pattern_sphere_example(){
     world.spheres.push_back(checker_sphere);
     world.lights.push_back(light);
 
-    int factor = 8;
+    int factor = 6;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.set_transform(
             Transformation::view_transform(
                     Tuple::point(0, 10.5, 0),
                     Tuple::point(0, 0, 0),
-                    Tuple::vector(0, 1, 0)
+                    Tuple::vector(0, 0, 1)
             )
     );
 
@@ -1086,12 +1100,12 @@ int main()
 //    transformed_patterns();
 
     basic_sphere_patterns_example();
-
+//
 //    basic_stripe_patterns_plane_example();
 //    basic_gradient_patterns_plane_example();
 //    basic_ring_patterns_plane_example();
-    basic_checker_pattern_plane_example();
-
+//    basic_checker_pattern_plane_example();
+//
 //    basic_stripe_patterns_sphere_example();
 //    basic_gradient_patterns_sphere_example();
 //    basic_ring_patterns_sphere_example();
