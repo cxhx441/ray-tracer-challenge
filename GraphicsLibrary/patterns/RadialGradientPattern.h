@@ -20,6 +20,10 @@ public:
     std::shared_ptr<Pattern> clone() const override {
         return std::make_shared<RadialGradientPattern>(*this);
     }
+
+    std::vector<Tuple> get_colors(){
+        return {color_a, color_b};
+    }
 };
 
 #endif //RAYTRACERCHALLENGE_RADIALGRADIENTPATTERN_H

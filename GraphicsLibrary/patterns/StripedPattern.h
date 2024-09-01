@@ -19,6 +19,10 @@ public:
     std::shared_ptr<Pattern> clone() const override {
         return std::make_shared<StripedPattern>(*this);
     }
+
+    std::vector<Tuple> get_colors(){
+        return {color_a, color_b};
+    }
 };
 
 

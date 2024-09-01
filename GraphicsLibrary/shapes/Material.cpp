@@ -4,8 +4,7 @@
 
 #include "Material.h"
 
-Material::Material(Tuple color, float ambient, float diffuse, float specular, float shininess) :
-        color(color),
+Material::Material(float ambient, float diffuse, float specular, float shininess) :
         ambient(ambient),
         diffuse(diffuse),
         specular(specular),
@@ -18,7 +17,7 @@ Material::Material(Tuple color, float ambient, float diffuse, float specular, fl
 
 Material::Material(){
     /** default material **/
-    color = Tuple::color(1, 1, 1, 1);
+    set_pattern(SolidPattern(Tuple::color(1, 1, 1, 1)));
     ambient = 0.1;
     diffuse = 0.9;
     specular = 0.9;
@@ -35,10 +34,6 @@ void Material::add_pattern(const Pattern& in_pattern) {
     patterns.push_back(in_pattern.clone());
 };
 
-bool Material::has_pattern() const {
-    return not patterns.empty();
-}
-
 Tuple Material::get_pattern_color(const Tuple &model_point) const {
     Tuple resulting_color(0, 0, 0, 0);
     for (const auto &pattern: patterns) {
@@ -47,8 +42,12 @@ Tuple Material::get_pattern_color(const Tuple &model_point) const {
     return resulting_color / (float) patterns.size();
 }
 
+std::shared_ptr<Pattern> Material::get_pattern_at(const size_t idx) const{
+    return patterns.at(idx);
+}
+
 bool Material::operator==(const Material &other) const {
-    if (color != other.color ||
+    if (patterns != other.patterns ||
         ambient != other.ambient ||
         diffuse != other.diffuse ||
         specular != other.specular ||

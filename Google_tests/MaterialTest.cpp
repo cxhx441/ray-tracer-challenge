@@ -11,12 +11,12 @@
 
 TEST(MaterialTestSuite, DefaultMaterial){
     Material m = Material();
-    EXPECT_EQ(m.color, Tuple::color(1, 1, 1, 1));
+    EXPECT_EQ(m.get_pattern_at(0)->get_colors().size(), 1);
+    EXPECT_EQ(m.get_pattern_at(0)->get_colors()[0], Tuple::color(1, 1, 1, 1));
     EXPECT_FLOAT_EQ(m.ambient, 0.1);
     EXPECT_FLOAT_EQ(m.diffuse, 0.9);
     EXPECT_FLOAT_EQ(m.specular, 0.9);
     EXPECT_FLOAT_EQ(m.shininess, 200);
-    EXPECT_FALSE(m.has_pattern());
 }
 
 TEST(MaterialTestSuite, LightingWithPatternApplied){

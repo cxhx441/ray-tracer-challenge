@@ -12,7 +12,7 @@ World World::DefaultWorld() {
 
     // Unit sphere at origin.
     Sphere s1;
-    s1.material.color = Tuple::color(0.8, 1.0, 0.6, 1);
+    s1.material.set_pattern(SolidPattern(Tuple::color(0.8, 1.0, 0.6, 1)));
     s1.material.diffuse = 0.7;
     s1.material.specular = 0.2;
 

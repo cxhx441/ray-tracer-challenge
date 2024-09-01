@@ -7,25 +7,25 @@
 
 #include "../primitives/Tuple.h"
 #include "../patterns/Pattern.h"
+#include "../patterns/SolidPattern.h"
 
 class Material {
 private:
     std::vector<std::shared_ptr<Pattern>> patterns;
 public:
-    Tuple color;
     float ambient;
     float diffuse;
     float specular;
     float shininess;
 
     Material();
-    Material(Tuple color, float ambient, float diffuse, float specular, float shininess);
+    Material(float ambient, float diffuse, float specular, float shininess);
 
     void set_pattern(const Pattern& in_pattern);
 
     void add_pattern(const Pattern& in_pattern);
 
-    bool has_pattern() const;
+    std::shared_ptr<Pattern> get_pattern_at(const size_t idx) const;
 
     Tuple get_pattern_color(const Tuple &model_point) const;
 
