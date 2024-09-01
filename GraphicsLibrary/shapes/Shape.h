@@ -26,6 +26,7 @@ public:
 
     // virtual method to clone the shape
 //    virtual Shape* clone() const = 0;
+    std::string name = "not_given";
 
     void set_transform(const Matrix& m);
     Matrix get_transform() const;

@@ -15,6 +15,7 @@ public:
     Tuple point;
     Tuple eyev;
     Tuple normalv;
+    Tuple reflectv;
     bool inside;
     Tuple over_point;
 

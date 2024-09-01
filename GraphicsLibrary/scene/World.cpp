@@ -12,12 +12,14 @@ World World::DefaultWorld() {
 
     // Unit sphere at origin.
     Sphere s1;
+    s1.name = std::string("s1");
     s1.material.color = Tuple::color(0.8, 1.0, 0.6, 1);
     s1.material.diffuse = 0.7;
     s1.material.specular = 0.2;
 
     // Half unit sphere at origin.
     Sphere s2;
+    s2.name = std::string("s2");
     s2.set_transform(Transformation::scaling(0.5));
 
     w.spheres.push_back(s1);
@@ -47,8 +49,8 @@ std::vector<Intersection> World::intersect_world(Ray &r) {
     return world_xs;
 }
 
-Tuple World::shade_hit(PreparedComputation &precompute) {
-    Tuple rendered_color(0, 0, 0, 0);
+Tuple World::shade_hit(PreparedComputation &precompute, int remaining_reflections) {
+    Tuple surface_color(0, 0, 0, 0);
     for (auto light : lights){
         Tuple phong_color = LightingModels::phong_lighting(precompute.object->material,
                                                            *precompute.object,
@@ -58,22 +60,22 @@ Tuple World::shade_hit(PreparedComputation &precompute) {
                                                            precompute.normalv,
                                                            is_shadowed(light, precompute.over_point)
                                                      );
-        rendered_color += phong_color;
+        surface_color += phong_color;
     }
-
     // average lights
-    rendered_color /= (float) lights.size();
+    surface_color /= (float) lights.size();
 
+    Tuple rendered_color = surface_color + reflected_color(precompute, remaining_reflections);
     rendered_color.w = 1;
     return rendered_color;
 }
 
-Tuple World::color_at(Ray &r) {
+Tuple World::color_at(Ray &r, int remaining_reflections) {
     std::vector<Intersection> xs = intersect_world(r);
     std::optional<Intersection> hit = Intersection::get_hit(xs);
     if (hit != std::nullopt){
         auto comps = PreparedComputation(*hit, r);
-        Tuple rendered_color = shade_hit(comps);
+        Tuple rendered_color = shade_hit(comps, remaining_reflections);
         return rendered_color;
     }
     return Tuple::color(0, 0, 0, 1);
@@ -89,4 +91,15 @@ bool World::is_shadowed(PointLight &l, Tuple &p) {
     if (hit != std::nullopt && hit->t < distance)
         return true;
     return false;
+}
+
+Tuple World::reflected_color(PreparedComputation &precompute, int remaining_reflections) {
+    if (precompute.object->material.reflective == 0 || remaining_reflections <= 0)
+        return Tuple::color(0, 0, 0, 1);
+
+    Ray reflected_ray(precompute.over_point, precompute.reflectv);
+    Tuple color = color_at(reflected_ray, --remaining_reflections);
+    Tuple ref_color = color * precompute.object->material.reflective;
+    ref_color.w = 1;
+    return ref_color;
 }

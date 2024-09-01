@@ -10,6 +10,7 @@ PreparedComputation::PreparedComputation(Intersection &i, Ray &r) {
     point = Ray::position(r, t);
     eyev = -r.direction;
     normalv = object->normal_at(point);
+    reflectv = Tuple::reflected(r.direction, normalv);
     inside = false;
 
     // if the eye is inside the object, we still want to color it correctly.

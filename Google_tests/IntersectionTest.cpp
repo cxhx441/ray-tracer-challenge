@@ -153,3 +153,11 @@ TEST(ShadowTestSuite, HitShouldOffsetThePoint) {
     EXPECT_LT(comps.over_point.z , -SHADOW_EPSILON/2 ) ;
     EXPECT_GT(comps.point.z , comps.over_point.z);
 }
+
+TEST(ShadowTestSuite, PrecomputingTheReflectionVector) {
+    Plane shape;
+    Ray r(Tuple::point(0, 1, -1), Tuple::vector(0, -sqrtf(2)/2 , sqrtf(2)/2));
+    Intersection i = Intersection(sqrtf(2), &shape);
+    PreparedComputation comps(i, r);
+    EXPECT_EQ(comps.reflectv , Tuple::vector(0, sqrtf(2)/2 , sqrtf(2)/2));
+}

@@ -1275,6 +1275,200 @@ void basic_blended_sphere_patterns_example(){
     canvas.to_ppm_file(filename);
 }
 
+void default_world_w_reflection(){
+    World w = World::DefaultWorld();
+
+    Plane p;
+    p.name = std::string("p");
+    p.material.reflective = 0.5;
+    p.set_transform(Transformation::translation(0, -1, 0));
+    w.planes.push_back(p);
+
+    int factor = 10;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 4., -5),
+                    Tuple::point(0, 1, 0),
+                    Tuple::vector(0, 1, 0)
+            )
+    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, w);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+}
+
+void basic_blended_sphere_patterns_with_reflections_example(){
+    // colors
+    Tuple orange = Tuple::color(1, .27, 0, 1);
+    Tuple blue = Tuple::color(0, 0, 1, 1);
+
+    Tuple red = Tuple::color(1, 0, 0, 1);
+    Tuple yellow = Tuple::color(0, 1, 1, 1);
+
+    // patterns
+    StripedPattern stripes(orange, blue);
+    StripedPattern stripes_rot(red, yellow);
+    GradientPattern gradient(orange, blue);
+    RingPattern rings(orange, blue);
+    CheckerPattern checkers(orange, blue);
+
+    stripes.set_transform(Transformation::scaling(0.1));
+    stripes_rot.set_transform(Transformation::rotation_y(M_PI_2) * Transformation::scaling(0.1));
+    gradient.set_transform(Transformation::scaling(2, 1, 1) * Transformation::translation(0.5, 0, 0));
+    rings.set_transform(Transformation::scaling(0.085));
+    checkers.set_transform(Transformation::scaling(0.25));
+
+    // Shapes
+    Sphere striped_sphere;
+    Sphere gradient_sphere;
+    Sphere ring_sphere;
+    Sphere checkered_sphere;
+
+    float sphere_size = .9;
+    float delta = 2.2;
+    float two = -delta / 2;
+    float three = delta / 2;
+    float one = two - delta;
+    float four = three + delta;
+
+    float y_up = 0;
+    striped_sphere.set_transform(Transformation::translation(one, y_up, 1) * Transformation::scaling(sphere_size));
+    gradient_sphere.set_transform(Transformation::translation(two, y_up, 1) * Transformation::scaling(sphere_size));
+    ring_sphere.set_transform(Transformation::translation(three, y_up, 1) * Transformation::scaling(sphere_size));
+    checkered_sphere.set_transform(Transformation::translation(four, y_up, 1) * Transformation::scaling(sphere_size));
+
+    striped_sphere.material.set_pattern(stripes);
+    gradient_sphere.material.set_pattern(gradient);
+    ring_sphere.material.set_pattern(rings);
+    checkered_sphere.material.set_pattern(checkers);
+
+    striped_sphere.material.add_pattern(stripes_rot);
+    gradient_sphere.material.add_pattern(stripes_rot);
+    ring_sphere.material.add_pattern(stripes_rot);
+    checkered_sphere.material.add_pattern(stripes_rot);
+
+
+    float ref = 0.5;
+    striped_sphere.material.reflective = ref;
+    gradient_sphere.material.reflective = ref;
+    ring_sphere.material.reflective = ref;
+    checkered_sphere.material.reflective = ref;
+
+    Plane regular_plane;
+    regular_plane.set_transform(Transformation::translation(0, -1, 0));
+    CheckerPattern checkerPlanePattern(Tuple::color(1, 1, 1, 1), Tuple::color(0, 0, 0, 1));
+    regular_plane.material.set_pattern(checkerPlanePattern);
+
+    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+
+    World world;
+    world.spheres.insert(world.spheres.end(), {striped_sphere, gradient_sphere, ring_sphere, checkered_sphere} );
+    world.planes.push_back(regular_plane);
+//    world.planes.insert(world.planes.end(), {striped_plane, gradient_plane, ring_plane, checkered_plane} );
+    world.lights.push_back(light);
+
+    int factor = 10;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 4., -5),
+                    Tuple::point(0, 1, 0),
+                    Tuple::vector(0, 1, 0)
+            )
+    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, world);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+}
+
+void perfectly_reflective_spheres(){
+    Sphere s1;
+    Sphere s2;
+    Sphere s3;
+    Sphere s4;
+
+    float sphere_size = .9;
+    float delta = 2.2;
+    float two = -delta / 2;
+    float three = delta / 2;
+    float one = two - delta;
+    float four = three + delta;
+
+    float y_up = 0;
+    s1.set_transform(Transformation::translation(one, y_up, 1) * Transformation::scaling(sphere_size));
+    s2.set_transform(Transformation::translation(two, y_up, 1) * Transformation::scaling(sphere_size));
+    s3.set_transform(Transformation::translation(three, y_up, 1) * Transformation::scaling(sphere_size));
+    s4.set_transform(Transformation::translation(four, y_up, 1) * Transformation::scaling(sphere_size));
+
+    s1.material.color = Tuple::color(0, 0, 0, 1);
+    s2.material.color = Tuple::color(0, 0, 0, 1);
+    s3.material.color = Tuple::color(0, 0, 0, 1);
+    s4.material.color = Tuple::color(0, 0, 0, 1);
+
+    float ref = 1;
+    s1.material.reflective = ref;
+    s2.material.reflective = ref;
+    s3.material.reflective = ref;
+    s1.material.reflective = ref;
+
+    Plane regular_plane;
+    regular_plane.set_transform(Transformation::translation(0, -1, 0));
+    CheckerPattern checkerPlanePattern(Tuple::color(1, 1, 1, 1), Tuple::color(0, 0, 0, 1));
+    regular_plane.material.set_pattern(checkerPlanePattern);
+
+    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+
+    World world;
+    world.spheres.insert(world.spheres.end(), {s1, s2, s3, s4} );
+    world.planes.push_back(regular_plane);
+//    world.planes.insert(world.planes.end(), {striped_plane, gradient_plane, ring_plane, checkered_plane} );
+    world.lights.push_back(light);
+
+    int factor = 10;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 4., -5),
+                    Tuple::point(0, 1, 0),
+                    Tuple::vector(0, 1, 0)
+            )
+    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, world);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+}
+
 int main()
 {
 //    challenge_world_w_spheres();
@@ -1290,7 +1484,10 @@ int main()
 //    basic_ring_patterns_plane_example();
 //    basic_checker_pattern_plane_example();
 //    basic_blended_pattern_plane_example();
-    basic_blended_sphere_patterns_example();
+//    basic_blended_sphere_patterns_example();
+//    basic_blended_sphere_patterns_with_reflections_example();
+    perfectly_reflective_spheres();
+//    default_world_w_reflection();
 //
 //    basic_stripe_patterns_sphere_example();
 //    basic_gradient_patterns_sphere_example();

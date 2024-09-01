@@ -17,9 +17,10 @@ public:
     float diffuse;
     float specular;
     float shininess;
+    float reflective; // 0 to 1 from non-reflective to mirror
 
     Material();
-    Material(Tuple color, float ambient, float diffuse, float specular, float shininess);
+    Material(Tuple color, float ambient, float diffuse, float specular, float shininess, float reflective);
 
     void set_pattern(const Pattern& in_pattern);
 
