@@ -6,6 +6,7 @@
 #include "GraphicsLibrary/patterns/RingPattern.h"
 #include "GraphicsLibrary/patterns/GradientPattern.h"
 #include "GraphicsLibrary/patterns/CheckerPattern.h"
+#include "GraphicsLibrary/patterns/RadialGradientPattern.h"
 #include <cmath>
 #include <chrono>
 
@@ -930,6 +931,47 @@ void basic_checker_pattern_plane_example(){
     canvas.to_ppm_file(filename);
 }
 
+void basic_radialgrad_pattern_plane_example(){
+    // colors
+    Tuple orange = Tuple::color(1, .27, 0, 1);
+    Tuple blue = Tuple::color(0, 0, 1, 1);
+
+    // patterns
+    RadialGradientPattern radialgrad(orange, blue);
+    Plane radgrad_plane;
+    radgrad_plane.material.set_pattern(&radialgrad);
+
+    // light
+    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+
+    // world
+    World world;
+    world.planes.insert(world.planes.end(), {radgrad_plane} );
+    world.lights.push_back(light);
+
+    int factor = 8;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 10, -10),
+                    Tuple::point(0, 0, 0),
+                    Tuple::vector(0, 1, 0)
+            )
+    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, world);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+}
 void basic_stripe_patterns_sphere_example(){
     // colors
     Tuple orange = Tuple::color(1, .27, 0, 1);
@@ -1098,12 +1140,13 @@ int main()
 //    non_transformed_patterns();
 //    transformed_patterns();
 
-    basic_sphere_patterns_example();
+//    basic_sphere_patterns_example();
 //
 //    basic_stripe_patterns_plane_example();
 //    basic_gradient_patterns_plane_example();
 //    basic_ring_patterns_plane_example();
 //    basic_checker_pattern_plane_example();
+    basic_radialgrad_pattern_plane_example();
 //
 //    basic_stripe_patterns_sphere_example();
 //    basic_gradient_patterns_sphere_example();
