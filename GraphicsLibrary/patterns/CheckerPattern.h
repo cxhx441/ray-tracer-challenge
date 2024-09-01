@@ -20,9 +20,14 @@ public:
         return std::make_shared<CheckerPattern>(*this);
     }
 
-    std::vector<Tuple> get_colors(){
+    std::vector<Tuple> get_colors() const override{
         return {color_a, color_b};
     }
+
+    bool operator==(const Pattern& other) const override{
+        return get_colors() == other.get_colors();
+    }
+
 };
 
 

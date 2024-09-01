@@ -20,7 +20,7 @@ public:
         return std::make_shared<StripedPattern>(*this);
     }
 
-    std::vector<Tuple> get_colors(){
+    std::vector<Tuple> get_colors() const override{
         return {color_a, color_b};
     }
 };

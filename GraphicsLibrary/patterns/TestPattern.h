@@ -17,7 +17,7 @@ public:
         return std::make_shared<TestPattern>(*this);
     }
 
-    std::vector<Tuple> get_colors(){
+    std::vector<Tuple> get_colors() const override{
         return {};
     }
 };

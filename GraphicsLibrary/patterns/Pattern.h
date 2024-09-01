@@ -25,6 +25,7 @@ public:
     virtual Tuple pattern_color_at(const Tuple &pattern_point) const = 0;
     virtual std::shared_ptr<Pattern> clone() const = 0;  // Pure virtual clone method allowing to add different derived patterns to the material class
     virtual std::vector<Tuple> get_colors() const = 0;
+    virtual bool operator==(const Pattern& other) const = 0;
 };
 
 

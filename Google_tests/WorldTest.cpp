@@ -15,7 +15,7 @@ TEST(WorldTestSuite, CreateDefaultWorld){
 
     ASSERT_EQ(w.spheres.size(), 2);
 
-    EXPECT_EQ(w.spheres[0].material.color, Tuple::color(0.8, 1.0, 0.6, 1) );
+    EXPECT_EQ(w.spheres[0].material.get_pattern_at(0)->get_colors()[0], Tuple::color(0.8, 1.0, 0.6, 1) );
     EXPECT_FLOAT_EQ(w.spheres[0].material.diffuse, 0.7);
     EXPECT_FLOAT_EQ(w.spheres[0].material.specular, 0.2);
 

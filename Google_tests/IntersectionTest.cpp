@@ -117,7 +117,7 @@ TEST(WorldTestSuite, ColorWithIntersectionBehindSphere) {
     inner->material.ambient = 1;
     Ray r = Ray(Tuple::point(0, 0, 0.75), Tuple::vector(0, 0, -1));
     Tuple rendered_color = w.color_at(r);
-    EXPECT_EQ(rendered_color, inner->material.color);
+    EXPECT_EQ(rendered_color, inner->material.get_pattern_at(0)->get_colors()[0]);
 }
 
 TEST(ShadowTestSuite, NoShadowWhenNothingIsCollinearWithPointAndLight) {
