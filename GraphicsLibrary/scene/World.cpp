@@ -50,13 +50,13 @@ std::vector<Intersection> World::intersect_world(Ray &r) {
 Tuple World::shade_hit(PreparedComputation &precompute) {
     Tuple rendered_color(0, 0, 0, 0);
     for (auto light : lights){
-        Tuple phong_color = Lighting::phong_lighting(precompute.object->material,
-                                                     *precompute.object,
-                                                     light,
-                                                     precompute.point,
-                                                     precompute.eyev,
-                                                     precompute.normalv,
-                                                     is_shadowed(light, precompute.over_point)
+        Tuple phong_color = LightingModels::phong_lighting(precompute.object->material,
+                                                           *precompute.object,
+                                                           light,
+                                                           precompute.point,
+                                                           precompute.eyev,
+                                                           precompute.normalv,
+                                                           is_shadowed(light, precompute.over_point)
                                                      );
         rendered_color += phong_color;
     }

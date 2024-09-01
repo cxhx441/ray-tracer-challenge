@@ -5,8 +5,8 @@
 #ifndef RAYTRACERCHAELLENGE_MATERIAL_H
 #define RAYTRACERCHAELLENGE_MATERIAL_H
 
-#include "Tuple.h"
-#include "Pattern.h"
+#include "../primitives/Tuple.h"
+#include "../patterns/Pattern.h"
 
 class Material {
 public:

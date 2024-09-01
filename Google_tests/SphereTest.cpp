@@ -3,9 +3,9 @@
 //
 
 #include "gtest/gtest.h"
-#include "Intersection.h"
-#include "Ray.h"
-#include "Sphere.h"
+#include "primitives/Intersection.h"
+#include "primitives/Ray.h"
+#include "shapes/Sphere.h"
 #include <cmath>
 
 TEST(SphereTestSuite, RayIntersectsSphereAtTangent){

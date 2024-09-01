@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "Matrix.h"
+#include "primitives/Matrix.h"
 
 TEST(MatrixTestSuite, ConstructAndInspectMat4) {
     Matrix m(4, 4);

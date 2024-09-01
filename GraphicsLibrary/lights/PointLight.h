@@ -5,7 +5,7 @@
 #ifndef RAYTRACERCHAELLENGE_POINTLIGHT_H
 #define RAYTRACERCHAELLENGE_POINTLIGHT_H
 
-#include "Tuple.h"
+#include "../primitives/Tuple.h"
 
 class PointLight {
 public:

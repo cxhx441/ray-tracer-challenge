@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "Tuple.h"
+#include "primitives/Tuple.h"
 
 // EXAMPLE
 class Vec3Fixture : public ::testing::Test {

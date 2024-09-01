@@ -3,8 +3,9 @@
 //
 
 #include "gtest/gtest.h"
-#include "Tuple.h"
-#include "Canvas.h"
+#include "primitives/Tuple.h"
+#include "display/Canvas.h"
+
 
 TEST(CanvasTestSuite, CreateACanvasAllBlack) {
     Canvas c(10, 20);

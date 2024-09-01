@@ -4,10 +4,10 @@
 
 #include "gtest/gtest.h"
 #include "Material.h"
-#include "StripedPattern.h"
-#include "PointLight.h"
-#include "Lighting.h"
-#include "Sphere.h"
+#include "patterns/StripedPattern.h"
+#include "lights/PointLight.h"
+#include "LightingModels.h"
+#include "shapes/Sphere.h"
 
 TEST(MaterialTestSuite, DefaultMaterial){
     Material m = Material();
@@ -29,8 +29,8 @@ TEST(MaterialTestSuite, LightingWithPatternApplied){
     Tuple eyev = Tuple::vector(0, 0, -1);
     Tuple normalv = Tuple::vector(0, 0, -1);
     PointLight light(Tuple::point(0, 0, -10), Tuple::color(1, 1, 1, 1));
-    Tuple c1 = Lighting::phong_lighting(s.material, s, light, Tuple::point(0.9, 0, 0), eyev, normalv, false);
-    Tuple c2 = Lighting::phong_lighting(s.material, s, light, Tuple::point(1.1, 0, 0), eyev, normalv, false);
+    Tuple c1 = LightingModels::phong_lighting(s.material, s, light, Tuple::point(0.9, 0, 0), eyev, normalv, false);
+    Tuple c2 = LightingModels::phong_lighting(s.material, s, light, Tuple::point(1.1, 0, 0), eyev, normalv, false);
     EXPECT_EQ(c1, Tuple::color(1, 1, 1, 1));
     EXPECT_EQ(c2, Tuple::color(0, 0, 0, 1));
 }

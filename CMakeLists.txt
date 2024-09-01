@@ -9,14 +9,19 @@ IF(APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
 ENDIF()
 
-set(SOURCE_FILES main.cpp)
 
-add_executable(main_run ${SOURCE_FILES})
-
-include_directories(GraphicsLibrary)
 add_subdirectory(GraphicsLibrary)
 
-target_link_libraries(main_run GraphicsLibrary_lib)
+set(SOURCE_FILES main.cpp)
+add_executable(main_run ${SOURCE_FILES})
+
+target_link_libraries(main_run PRIVATE GraphicsLibrary_lib)
+
+#target_include_directories(main_run PUBLIC
+#        ${CMAKE_CURRENT_SOURCE_DIR}
+#        ${CMAKE_SOURCE_DIR}/GraphicsLibrary
+#)
+#
 
 add_subdirectory(Google_tests)
 

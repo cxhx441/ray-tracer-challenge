@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "Plane.h"
+#include "shapes/Plane.h"
 
 TEST(PlaneTestSuite, NormalOfAPlaneIsConstantEverywhere){
     Plane p;

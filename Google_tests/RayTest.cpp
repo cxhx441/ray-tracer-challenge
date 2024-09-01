@@ -3,8 +3,8 @@
 //
 
 #include "gtest/gtest.h"
-#include "Ray.h"
-#include "Transformation.h"
+#include "primitives/Ray.h"
+#include "primitives/Transformation.h"
 #include <cmath>
 
 TEST(RayTestSuite, CreateRay){

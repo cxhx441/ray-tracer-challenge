@@ -2,11 +2,11 @@
 // Created by craig on 8/17/2024.
 //
 
-#include "Lighting.h"
+#include "LightingModels.h"
 #include <cmath>
 
-Tuple Lighting::phong_lighting(const Material &material, const Shape &shape, const PointLight &light, const Tuple &point, const Tuple &eyev,
-                               const Tuple &normalv, bool is_shadowed) {
+Tuple LightingModels::phong_lighting(const Material &material, const Shape &shape, const PointLight &light, const Tuple &point, const Tuple &eyev,
+                                     const Tuple &normalv, bool is_shadowed) {
 
     // TODO i think this could be simplified by calling a "color_at" function on the shape.
     Tuple base_color = material.color;
