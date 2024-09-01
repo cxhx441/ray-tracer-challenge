@@ -26,6 +26,27 @@ Material::Material(){
 }
 
 
+void Material::set_pattern(const Pattern& in_pattern) {
+    patterns.clear();
+    patterns.push_back(in_pattern.clone());
+};
+
+void Material::add_pattern(const Pattern& in_pattern) {
+    patterns.push_back(in_pattern.clone());
+};
+
+bool Material::has_pattern() const {
+    return not patterns.empty();
+}
+
+Tuple Material::get_pattern_color(const Tuple &model_point) const {
+    Tuple resulting_color(0, 0, 0, 0);
+    for (const auto &pattern: patterns) {
+        resulting_color += pattern->color_at(model_point);
+    }
+    return resulting_color / (float) patterns.size();
+}
+
 bool Material::operator==(const Material &other) const {
     if (color != other.color ||
         ambient != other.ambient ||

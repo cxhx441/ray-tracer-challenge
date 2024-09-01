@@ -14,7 +14,8 @@ private:
     Matrix inverse_transform = Matrix::inverse(transform);
     Matrix normal_transform = Matrix::normal_matrix(transform);
 public:
-
+    virtual ~Pattern() = default;
+    
     void set_transform(const Matrix& m);
     Matrix get_transform() const;
     Matrix get_inverse_transform() const;
@@ -22,14 +23,7 @@ public:
 
     virtual Tuple color_at(const Tuple &model_point) final;
     virtual Tuple pattern_color_at(const Tuple &pattern_point) const = 0;
-};
-
-
-class TestPattern : public Pattern{
-public:
-    TestPattern() = default;
-
-    Tuple pattern_color_at(const Tuple &pattern_point) const override;
+    virtual std::shared_ptr<Pattern> clone() const = 0;  // Pure virtual clone method allowing to add different derived patterns to the material class
 };
 
 

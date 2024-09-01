@@ -16,12 +16,12 @@ TEST(MaterialTestSuite, DefaultMaterial){
     EXPECT_FLOAT_EQ(m.diffuse, 0.9);
     EXPECT_FLOAT_EQ(m.specular, 0.9);
     EXPECT_FLOAT_EQ(m.shininess, 200);
-    EXPECT_EQ(m.pattern, nullptr);
+    EXPECT_FALSE(m.has_pattern());
 }
 
 TEST(MaterialTestSuite, LightingWithPatternApplied){
     Sphere s;
-    Pattern *p = new StripedPattern(Tuple::color(1, 1, 1, 1), Tuple::color(0, 0, 0, 1));
+    StripedPattern p = StripedPattern(Tuple::color(1, 1, 1, 1), Tuple::color(0, 0, 0, 1));
     s.material.set_pattern(p);
     s.material.ambient = 1;
     s.material.diffuse = 0;

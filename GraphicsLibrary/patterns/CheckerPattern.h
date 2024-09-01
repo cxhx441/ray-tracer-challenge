@@ -15,6 +15,10 @@ public:
     CheckerPattern(Tuple color_a, Tuple color_b);
 
     Tuple pattern_color_at(const Tuple &pattern_point) const override;
+
+    std::shared_ptr<Pattern> clone() const override {
+        return std::make_shared<CheckerPattern>(*this);
+    }
 };
 
 

@@ -31,7 +31,7 @@ Tuple Shape::normal_at(const Tuple& world_point) const {
 
 Tuple Shape::pattern_at(const Tuple &world_point) const {
     Tuple model_point = get_inverse_transform() * world_point;
-    return material.pattern->color_at(model_point);
+    return material.get_pattern_color(model_point);
 }
 
 

@@ -7,6 +7,7 @@ add_library(patterns STATIC
         RingPattern.cpp
         StripedPattern.cpp
         RadialGradientPattern.cpp
+        TestPattern.cpp
 )
 target_include_directories(patterns PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}

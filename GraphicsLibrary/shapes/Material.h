@@ -9,18 +9,25 @@
 #include "../patterns/Pattern.h"
 
 class Material {
+private:
+    std::vector<std::shared_ptr<Pattern>> patterns;
 public:
     Tuple color;
     float ambient;
     float diffuse;
     float specular;
     float shininess;
-    Pattern* pattern = nullptr;
 
     Material();
     Material(Tuple color, float ambient, float diffuse, float specular, float shininess);
 
-    void set_pattern(Pattern* in_pattern) { pattern = in_pattern; }; // TODO set through shape? why pointer?
+    void set_pattern(const Pattern& in_pattern);
+
+    void add_pattern(const Pattern& in_pattern);
+
+    bool has_pattern() const;
+
+    Tuple get_pattern_color(const Tuple &model_point) const;
 
     bool operator==(const Material& other) const;
     bool operator!=(const Material& other) const;

@@ -10,7 +10,7 @@ Tuple LightingModels::phong_lighting(const Material &material, const Shape &shap
 
     // TODO i think this could be simplified by calling a "color_at" function on the shape.
     Tuple base_color = material.color;
-    if ( material.pattern != nullptr )
+    if ( material.has_pattern() )
         base_color = shape.pattern_at(point);
 
     Tuple effective_color = base_color * light.color;

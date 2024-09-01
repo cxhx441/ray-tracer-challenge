@@ -516,14 +516,14 @@ void non_transformed_patterns(){
 
     //set patterns
     StripedPattern p1(Tuple::color(1, 0, 1, 1), Tuple::color(0, 1, 0, 1));
-    redDisk.material.set_pattern(&p1);
-    blueDisk.material.set_pattern(&p1);
+    redDisk.material.set_pattern(p1);
+    blueDisk.material.set_pattern(p1);
 
     StripedPattern p2(Tuple::color(1, 1, 1, 1), Tuple::color(0, 1, 1, 1));
-    floor.material.set_pattern(&p2);
+    floor.material.set_pattern(p2);
 
     StripedPattern p3(Tuple::color(0, 1, 1, 1), Tuple::color(1, 1, 1, 1));
-    back_wall.material.set_pattern(&p3);
+    back_wall.material.set_pattern(p3);
 
     Sphere origin;
     origin.set_transform(Transformation::scaling(0.05));
@@ -619,15 +619,15 @@ void transformed_patterns(){
     //set patterns
     StripedPattern p1(Tuple::color(1, 0, 1, 1), Tuple::color(0, 1, 0, 1));
     p1.set_transform(Transformation::scaling(0.01));
-    redDisk.material.set_pattern(&p1);
-    blueDisk.material.set_pattern(&p1);
+    redDisk.material.set_pattern(p1);
+    blueDisk.material.set_pattern(p1);
 
     StripedPattern p2(Tuple::color(1, 1, 1, 1), Tuple::color(0, 1, 1, 1));
-    floor.material.set_pattern(&p2);
+    floor.material.set_pattern(p2);
 
     StripedPattern p3(Tuple::color(0, 1, 1, 1), Tuple::color(1, 1, 1, 1));
     p3.set_transform(Transformation::scaling(0.1));
-    back_wall.material.set_pattern(&p3);
+    back_wall.material.set_pattern(p3);
 
     Sphere origin;
     origin.set_transform(Transformation::scaling(0.05));
@@ -724,16 +724,16 @@ void basic_sphere_patterns_example(){
     ring_sphere.set_transform(Transformation::translation(three, y_up, 1) * Transformation::scaling(sphere_size));
     checkered_sphere.set_transform(Transformation::translation(four, y_up, 1) * Transformation::scaling(sphere_size));
 
-    striped_sphere.material.set_pattern(&stripes);
-    gradient_sphere.material.set_pattern(&gradient);
-    ring_sphere.material.set_pattern(&rings);
-    checkered_sphere.material.set_pattern(&checkers);
+    striped_sphere.material.set_pattern(stripes);
+    gradient_sphere.material.set_pattern(gradient);
+    ring_sphere.material.set_pattern(rings);
+    checkered_sphere.material.set_pattern(checkers);
 
     regular_plane.set_transform(Transformation::translation(0, -1, 0));
-    striped_plane;
-    gradient_plane;
-    ring_plane;
-    checkered_plane;
+//    striped_plane;
+//    gradient_plane;
+//    ring_plane;
+//    checkered_plane;
 
     PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
 
@@ -775,7 +775,7 @@ void basic_stripe_patterns_plane_example(){
     // patterns
     StripedPattern stripes(orange, blue);
     Plane striped_plane;
-    striped_plane.material.set_pattern(&stripes);
+    striped_plane.material.set_pattern(stripes);
 
     PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
 
@@ -815,7 +815,7 @@ void basic_gradient_patterns_plane_example(){
     // patterns
     GradientPattern gradient(orange, blue);
     Plane gradient_plane;
-    gradient_plane.material.set_pattern(&gradient);
+    gradient_plane.material.set_pattern(gradient);
 
     PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
 
@@ -856,7 +856,7 @@ void basic_ring_patterns_plane_example(){
     // patterns
     RingPattern rings(orange, blue);
     Plane ring_plane;
-    ring_plane.material.set_pattern(&rings);
+    ring_plane.material.set_pattern(rings);
 
     PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
 
@@ -897,7 +897,7 @@ void basic_checker_pattern_plane_example(){
     // patterns
     CheckerPattern checkers(orange, blue);
     Plane checkered_plane;
-    checkered_plane.material.set_pattern(&checkers);
+    checkered_plane.material.set_pattern(checkers);
 
     // light
     PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
@@ -939,7 +939,7 @@ void basic_radialgrad_pattern_plane_example(){
     // patterns
     RadialGradientPattern radialgrad(orange, blue);
     Plane radgrad_plane;
-    radgrad_plane.material.set_pattern(&radialgrad);
+    radgrad_plane.material.set_pattern(radialgrad);
 
     // light
     PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
@@ -980,7 +980,7 @@ void basic_stripe_patterns_sphere_example(){
     // patterns
     StripedPattern stripes(orange, blue);
     Sphere striped_sphere;
-    striped_sphere.material.set_pattern(&stripes);
+    striped_sphere.material.set_pattern(stripes);
 
     PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
 
@@ -1020,7 +1020,7 @@ void basic_gradient_patterns_sphere_example(){
     // patterns
     GradientPattern gradient(orange, blue);
     Sphere gradient_sphere;
-    gradient_sphere.material.set_pattern(&gradient);
+    gradient_sphere.material.set_pattern(gradient);
 
     PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
 
@@ -1061,7 +1061,7 @@ void basic_ring_patterns_sphere_example(){
     RingPattern ring(orange, blue);
     ring.set_transform(Transformation::scaling(0.1));
     Sphere ring_sphere;
-    ring_sphere.material.set_pattern(&ring);
+    ring_sphere.material.set_pattern(ring);
 
     PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
 
@@ -1101,7 +1101,7 @@ void basic_checker_pattern_sphere_example(){
     // patterns
     CheckerPattern checker(orange, blue);
     Sphere checker_sphere;
-    checker_sphere.material.set_pattern(&checker);
+    checker_sphere.material.set_pattern(checker);
 
     PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
 
@@ -1132,6 +1132,149 @@ void basic_checker_pattern_sphere_example(){
     filename.append("_" + std::to_string(duration.count()) + "s");
     canvas.to_ppm_file(filename);
 }
+
+void basic_blended_pattern_plane_example(){
+    // colors
+    Tuple orange = Tuple::color(1, .27, 0, 1);
+    Tuple blue = Tuple::color(0, 0, 1, 1);
+
+    // patterns
+    RadialGradientPattern radialgrad(orange, blue);
+    StripedPattern stripes(orange, blue);
+    Plane plane;
+    plane.material.add_pattern(radialgrad);
+    plane.material.add_pattern(stripes);
+
+    // light
+    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+
+    // world
+    World world;
+    world.planes.insert(world.planes.end(), {plane} );
+    world.lights.push_back(light);
+
+    int factor = 8;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 10, -10),
+                    Tuple::point(0, 0, 0),
+                    Tuple::vector(0, 1, 0)
+            )
+    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, world);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+}
+
+void basic_blended_sphere_patterns_example(){
+    // colors
+    Tuple orange = Tuple::color(1, .27, 0, 1);
+    Tuple blue = Tuple::color(0, 0, 1, 1);
+
+    Tuple red = Tuple::color(1, 0, 0, 1);
+    Tuple yellow = Tuple::color(0, 1, 1, 1);
+
+    // patterns
+    StripedPattern stripes(orange, blue);
+    StripedPattern stripes_rot(red, yellow);
+    GradientPattern gradient(orange, blue);
+    RingPattern rings(orange, blue);
+    CheckerPattern checkers(orange, blue);
+
+    stripes.set_transform(Transformation::scaling(0.1));
+    stripes_rot.set_transform(Transformation::rotation_y(M_PI_2) * Transformation::scaling(0.1));
+    gradient.set_transform(Transformation::scaling(2, 1, 1) * Transformation::translation(0.5, 0, 0));
+    rings.set_transform(Transformation::scaling(0.085));
+    checkers.set_transform(Transformation::scaling(0.25));
+
+    // Shapes
+    Sphere striped_sphere;
+    Sphere gradient_sphere;
+    Sphere ring_sphere;
+    Sphere checkered_sphere;
+
+    Plane regular_plane;
+    Plane striped_plane;
+    Plane gradient_plane;
+    Plane ring_plane;
+    Plane checkered_plane;
+
+//    striped_sphere.set_transform(Transformation::translation(-2.25, 0, 1) * Transformation::scaling(.6));
+//    gradient_sphere.set_transform(Transformation::translation(-0.75, 0, 1) * Transformation::scaling(.6));
+//    ring_sphere.set_transform(Transformation::translation(.75, 0, 1) * Transformation::scaling(.6));
+//    checkered_sphere.set_transform(Transformation::translation(2.25, 0, 1) * Transformation::scaling(.6));
+    float sphere_size = .9;
+    float delta = 2.2;
+    float two = -delta / 2;
+    float three = delta / 2;
+    float one = two - delta;
+    float four = three + delta;
+
+    float y_up = 0;
+    striped_sphere.set_transform(Transformation::translation(one, y_up, 1) * Transformation::scaling(sphere_size));
+    gradient_sphere.set_transform(Transformation::translation(two, y_up, 1) * Transformation::scaling(sphere_size));
+    ring_sphere.set_transform(Transformation::translation(three, y_up, 1) * Transformation::scaling(sphere_size));
+    checkered_sphere.set_transform(Transformation::translation(four, y_up, 1) * Transformation::scaling(sphere_size));
+
+    striped_sphere.material.set_pattern(stripes);
+    gradient_sphere.material.set_pattern(gradient);
+    ring_sphere.material.set_pattern(rings);
+    checkered_sphere.material.set_pattern(checkers);
+
+    striped_sphere.material.add_pattern(stripes_rot);
+    gradient_sphere.material.add_pattern(stripes_rot);
+    ring_sphere.material.add_pattern(stripes_rot);
+    checkered_sphere.material.add_pattern(stripes_rot);
+
+    regular_plane.set_transform(Transformation::translation(0, -1, 0));
+//    striped_plane;
+//    gradient_plane;
+//    ring_plane;
+//    checkered_plane;
+
+    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+
+    World world;
+    world.spheres.insert(world.spheres.end(), {striped_sphere, gradient_sphere, ring_sphere, checkered_sphere} );
+    world.planes.push_back(regular_plane);
+//    world.planes.insert(world.planes.end(), {striped_plane, gradient_plane, ring_plane, checkered_plane} );
+    world.lights.push_back(light);
+
+    int factor = 10;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 4., -5),
+                    Tuple::point(0, 1, 0),
+                    Tuple::vector(0, 1, 0)
+            )
+    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, world);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+}
+
 int main()
 {
 //    challenge_world_w_spheres();
@@ -1146,7 +1289,8 @@ int main()
 //    basic_gradient_patterns_plane_example();
 //    basic_ring_patterns_plane_example();
 //    basic_checker_pattern_plane_example();
-    basic_radialgrad_pattern_plane_example();
+//    basic_blended_pattern_plane_example();
+    basic_blended_sphere_patterns_example();
 //
 //    basic_stripe_patterns_sphere_example();
 //    basic_gradient_patterns_sphere_example();

@@ -7,6 +7,7 @@
 #include "patterns/GradientPattern.h"
 #include "patterns/CheckerPattern.h"
 #include "patterns/RingPattern.h"
+#include "patterns/TestPattern.h"
 #include "shapes/Sphere.h"
 
 class PatternFixture : public ::testing::Test {
@@ -64,7 +65,7 @@ TEST_F(PatternFixture, StripesWithObjectTransformation){
 
     Sphere s;
     s.set_transform(Transformation::scaling(2));
-    s.material.set_pattern(&pattern);
+    s.material.set_pattern(pattern);
 
     Tuple world_point(1.5, 0, 0, 1);
 
@@ -76,7 +77,7 @@ TEST_F(PatternFixture, StripesWithPatternTransformation){
     pattern.set_transform(Transformation::scaling(2));
 
     Sphere s;
-    s.material.set_pattern(&pattern);
+    s.material.set_pattern(pattern);
 
     Tuple world_point(1.5, 0, 0, 1);
 
@@ -89,7 +90,7 @@ TEST_F(PatternFixture, StripesWithObjectAndPatternTransformation){
 
     Sphere s;
     s.set_transform(Transformation::scaling(2));
-    s.material.set_pattern(&pattern);
+    s.material.set_pattern(pattern);
 
     Tuple world_point(1.5, 0, 0, 1);
 
@@ -149,7 +150,7 @@ TEST(TestPatternFixture, TestPatternWIthAnObjectTranformation){
     Sphere s;
     s.set_transform(Transformation::scaling(2));
     TestPattern p;
-    s.material.set_pattern(&p);
+    s.material.set_pattern(p);
     Tuple c = s.pattern_at(Tuple::point(2, 3, 4));
     EXPECT_EQ(c, Tuple::color(1, 1.5, 2, 1));
 }
@@ -158,7 +159,7 @@ TEST(TestPatternFixture, TestPatternWithPatternTranformation){
     Sphere s;
     TestPattern p;
     p.set_transform(Transformation::scaling(2));
-    s.material.set_pattern(&p);
+    s.material.set_pattern(p);
     Tuple c = s.pattern_at(Tuple::point(2, 3, 4));
     EXPECT_EQ(c, Tuple::color(1, 1.5, 2, 1));
 }
@@ -169,7 +170,7 @@ TEST(TestPatternFixture, TestPatternWithBothObjectAndPatternTranformation){
     TestPattern p;
     p.set_transform(Transformation::translation(0.5, 1, 1.5));
 
-    s.material.set_pattern(&p);
+    s.material.set_pattern(p);
     Tuple c = s.pattern_at(Tuple::point(2.5, 3, 3.5));
     EXPECT_EQ(c, Tuple::color(0.75, .5, .25, 1));
 }
