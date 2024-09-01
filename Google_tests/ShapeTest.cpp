@@ -4,7 +4,7 @@
 
 #include "gtest/gtest.h"
 #include "primitives/Intersection.h"
-#include "shapes/Shape.h"
+#include "shapes/TestShape.h"
 #include <cmath>
 
 TEST(ShapeTestSuite, AShapesDefaultTransformationIsIdentity){

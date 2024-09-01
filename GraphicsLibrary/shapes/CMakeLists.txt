@@ -5,6 +5,7 @@ add_library(shapes STATIC
         Plane.cpp
         Shape.cpp
         Sphere.cpp
+        TestShape.cpp
 )
 target_include_directories(shapes PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}

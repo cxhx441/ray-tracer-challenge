@@ -33,13 +33,3 @@ Tuple Shape::pattern_at(const Tuple &world_point) const {
     Tuple model_point = get_inverse_transform() * world_point;
     return material.get_pattern_color(model_point);
 }
-
-
-Tuple TestShape::model_normal_at(const Tuple& model_point) const {
-    return Tuple::vector(model_point.x, model_point.y, model_point.z);
-}
-
-std::vector<Intersection> TestShape::model_intersect(const Ray &model_ray) const {
-    this->saved_ray = model_ray;
-    return {};
-}
