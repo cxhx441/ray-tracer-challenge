@@ -1391,7 +1391,7 @@ void basic_blended_sphere_patterns_with_reflections_example(){
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    Canvas canvas = Canvas::render(camera, world);
+    Canvas canvas = Canvas::render(camera, world, true, 1);
 
     auto stop = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = stop - start;
@@ -1471,6 +1471,126 @@ void perfectly_reflective_spheres(){
     canvas.to_ppm_file(filename);
 }
 
+void challenge_plane_w_reflections(){
+    Plane floor;
+    Plane ceiling;
+    Plane back_wall;
+    Plane front_wall;
+    Plane left_wall;
+    Plane right_wall;
+
+    ceiling.set_transform(Transformation::translation(0, 11, 0) * Transformation::rotation_x(M_PI));
+    back_wall.set_transform(Transformation::translation(0, 0, 3) * Transformation::rotation_x(M_PI_2));
+    front_wall.set_transform(Transformation::translation(0, 0, -11) * Transformation::rotation_x(-M_PI_2));
+    left_wall.set_transform(Transformation::translation(-11, 0, 0) * Transformation::rotation_z(M_PI_2));
+    right_wall.set_transform(Transformation::translation(11, 0, 0) * Transformation::rotation_z(M_PI_2));
+
+    floor.material.color = Tuple::color(1, 0, 0, 1);
+    ceiling.material.color = Tuple::color(1, 0, 0, 1);
+    back_wall.material.color = Tuple::color(0, 1, 0, 1);
+    front_wall.material.color = Tuple::color(0, 1, 0, 1);
+    left_wall.material.color = Tuple::color(0, 0, 1, 1);
+    right_wall.material.color = Tuple::color(0, 0, 1, 1);
+
+    floor.material.reflective = .4;
+    ceiling.material.reflective = .4;
+    back_wall.material.reflective = .4;
+    front_wall.material.reflective = .4;
+    left_wall.material.reflective = .4;
+    right_wall.material.reflective = .4;
+
+    Sphere redDome;
+    redDome.set_transform(Transformation::translation(-1.5, .8, 1) * Transformation::scaling(0.35));
+    redDome.material.color = Tuple::color(1, 0.2, 0.1, 1);
+    redDome.material.diffuse = 0.7;
+    redDome.material.specular = 0.8;
+    redDome.material.reflective = 1;
+
+    Sphere blueDisk;
+    blueDisk.set_transform(
+            Transformation::translation(-1.5, .8, 1) *
+            Transformation::rotation_x(-M_PI_4) *
+            Transformation::rotation_z(-M_PI / 5) *
+            Transformation::scaling(0.8, 0.1, 0.8)
+    );
+    blueDisk.material.color = Tuple::color(0.3, 0.2, 1, 1);
+    blueDisk.material.diffuse = 0.7;
+    blueDisk.material.specular = 0.8;
+    blueDisk.material.shininess = 200;
+    blueDisk.material.reflective = .2;
+
+    Sphere blueDome;
+    blueDome.set_transform(Transformation::translation(1.5, 1.5, 1.3) * Transformation::scaling(0.35));
+    blueDome.material.color = Tuple::color(0.3, 0.2, 1, 1);
+    blueDome.material.diffuse = 0.7;
+    blueDome.material.specular = 0.8;
+    blueDome.material.reflective = .2;
+
+    Sphere redDisk;
+    redDisk.set_transform(
+            Transformation::translation(1.5, 1.5, 1.3) *
+            Transformation::rotation_y(-M_PI / 3) *
+            Transformation::rotation_z(M_PI / 2.5) *
+            Transformation::scaling(0.8, 0.1, 0.8)
+    );
+    redDisk.material.color = Tuple::color(1, 0.2, 0.1, 1);
+    redDisk.material.diffuse = 0.7;
+    redDisk.material.specular = 0.8;
+    redDisk.material.shininess = 200;
+    redDisk.material.reflective = .2;
+
+    Sphere origin;
+    origin.set_transform(Transformation::scaling(0.05));
+
+    // Set Lighting
+    PointLight l1(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l2(Tuple::point(-5, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l3(Tuple::point(-0, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l4(Tuple::point(5, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l5(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+    PointLight l6(Tuple::point(0, 10, -1), Tuple::color(1, 1, 1, 1));
+
+    // Set World
+    World world;
+
+    world.spheres.insert(world.spheres.end(), {origin, redDome, blueDisk, blueDome, redDisk} );
+
+    world.planes.insert(world.planes.end(), {floor, ceiling, back_wall, front_wall, left_wall, right_wall});//, front_wall, left_wall, right_wall});
+//    world.planes.insert(world.planes.end(), {floor, back_wall});
+
+    world.lights.push_back(l1);
+//    world.lights.push_back(l2);
+//    world.lights.push_back(l3);
+//    world.lights.push_back(l4);
+//    world.lights.push_back(l5);
+//    world.lights.push_back(l6);
+
+    // Set Camera
+    int factor = 30;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 1.5, -5),
+                    Tuple::point(0, 1, 0),
+                    Tuple::vector(0, 1, 0)
+            )
+    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, world, true, 5);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+
+
+}
 int main()
 {
 //    challenge_world_w_spheres();
@@ -1487,7 +1607,7 @@ int main()
 //    basic_checker_pattern_plane_example();
 //    basic_blended_pattern_plane_example();
 //    basic_blended_sphere_patterns_example();
-    basic_blended_sphere_patterns_with_reflections_example();
+//    basic_blended_sphere_patterns_with_reflections_example();
 //    perfectly_reflective_spheres();
 //    default_world_w_reflection();
 //
@@ -1495,5 +1615,7 @@ int main()
 //    basic_gradient_patterns_sphere_example();
 //    basic_ring_patterns_sphere_example();
 //    basic_checker_pattern_sphere_example();
+
+    challenge_plane_w_reflections();
     return 0;
 }
