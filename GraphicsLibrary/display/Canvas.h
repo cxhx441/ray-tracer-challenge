@@ -22,7 +22,7 @@ public:
 
     void fill_pixels(const Tuple& color);
     void write_pixel(int x, int y, const Tuple& color);
-    static Canvas render(Camera &c, World &w, bool shadows=true, int num_reflections=3);
+    static Canvas render(Camera &c, World &w, bool shadows_enabled=true, int num_reflections=3);
     static int map_color_value(float colorVal, int maxValue);
 
     std::string to_ppm_str();
