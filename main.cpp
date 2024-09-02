@@ -1485,19 +1485,23 @@ void challenge_plane_w_reflections(){
     left_wall.set_transform(Transformation::translation(-11, 0, 0) * Transformation::rotation_z(M_PI_2));
     right_wall.set_transform(Transformation::translation(11, 0, 0) * Transformation::rotation_z(M_PI_2));
 
-    floor.material.color = Tuple::color(1, 0, 0, 1);
-    ceiling.material.color = Tuple::color(1, 0, 0, 1);
-    back_wall.material.color = Tuple::color(0, 1, 0, 1);
-    front_wall.material.color = Tuple::color(0, 1, 0, 1);
-    left_wall.material.color = Tuple::color(0, 0, 1, 1);
-    right_wall.material.color = Tuple::color(0, 0, 1, 1);
+    Tuple red = Tuple::color(1, 0, 0, 1);
+    Tuple green = Tuple::color(0, 1, 0, 1);
+    Tuple blue = Tuple::color(0, 0, 1, 1);
+    Tuple white = Tuple::color(1, 1, 1, 1);
+    floor.material.add_pattern(CheckerPattern(red, white));
+    ceiling.material.add_pattern(CheckerPattern(red, white));
+    back_wall.material.add_pattern(CheckerPattern(green, white));
+    front_wall.material.add_pattern(CheckerPattern(green, white));
+    left_wall.material.add_pattern(CheckerPattern(blue, white));
+    right_wall.material.add_pattern(CheckerPattern(blue, white));
 
-    floor.material.reflective = .4;
-    ceiling.material.reflective = .4;
-    back_wall.material.reflective = .4;
-    front_wall.material.reflective = .4;
-    left_wall.material.reflective = .4;
-    right_wall.material.reflective = .4;
+    floor.material.reflective = .1;
+    ceiling.material.reflective = .1;
+    back_wall.material.reflective = .1;
+    front_wall.material.reflective = .1;
+    left_wall.material.reflective = .1;
+    right_wall.material.reflective = .1;
 
     Sphere redDome;
     redDome.set_transform(Transformation::translation(-1.5, .8, 1) * Transformation::scaling(0.35));
@@ -1540,7 +1544,8 @@ void challenge_plane_w_reflections(){
     redDisk.material.reflective = .2;
 
     Sphere origin;
-    origin.set_transform(Transformation::scaling(0.05));
+    origin.set_transform(Transformation::scaling(0.5));
+    origin.material.reflective = 1;
 
     // Set Lighting
     PointLight l1(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
@@ -1566,7 +1571,7 @@ void challenge_plane_w_reflections(){
 //    world.lights.push_back(l6);
 
     // Set Camera
-    int factor = 30;
+    int factor = 60;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.set_transform(
             Transformation::view_transform(
@@ -1578,7 +1583,7 @@ void challenge_plane_w_reflections(){
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    Canvas canvas = Canvas::render(camera, world, true, 5);
+    Canvas canvas = Canvas::render(camera, world, true, 3);
 
     auto stop = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = stop - start;

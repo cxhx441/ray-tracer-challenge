@@ -129,7 +129,7 @@ TEST(WorldTestSuite, ReflectedColorForReflectiveMaterial) {
     Ray r = Ray(Tuple::point(0, 0, -3), Tuple::vector(0, -sqrtf(2)/2, sqrtf(2)/2));
     Intersection x = Intersection(sqrtf(2), &p);
     PreparedComputation comps(x, r);
-    Tuple reflected_color = w.reflected_color(comps, 3);
+    Tuple reflected_color = w.reflected_color(comps, true, 3);
 //    EXPECT_EQ( reflected_color, Tuple::color(0.19032, 0.2379, 0.14274, 1) );
     EXPECT_EQ( reflected_color, Tuple::color(0.190503, 0.238129, 0.142877, 1) );
 }

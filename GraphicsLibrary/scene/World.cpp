@@ -66,7 +66,7 @@ Tuple World::shade_hit(PreparedComputation &precompute, bool shadows_enabled, in
     // average lights
     surface_color /= (float) lights.size();
 
-    Tuple rendered_color = surface_color + reflected_color(precompute, remaining_reflections);
+    Tuple rendered_color = surface_color + reflected_color(precompute, shadows_enabled, remaining_reflections);
     rendered_color.w = 1;
     return rendered_color;
 }
@@ -94,12 +94,12 @@ bool World::is_shadowed(PointLight &l, Tuple &p) {
     return false;
 }
 
-Tuple World::reflected_color(PreparedComputation &precompute, int remaining_reflections) {
+Tuple World::reflected_color(PreparedComputation &precompute, bool shadows_enabled, int remaining_reflections) {
     if (precompute.object->material.reflective == 0 || remaining_reflections <= 0)
         return Tuple::color(0, 0, 0, 1);
 
     Ray reflected_ray(precompute.over_point, precompute.reflectv);
-    Tuple color = color_at(reflected_ray, --remaining_reflections);
+    Tuple color = color_at(reflected_ray, shadows_enabled, remaining_reflections-1);
     Tuple ref_color = color * precompute.object->material.reflective;
     ref_color.w = 1;
     return ref_color;

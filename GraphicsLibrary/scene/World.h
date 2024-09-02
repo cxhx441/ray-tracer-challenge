@@ -25,7 +25,7 @@ public:
     Tuple shade_hit(PreparedComputation& precompute, bool shadows_enabled=false, int remaining_reflections=0);
     Tuple color_at(Ray& r, bool shadows_enabled=false, int remaining_reflections=0);
     bool is_shadowed(PointLight &l, Tuple &p);
-    Tuple reflected_color(PreparedComputation& precompute, int remaining_reflections=0);
+    Tuple reflected_color(PreparedComputation& precompute, bool shadows_enabled=false, int remaining_reflections=0);
 
 };
 
