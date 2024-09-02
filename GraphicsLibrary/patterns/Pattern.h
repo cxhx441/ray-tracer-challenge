@@ -7,6 +7,7 @@
 
 #include "../primitives/Tuple.h"
 #include "../primitives/Matrix.h"
+#include <memory>
 
 class Pattern {
 private:

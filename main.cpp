@@ -1360,15 +1360,16 @@ void basic_blended_sphere_patterns_with_reflections_example(){
 
 
     float ref = 0.5;
-    striped_sphere.material.reflective = ref;
-    gradient_sphere.material.reflective = ref;
-    ring_sphere.material.reflective = ref;
-    checkered_sphere.material.reflective = ref;
+    striped_sphere.material.reflective = 0.1;
+    gradient_sphere.material.reflective = 0.2;
+    ring_sphere.material.reflective = 0.3;
+    checkered_sphere.material.reflective = 0.4;
 
     Plane regular_plane;
     regular_plane.set_transform(Transformation::translation(0, -1, 0));
     CheckerPattern checkerPlanePattern(Tuple::color(1, 1, 1, 1), Tuple::color(0, 0, 0, 1));
     regular_plane.material.set_pattern(checkerPlanePattern);
+    regular_plane.material.reflective = ref;
 
     PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
 
@@ -1378,7 +1379,7 @@ void basic_blended_sphere_patterns_with_reflections_example(){
 //    world.planes.insert(world.planes.end(), {striped_plane, gradient_plane, ring_plane, checkered_plane} );
     world.lights.push_back(light);
 
-    int factor = 10;
+    int factor = 30;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.set_transform(
             Transformation::view_transform(
@@ -1430,12 +1431,13 @@ void perfectly_reflective_spheres(){
     s1.material.reflective = ref;
     s2.material.reflective = ref;
     s3.material.reflective = ref;
-    s1.material.reflective = ref;
+    s4.material.reflective = ref;
 
     Plane regular_plane;
     regular_plane.set_transform(Transformation::translation(0, -1, 0));
     CheckerPattern checkerPlanePattern(Tuple::color(1, 1, 1, 1), Tuple::color(0, 0, 0, 1));
     regular_plane.material.set_pattern(checkerPlanePattern);
+    regular_plane.material.reflective = ref;
 
     PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
 
@@ -1445,7 +1447,7 @@ void perfectly_reflective_spheres(){
 //    world.planes.insert(world.planes.end(), {striped_plane, gradient_plane, ring_plane, checkered_plane} );
     world.lights.push_back(light);
 
-    int factor = 10;
+    int factor = 30;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.set_transform(
             Transformation::view_transform(
@@ -1485,8 +1487,8 @@ int main()
 //    basic_checker_pattern_plane_example();
 //    basic_blended_pattern_plane_example();
 //    basic_blended_sphere_patterns_example();
-//    basic_blended_sphere_patterns_with_reflections_example();
-    perfectly_reflective_spheres();
+    basic_blended_sphere_patterns_with_reflections_example();
+//    perfectly_reflective_spheres();
 //    default_world_w_reflection();
 //
 //    basic_stripe_patterns_sphere_example();
