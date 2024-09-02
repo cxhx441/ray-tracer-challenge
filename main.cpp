@@ -45,11 +45,11 @@ void challenge_projectile(){
         tick(&proj, &env);
         std::cout << "Projectile Pos: " << proj.position << " Projectile Vel: " << proj.velocity << std::endl;
         try{
-            canvas.write_pixel(proj.position.x, canvas.height - proj.position.y, Tuple::color(1, 1, 1, 1));
-            canvas.write_pixel(proj.position.x + 1, canvas.height - proj.position.y, Tuple::color(1, 1, 1, 1));
-            canvas.write_pixel(proj.position.x - 1, canvas.height - proj.position.y, Tuple::color(1, 1, 1, 1));
-            canvas.write_pixel(proj.position.x, canvas.height - proj.position.y + 1, Tuple::color(1, 1, 1, 1));
-            canvas.write_pixel(proj.position.x, canvas.height - proj.position.y - 1, Tuple::color(1, 1, 1, 1));
+            canvas.write_pixel(proj.position.x, canvas.height - proj.position.y, Color::white());
+            canvas.write_pixel(proj.position.x + 1, canvas.height - proj.position.y, Color::white());
+            canvas.write_pixel(proj.position.x - 1, canvas.height - proj.position.y, Color::white());
+            canvas.write_pixel(proj.position.x, canvas.height - proj.position.y + 1, Color::white());
+            canvas.write_pixel(proj.position.x, canvas.height - proj.position.y - 1, Color::white());
         }
         catch(std::invalid_argument const& ex){
             std::cout << ex.what() << std::endl;
@@ -78,7 +78,7 @@ void challenge_clock(){
         Tuple Sp = S * p;
         std::cout << "Point Pos: " << Sp << std::endl;
         Tuple cp = canvas_transform * Sp;
-        try{ canvas.write_pixel(cp.x, cp.y, Tuple::color(1, 1, 1, 1)); }
+        try{ canvas.write_pixel(cp.x, cp.y, Color::white()); }
         catch(std::invalid_argument const& ex){ std::cout << ex.what() << std::endl; };
 
     }
@@ -92,7 +92,7 @@ void challenge_ray_to_sphere(){
     float backdrop_half_size = backdrop_size / 2.f;
     int canvas_size = 256;
     float pixel_size = (float) backdrop_size / (float) canvas_size;
-    Tuple color = Tuple::color(1, 0, 0, 1);
+    Color color = Color::red();
     Canvas canvas(canvas_size, canvas_size);
 
     Sphere s;
@@ -127,19 +127,19 @@ void challenge_ray_to_sphere_w_phong_lighting(){
     float backdrop_half_size = backdrop_size / 2.f;
     int canvas_size = 256;
     float pixel_size = (float) backdrop_size / (float) canvas_size;
-    Tuple color = Tuple::color(1, 0, 0, 1);
+    Color color = Color::red();
     Canvas canvas(canvas_size, canvas_size);
 
     Sphere sphere;
     sphere.material = Material();
-    sphere.material.color = Tuple::color(1, 0.2, 1, 1);
+    sphere.material.color = Color(1, 0.2, 1, 1);
     Matrix shear = Transformation::shearing(1, 0, 0, 0, 0, 0);
     Matrix rot = Transformation::rotation_y((355.f/113.f) / 2.f);
     Matrix scale = Transformation::scaling(0.75f);
 //    sphere.transformation = scale * rot * shear;
 //    sphere.transformation = scale * shear;
 
-    PointLight light(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
+    PointLight light(Tuple::point(-10, 10, -10), Color::white());
 
     Tuple origin = Tuple::point(0, 0, -5);
     Ray ray(origin, Tuple::vector(0, 0, 0));
@@ -171,7 +171,7 @@ void challenge_world_w_spheres(){
     // Set Spheres
     Sphere floor;
     floor.set_transform(Transformation::scaling(10, 0.01, 10));
-    floor.material.color = Tuple::color(1, 0.9, 0.9, 1);
+    floor.material.color = Color(1, 0.9, 0.9, 1);
     floor.material.specular = 0;
 
     Sphere left_wall;
@@ -194,25 +194,25 @@ void challenge_world_w_spheres(){
 
     Sphere middle;
     middle.set_transform(Transformation::translation(-.1, 1.6, -0.3) * Transformation::scaling(0.7));
-    middle.material.color = Tuple::color(0.1, 1, 0.5, 1);
+    middle.material.color = Color(0.1, 1, 0.5, 1);
     middle.material.diffuse = 0.7;
     middle.material.specular = 0.3;
 
     Sphere right;
     right.set_transform(Transformation::translation(.5, 0.7, -0.5) * Transformation::scaling(0.7));
-    right.material.color = Tuple::color(0.5, 1, 0.1, 1);
+    right.material.color = Color(0.5, 1, 0.1, 1);
     right.material.diffuse = 0.7;
     right.material.specular = 0.3;
 
     Sphere left;
     left.set_transform(Transformation::translation(-.5, 0.7, -0.5) * Transformation::scaling(0.7));
-    left.material.color = Tuple::color(1, 0.8, 0.1, 1);
+    left.material.color = Color(1, 0.8, 0.1, 1);
     left.material.diffuse = 0.7;
     left.material.specular = 0.8;
 
     Sphere small;
     small.set_transform(Transformation::translation(-.7, 0.3, -0.8) * Transformation::scaling(0.3));
-    small.material.color = Tuple::color(1, 0.2, 0.1, 1);
+    small.material.color = Color(1, 0.2, 0.1, 1);
     small.material.diffuse = 0.7;
     small.material.specular = 0.8;
 
@@ -222,16 +222,16 @@ void challenge_world_w_spheres(){
             Transformation::scaling(0.4) *
             Transformation::shearing(2, 0, 0, 0 ,0, 0)
             );
-    small2.material.color = Tuple::color(0.3, 0.2, 1, 1);
+    small2.material.color = Color(0.3, 0.2, 1, 1);
     small2.material.diffuse = 0.7;
     small2.material.specular = 0.8;
     small2.material.shininess = 200;
 
     // Set Lighting
-    PointLight l1(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l2(Tuple::point(-10, 0, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l3(Tuple::point(0, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l4(Tuple::point(10, 0, -10), Tuple::color(1, 1, 1, 1));
+    PointLight l1(Tuple::point(-10, 10, -10), Color::white());
+    PointLight l2(Tuple::point(-10, 0, -10), Color::white());
+    PointLight l3(Tuple::point(0, 10, -10), Color::white());
+    PointLight l4(Tuple::point(10, 0, -10), Color::white());
 
     // Set World
     World world;
@@ -272,7 +272,7 @@ void challenge_world_w_spheres(){
 void custom_scene(){
     Sphere floor;
     floor.set_transform(Transformation::scaling(10, 0.01, 10));
-    floor.material.color = Tuple::color(1, 0.9, 0.9, 1);
+    floor.material.color = Color(1, 0.9, 0.9, 1);
     floor.material.specular = 0;
 
     Sphere left_wall;
@@ -295,7 +295,7 @@ void custom_scene(){
 
     Sphere redDome;
     redDome.set_transform(Transformation::translation(-1.5, .8, 1) * Transformation::scaling(0.35));
-    redDome.material.color = Tuple::color(1, 0.2, 0.1, 1);
+    redDome.material.color = Color(1, 0.2, 0.1, 1);
     redDome.material.diffuse = 0.7;
     redDome.material.specular = 0.8;
 
@@ -306,14 +306,14 @@ void custom_scene(){
             Transformation::rotation_z(-M_PI / 5) *
             Transformation::scaling(0.8, 0.1, 0.8)
     );
-    blueDisk.material.color = Tuple::color(0.3, 0.2, 1, 1);
+    blueDisk.material.color = Color(0.3, 0.2, 1, 1);
     blueDisk.material.diffuse = 0.7;
     blueDisk.material.specular = 0.8;
     blueDisk.material.shininess = 200;
 
     Sphere blueDome;
     blueDome.set_transform(Transformation::translation(1.5, 1.5, 1.3) * Transformation::scaling(0.35));
-    blueDome.material.color = Tuple::color(0.3, 0.2, 1, 1);
+    blueDome.material.color = Color(0.3, 0.2, 1, 1);
     blueDome.material.diffuse = 0.7;
     blueDome.material.specular = 0.8;
 
@@ -324,7 +324,7 @@ void custom_scene(){
             Transformation::rotation_z(M_PI / 2.5) *
             Transformation::scaling(0.8, 0.1, 0.8)
     );
-    redDisk.material.color = Tuple::color(1, 0.2, 0.1, 1);
+    redDisk.material.color = Color(1, 0.2, 0.1, 1);
     redDisk.material.diffuse = 0.7;
     redDisk.material.specular = 0.8;
     redDisk.material.shininess = 200;
@@ -333,12 +333,12 @@ void custom_scene(){
     origin.set_transform(Transformation::scaling(0.05));
 
     // Set Lighting
-    PointLight l1(Tuple::point(-10, 10, -10), Tuple::color(1, 0, 1, 1));
-    PointLight l2(Tuple::point(-5, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l3(Tuple::point(-0, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l4(Tuple::point(5, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l5(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
-    PointLight l6(Tuple::point(0, 10, -1), Tuple::color(1, 1, 1, 1));
+    PointLight l1(Tuple::point(-10, 10, -10), Color::magenta());
+    PointLight l2(Tuple::point(-5, 10, -10), Color::white());
+    PointLight l3(Tuple::point(-0, 10, -10), Color::white());
+    PointLight l4(Tuple::point(5, 10, -10), Color::white());
+    PointLight l5(Tuple::point(0, 10, 0), Color::white());
+    PointLight l6(Tuple::point(0, 10, -1), Color::white());
 
     // Set World
     World world;
@@ -387,7 +387,7 @@ void challenge_plane(){
 
     Sphere redDome;
     redDome.set_transform(Transformation::translation(-1.5, .8, 1) * Transformation::scaling(0.35));
-    redDome.material.color = Tuple::color(1, 0.2, 0.1, 1);
+    redDome.material.color = Color(1, 0.2, 0.1, 1);
     redDome.material.diffuse = 0.7;
     redDome.material.specular = 0.8;
 
@@ -398,14 +398,14 @@ void challenge_plane(){
             Transformation::rotation_z(-M_PI / 5) *
             Transformation::scaling(0.8, 0.1, 0.8)
     );
-    blueDisk.material.color = Tuple::color(0.3, 0.2, 1, 1);
+    blueDisk.material.color = Color(0.3, 0.2, 1, 1);
     blueDisk.material.diffuse = 0.7;
     blueDisk.material.specular = 0.8;
     blueDisk.material.shininess = 200;
 
     Sphere blueDome;
     blueDome.set_transform(Transformation::translation(1.5, 1.5, 1.3) * Transformation::scaling(0.35));
-    blueDome.material.color = Tuple::color(0.3, 0.2, 1, 1);
+    blueDome.material.color = Color(0.3, 0.2, 1, 1);
     blueDome.material.diffuse = 0.7;
     blueDome.material.specular = 0.8;
 
@@ -416,7 +416,7 @@ void challenge_plane(){
             Transformation::rotation_z(M_PI / 2.5) *
             Transformation::scaling(0.8, 0.1, 0.8)
     );
-    redDisk.material.color = Tuple::color(1, 0.2, 0.1, 1);
+    redDisk.material.color = Color(1, 0.2, 0.1, 1);
     redDisk.material.diffuse = 0.7;
     redDisk.material.specular = 0.8;
     redDisk.material.shininess = 200;
@@ -425,12 +425,12 @@ void challenge_plane(){
     origin.set_transform(Transformation::scaling(0.05));
 
     // Set Lighting
-    PointLight l1(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l2(Tuple::point(-5, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l3(Tuple::point(-0, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l4(Tuple::point(5, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l5(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
-    PointLight l6(Tuple::point(0, 10, -1), Tuple::color(1, 1, 1, 1));
+    PointLight l1(Tuple::point(-10, 10, -10), Color::white());
+    PointLight l2(Tuple::point(-5, 10, -10), Color::white());
+    PointLight l3(Tuple::point(-0, 10, -10), Color::white());
+    PointLight l4(Tuple::point(5, 10, -10), Color::white());
+    PointLight l5(Tuple::point(0, 10, 0), Color::white());
+    PointLight l6(Tuple::point(0, 10, -1), Color::white());
 
     // Set World
     World world;
@@ -480,7 +480,7 @@ void non_transformed_patterns(){
 
     Sphere redDome;
     redDome.set_transform(Transformation::translation(-1.5, .8, 1) * Transformation::scaling(0.35));
-    redDome.material.color = Tuple::color(1, 0.2, 0.1, 1);
+    redDome.material.color = Color(1, 0.2, 0.1, 1);
     redDome.material.diffuse = 0.7;
     redDome.material.specular = 0.8;
 
@@ -491,14 +491,14 @@ void non_transformed_patterns(){
             Transformation::rotation_z(-M_PI / 5) *
             Transformation::scaling(0.8, 0.1, 0.8)
     );
-    blueDisk.material.color = Tuple::color(0.3, 0.2, 1, 1);
+    blueDisk.material.color = Color(0.3, 0.2, 1, 1);
     blueDisk.material.diffuse = 0.7;
     blueDisk.material.specular = 0.8;
     blueDisk.material.shininess = 200;
 
     Sphere blueDome;
     blueDome.set_transform(Transformation::translation(1.5, 1.5, 1.3) * Transformation::scaling(0.35));
-    blueDome.material.color = Tuple::color(0.3, 0.2, 1, 1);
+    blueDome.material.color = Color(0.3, 0.2, 1, 1);
     blueDome.material.diffuse = 0.7;
     blueDome.material.specular = 0.8;
 
@@ -509,32 +509,32 @@ void non_transformed_patterns(){
             Transformation::rotation_z(M_PI / 2.5) *
             Transformation::scaling(0.8, 0.1, 0.8)
     );
-    redDisk.material.color = Tuple::color(1, 0.2, 0.1, 1);
+    redDisk.material.color = Color(1, 0.2, 0.1, 1);
     redDisk.material.diffuse = 0.7;
     redDisk.material.specular = 0.8;
     redDisk.material.shininess = 200;
 
     //set patterns
-    StripedPattern p1(Tuple::color(1, 0, 1, 1), Tuple::color(0, 1, 0, 1));
+    StripedPattern p1(Color::cyan(), Color::magenta());
     redDisk.material.set_pattern(p1);
     blueDisk.material.set_pattern(p1);
 
-    StripedPattern p2(Tuple::color(1, 1, 1, 1), Tuple::color(0, 1, 1, 1));
+    StripedPattern p2(Color::white(), Color::cyan());
     floor.material.set_pattern(p2);
 
-    StripedPattern p3(Tuple::color(0, 1, 1, 1), Tuple::color(1, 1, 1, 1));
+    StripedPattern p3(Color::cyan(), Color::white());
     back_wall.material.set_pattern(p3);
 
     Sphere origin;
     origin.set_transform(Transformation::scaling(0.05));
 
     // Set Lighting
-    PointLight l1(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l2(Tuple::point(-5, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l3(Tuple::point(-0, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l4(Tuple::point(5, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l5(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
-    PointLight l6(Tuple::point(0, 10, -1), Tuple::color(1, 1, 1, 1));
+    PointLight l1(Tuple::point(-10, 10, -10), Color::white());
+    PointLight l2(Tuple::point(-5, 10, -10), Color::white());
+    PointLight l3(Tuple::point(-0, 10, -10), Color::white());
+    PointLight l4(Tuple::point(5, 10, -10), Color::white());
+    PointLight l5(Tuple::point(0, 10, 0), Color::white());
+    PointLight l6(Tuple::point(0, 10, -1), Color::white());
 
     // Set World
     World world;
@@ -582,7 +582,7 @@ void transformed_patterns(){
 
     Sphere redDome;
     redDome.set_transform(Transformation::translation(-1.5, .8, 1) * Transformation::scaling(0.35));
-    redDome.material.color = Tuple::color(1, 0.2, 0.1, 1);
+    redDome.material.color = Color(1, 0.2, 0.1, 1);
     redDome.material.diffuse = 0.7;
     redDome.material.specular = 0.8;
 
@@ -593,14 +593,14 @@ void transformed_patterns(){
             Transformation::rotation_z(-M_PI / 5) *
             Transformation::scaling(0.8, 0.1, 0.8)
     );
-    blueDisk.material.color = Tuple::color(0.3, 0.2, 1, 1);
+    blueDisk.material.color = Color(0.3, 0.2, 1, 1);
     blueDisk.material.diffuse = 0.7;
     blueDisk.material.specular = 0.8;
     blueDisk.material.shininess = 200;
 
     Sphere blueDome;
     blueDome.set_transform(Transformation::translation(1.5, 1.5, 1.3) * Transformation::scaling(0.35));
-    blueDome.material.color = Tuple::color(0.3, 0.2, 1, 1);
+    blueDome.material.color = Color(0.3, 0.2, 1, 1);
     blueDome.material.diffuse = 0.7;
     blueDome.material.specular = 0.8;
 
@@ -611,21 +611,21 @@ void transformed_patterns(){
             Transformation::rotation_z(M_PI / 2.5) *
             Transformation::scaling(0.8, 0.1, 0.8)
     );
-    redDisk.material.color = Tuple::color(1, 0.2, 0.1, 1);
+    redDisk.material.color = Color(1, 0.2, 0.1, 1);
     redDisk.material.diffuse = 0.7;
     redDisk.material.specular = 0.8;
     redDisk.material.shininess = 200;
 
     //set patterns
-    StripedPattern p1(Tuple::color(1, 0, 1, 1), Tuple::color(0, 1, 0, 1));
+    StripedPattern p1(Color::magenta(), Color::green());
     p1.set_transform(Transformation::scaling(0.01));
     redDisk.material.set_pattern(p1);
     blueDisk.material.set_pattern(p1);
 
-    StripedPattern p2(Tuple::color(1, 1, 1, 1), Tuple::color(0, 1, 1, 1));
+    StripedPattern p2(Color::white(), Color::cyan());
     floor.material.set_pattern(p2);
 
-    StripedPattern p3(Tuple::color(0, 1, 1, 1), Tuple::color(1, 1, 1, 1));
+    StripedPattern p3(Color::cyan(), Color::white());
     p3.set_transform(Transformation::scaling(0.1));
     back_wall.material.set_pattern(p3);
 
@@ -633,12 +633,12 @@ void transformed_patterns(){
     origin.set_transform(Transformation::scaling(0.05));
 
     // Set Lighting
-    PointLight l1(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l2(Tuple::point(-5, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l3(Tuple::point(-0, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l4(Tuple::point(5, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l5(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
-    PointLight l6(Tuple::point(0, 10, -1), Tuple::color(1, 1, 1, 1));
+    PointLight l1(Tuple::point(-10, 10, -10), Color::white());
+    PointLight l2(Tuple::point(-5, 10, -10), Color::white());
+    PointLight l3(Tuple::point(-0, 10, -10), Color::white());
+    PointLight l4(Tuple::point(5, 10, -10), Color::white());
+    PointLight l5(Tuple::point(0, 10, 0), Color::white());
+    PointLight l6(Tuple::point(0, 10, -1), Color::white());
 
     // Set World
     World world;
@@ -681,8 +681,8 @@ void transformed_patterns(){
 
 void basic_sphere_patterns_example(){
     // colors
-    Tuple orange = Tuple::color(1, .27, 0, 1);
-    Tuple blue = Tuple::color(0, 0, 1, 1);
+    Color orange = Color(1, .27, 0, 1);
+    Color blue = Color::blue();
 
     // patterns
     StripedPattern stripes(orange, blue);
@@ -735,7 +735,7 @@ void basic_sphere_patterns_example(){
 //    ring_plane;
 //    checkered_plane;
 
-    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+    PointLight light(Tuple::point(0, 10, 0), Color::white());
 
     World world;
     world.spheres.insert(world.spheres.end(), {striped_sphere, gradient_sphere, ring_sphere, checkered_sphere} );
@@ -769,15 +769,15 @@ void basic_sphere_patterns_example(){
 
 void basic_stripe_patterns_plane_example(){
     // colors
-    Tuple orange = Tuple::color(1, .27, 0, 1);
-    Tuple blue = Tuple::color(0, 0, 1, 1);
+    Color orange = Color(1, .27, 0, 1);
+    Color blue = Color::blue();
 
     // patterns
     StripedPattern stripes(orange, blue);
     Plane striped_plane;
     striped_plane.material.set_pattern(stripes);
 
-    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+    PointLight light(Tuple::point(0, 10, 0), Color::white());
 
     World world;
     world.planes.insert(world.planes.end(), {striped_plane} );
@@ -809,15 +809,15 @@ void basic_stripe_patterns_plane_example(){
 
 void basic_gradient_patterns_plane_example(){
     // colors
-    Tuple orange = Tuple::color(1, .27, 0, 1);
-    Tuple blue = Tuple::color(0, 0, 1, 1);
+    Color orange = Color(1, .27, 0, 1);
+    Color blue = Color::blue();
 
     // patterns
     GradientPattern gradient(orange, blue);
     Plane gradient_plane;
     gradient_plane.material.set_pattern(gradient);
 
-    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+    PointLight light(Tuple::point(0, 10, 0), Color::white());
 
     World world;
     world.planes.insert(world.planes.end(), {gradient_plane} );
@@ -850,15 +850,15 @@ void basic_gradient_patterns_plane_example(){
 
 void basic_ring_patterns_plane_example(){
     // colors
-    Tuple orange = Tuple::color(1, .27, 0, 1);
-    Tuple blue = Tuple::color(0, 0, 1, 1);
+    Color orange = Color(1, .27, 0, 1);
+    Color blue = Color::blue();
 
     // patterns
     RingPattern rings(orange, blue);
     Plane ring_plane;
     ring_plane.material.set_pattern(rings);
 
-    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+    PointLight light(Tuple::point(0, 10, 0), Color::white());
 
     World world;
     world.planes.insert(world.planes.end(), {ring_plane} );
@@ -891,8 +891,8 @@ void basic_ring_patterns_plane_example(){
 
 void basic_checker_pattern_plane_example(){
     // colors
-    Tuple orange = Tuple::color(1, .27, 0, 1);
-    Tuple blue = Tuple::color(0, 0, 1, 1);
+    Color orange = Color(1, .27, 0, 1);
+    Color blue = Color::blue();
 
     // patterns
     CheckerPattern checkers(orange, blue);
@@ -900,7 +900,7 @@ void basic_checker_pattern_plane_example(){
     checkered_plane.material.set_pattern(checkers);
 
     // light
-    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+    PointLight light(Tuple::point(0, 10, 0), Color::white());
 
     // world
     World world;
@@ -933,8 +933,8 @@ void basic_checker_pattern_plane_example(){
 
 void basic_radialgrad_pattern_plane_example(){
     // colors
-    Tuple orange = Tuple::color(1, .27, 0, 1);
-    Tuple blue = Tuple::color(0, 0, 1, 1);
+    Color orange = Color(1, .27, 0, 1);
+    Color blue = Color::blue();
 
     // patterns
     RadialGradientPattern radialgrad(orange, blue);
@@ -942,7 +942,7 @@ void basic_radialgrad_pattern_plane_example(){
     radgrad_plane.material.set_pattern(radialgrad);
 
     // light
-    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+    PointLight light(Tuple::point(0, 10, 0), Color::white());
 
     // world
     World world;
@@ -974,15 +974,15 @@ void basic_radialgrad_pattern_plane_example(){
 }
 void basic_stripe_patterns_sphere_example(){
     // colors
-    Tuple orange = Tuple::color(1, .27, 0, 1);
-    Tuple blue = Tuple::color(0, 0, 1, 1);
+    Color orange = Color(1, .27, 0, 1);
+    Color blue = Color::blue();
 
     // patterns
     StripedPattern stripes(orange, blue);
     Sphere striped_sphere;
     striped_sphere.material.set_pattern(stripes);
 
-    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+    PointLight light(Tuple::point(0, 10, 0), Color::white());
 
     World world;
     world.spheres.push_back(striped_sphere);
@@ -1014,15 +1014,15 @@ void basic_stripe_patterns_sphere_example(){
 
 void basic_gradient_patterns_sphere_example(){
     // colors
-    Tuple orange = Tuple::color(1, .27, 0, 1);
-    Tuple blue = Tuple::color(0, 0, 1, 1);
+    Color orange = Color(1, .27, 0, 1);
+    Color blue = Color::blue();
 
     // patterns
     GradientPattern gradient(orange, blue);
     Sphere gradient_sphere;
     gradient_sphere.material.set_pattern(gradient);
 
-    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+    PointLight light(Tuple::point(0, 10, 0), Color::white());
 
     World world;
     world.spheres.push_back(gradient_sphere);
@@ -1054,8 +1054,9 @@ void basic_gradient_patterns_sphere_example(){
 
 void basic_ring_patterns_sphere_example(){
     // colors
-    Tuple orange = Tuple::color(1, .27, 0, 1);
-    Tuple blue = Tuple::color(0, 0, 1, 1);
+    Color orange = Color(1, .27, 0, 1);
+    Color blue = Color::blue();
+
 
     // patterns
     RingPattern ring(orange, blue);
@@ -1063,7 +1064,7 @@ void basic_ring_patterns_sphere_example(){
     Sphere ring_sphere;
     ring_sphere.material.set_pattern(ring);
 
-    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+    PointLight light(Tuple::point(0, 10, 0), Color::white());
 
     World world;
     world.spheres.push_back(ring_sphere);
@@ -1095,15 +1096,16 @@ void basic_ring_patterns_sphere_example(){
 
 void basic_checker_pattern_sphere_example(){
     // colors
-    Tuple orange = Tuple::color(1, .27, 0, 1);
-    Tuple blue = Tuple::color(0, 0, 1, 1);
+    Color orange = Color(1, .27, 0, 1);
+    Color blue = Color::blue();
+
 
     // patterns
     CheckerPattern checker(orange, blue);
     Sphere checker_sphere;
     checker_sphere.material.set_pattern(checker);
 
-    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+    PointLight light(Tuple::point(0, 10, 0), Color::white());
 
     World world;
     world.spheres.push_back(checker_sphere);
@@ -1135,8 +1137,8 @@ void basic_checker_pattern_sphere_example(){
 
 void basic_blended_pattern_plane_example(){
     // colors
-    Tuple orange = Tuple::color(1, .27, 0, 1);
-    Tuple blue = Tuple::color(0, 0, 1, 1);
+    Color orange = Color(1, .27, 0, 1);
+    Color blue = Color::blue();
 
     // patterns
     RadialGradientPattern radialgrad(orange, blue);
@@ -1146,7 +1148,7 @@ void basic_blended_pattern_plane_example(){
     plane.material.add_pattern(stripes);
 
     // light
-    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+    PointLight light(Tuple::point(0, 10, 0), Color::white());
 
     // world
     World world;
@@ -1179,11 +1181,11 @@ void basic_blended_pattern_plane_example(){
 
 void basic_blended_sphere_patterns_example(){
     // colors
-    Tuple orange = Tuple::color(1, .27, 0, 1);
-    Tuple blue = Tuple::color(0, 0, 1, 1);
+    Color orange = Color(1, .27, 0, 1);
+    Color blue = Color::blue();
 
-    Tuple red = Tuple::color(1, 0, 0, 1);
-    Tuple yellow = Tuple::color(0, 1, 1, 1);
+    Color red = Color::red();
+    Color yellow = Color::yellow();
 
     // patterns
     StripedPattern stripes(orange, blue);
@@ -1243,7 +1245,7 @@ void basic_blended_sphere_patterns_example(){
 //    ring_plane;
 //    checkered_plane;
 
-    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+    PointLight light(Tuple::point(0, 10, 0), Color::white());
 
     World world;
     world.spheres.insert(world.spheres.end(), {striped_sphere, gradient_sphere, ring_sphere, checkered_sphere} );
@@ -1310,11 +1312,11 @@ void default_world_w_reflection(){
 
 void basic_blended_sphere_patterns_with_reflections_example(){
     // colors
-    Tuple orange = Tuple::color(1, .27, 0, 1);
-    Tuple blue = Tuple::color(0, 0, 1, 1);
+    Color orange = Color(1, .27, 0, 1);
+    Color blue = Color::blue();
 
-    Tuple red = Tuple::color(1, 0, 0, 1);
-    Tuple yellow = Tuple::color(0, 1, 1, 1);
+    Color red = Color::red();
+    Color yellow = Color::yellow();
 
     // patterns
     StripedPattern stripes(orange, blue);
@@ -1367,11 +1369,11 @@ void basic_blended_sphere_patterns_with_reflections_example(){
 
     Plane regular_plane;
     regular_plane.set_transform(Transformation::translation(0, -1, 0));
-    CheckerPattern checkerPlanePattern(Tuple::color(1, 1, 1, 1), Tuple::color(0, 0, 0, 1));
+    CheckerPattern checkerPlanePattern(Color::white(), Color::black());
     regular_plane.material.set_pattern(checkerPlanePattern);
     regular_plane.material.reflective = ref;
 
-    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+    PointLight light(Tuple::point(0, 10, 0), Color::white());
 
     World world;
     world.spheres.insert(world.spheres.end(), {striped_sphere, gradient_sphere, ring_sphere, checkered_sphere} );
@@ -1422,10 +1424,10 @@ void perfectly_reflective_spheres(){
     s3.set_transform(Transformation::translation(three, y_up, 1) * Transformation::scaling(sphere_size));
     s4.set_transform(Transformation::translation(four, y_up, 1) * Transformation::scaling(sphere_size));
 
-    s1.material.color = Tuple::color(0, 0, 0, 1);
-    s2.material.color = Tuple::color(0, 0, 0, 1);
-    s3.material.color = Tuple::color(0, 0, 0, 1);
-    s4.material.color = Tuple::color(0, 0, 0, 1);
+    s1.material.color = Color::black();
+    s2.material.color = Color::black();
+    s3.material.color = Color::black();
+    s4.material.color = Color::black();
 
     float ref = 1;
     s1.material.reflective = ref;
@@ -1435,11 +1437,11 @@ void perfectly_reflective_spheres(){
 
     Plane regular_plane;
     regular_plane.set_transform(Transformation::translation(0, -1, 0));
-    CheckerPattern checkerPlanePattern(Tuple::color(1, 1, 1, 1), Tuple::color(0, 0, 0, 1));
+    CheckerPattern checkerPlanePattern(Color::white(), Color::black());
     regular_plane.material.set_pattern(checkerPlanePattern);
     regular_plane.material.reflective = ref;
 
-    PointLight light(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
+    PointLight light(Tuple::point(0, 10, 0), Color::white());
 
     World world;
     world.spheres.insert(world.spheres.end(), {s1, s2, s3, s4} );
@@ -1485,10 +1487,10 @@ void challenge_plane_w_reflections(){
     left_wall.set_transform(Transformation::translation(-11, 0, 0) * Transformation::rotation_z(M_PI_2));
     right_wall.set_transform(Transformation::translation(11, 0, 0) * Transformation::rotation_z(M_PI_2));
 
-    Tuple red = Tuple::color(1, 0, 0, 1);
-    Tuple green = Tuple::color(0, 1, 0, 1);
-    Tuple blue = Tuple::color(0, 0, 1, 1);
-    Tuple white = Tuple::color(1, 1, 1, 1);
+    Color red = Color::red();
+    Color green = Color::green();
+    Color blue = Color::blue();
+    Color white = Color::white();
     floor.material.add_pattern(CheckerPattern(red, white));
     ceiling.material.add_pattern(CheckerPattern(red, white));
     back_wall.material.add_pattern(CheckerPattern(green, white));
@@ -1505,7 +1507,7 @@ void challenge_plane_w_reflections(){
 
     Sphere redDome;
     redDome.set_transform(Transformation::translation(-1.5, .8, 1) * Transformation::scaling(0.35));
-    redDome.material.color = Tuple::color(1, 0.2, 0.1, 1);
+    redDome.material.color = Color(1, 0.2, 0.1, 1);
     redDome.material.diffuse = 0.7;
     redDome.material.specular = 0.8;
     redDome.material.reflective = 1;
@@ -1517,7 +1519,7 @@ void challenge_plane_w_reflections(){
             Transformation::rotation_z(-M_PI / 5) *
             Transformation::scaling(0.8, 0.1, 0.8)
     );
-    blueDisk.material.color = Tuple::color(0.3, 0.2, 1, 1);
+    blueDisk.material.color = Color(0.3, 0.2, 1, 1);
     blueDisk.material.diffuse = 0.7;
     blueDisk.material.specular = 0.8;
     blueDisk.material.shininess = 200;
@@ -1525,7 +1527,7 @@ void challenge_plane_w_reflections(){
 
     Sphere blueDome;
     blueDome.set_transform(Transformation::translation(1.5, 1.5, 1.3) * Transformation::scaling(0.35));
-    blueDome.material.color = Tuple::color(0.3, 0.2, 1, 1);
+    blueDome.material.color = Color(0.3, 0.2, 1, 1);
     blueDome.material.diffuse = 0.7;
     blueDome.material.specular = 0.8;
     blueDome.material.reflective = .2;
@@ -1537,7 +1539,7 @@ void challenge_plane_w_reflections(){
             Transformation::rotation_z(M_PI / 2.5) *
             Transformation::scaling(0.8, 0.1, 0.8)
     );
-    redDisk.material.color = Tuple::color(1, 0.2, 0.1, 1);
+    redDisk.material.color = Color(1, 0.2, 0.1, 1);
     redDisk.material.diffuse = 0.7;
     redDisk.material.specular = 0.8;
     redDisk.material.shininess = 200;
@@ -1548,12 +1550,12 @@ void challenge_plane_w_reflections(){
     origin.material.reflective = 1;
 
     // Set Lighting
-    PointLight l1(Tuple::point(-10, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l2(Tuple::point(-5, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l3(Tuple::point(-0, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l4(Tuple::point(5, 10, -10), Tuple::color(1, 1, 1, 1));
-    PointLight l5(Tuple::point(0, 10, 0), Tuple::color(1, 1, 1, 1));
-    PointLight l6(Tuple::point(0, 10, -1), Tuple::color(1, 1, 1, 1));
+    PointLight l1(Tuple::point(-10, 10, -10), Color::white());
+    PointLight l2(Tuple::point(-5, 10, -10), Color::white());
+    PointLight l3(Tuple::point(-0, 10, -10), Color::white());
+    PointLight l4(Tuple::point(5, 10, -10), Color::white());
+    PointLight l5(Tuple::point(0, 10, 0), Color::white());
+    PointLight l6(Tuple::point(0, 10, -1), Color::white());
 
     // Set World
     World world;
@@ -1571,7 +1573,7 @@ void challenge_plane_w_reflections(){
 //    world.lights.push_back(l6);
 
     // Set Camera
-    int factor = 60;
+    int factor = 2;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.set_transform(
             Transformation::view_transform(

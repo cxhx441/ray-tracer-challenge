@@ -13,7 +13,7 @@ Matrix Pattern::get_transform() const { return transform; }
 
 Matrix Pattern::get_inverse_transform() const { return inverse_transform; }
 
-Tuple Pattern::color_at(const Tuple &model_point) {
+Color Pattern::color_at(const Tuple &model_point) {
     Tuple pattern_point = get_inverse_transform() * model_point;
     return pattern_color_at(pattern_point);
 }

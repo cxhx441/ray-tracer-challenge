@@ -11,7 +11,7 @@ class TestPattern : public Pattern{
 public:
     TestPattern() = default;
 
-    Tuple pattern_color_at(const Tuple &pattern_point) const override;
+    Color pattern_color_at(const Tuple &pattern_point) const override;
 
     std::shared_ptr<Pattern> clone() const override {
         return std::make_shared<TestPattern>(*this);

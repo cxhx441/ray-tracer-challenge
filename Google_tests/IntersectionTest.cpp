@@ -99,15 +99,15 @@ TEST(WorldTestSuite, HitWhenIntersectionOccursOnInsideOfShape) {
 TEST(WorldTestSuite, ColorWhenRayMisses) {
     World w = World::DefaultWorld();
     Ray r = Ray(Tuple::point(0, 0, -5), Tuple::vector(0, 1, 0));
-    Tuple rendered_color = w.color_at(r);
-    EXPECT_EQ(rendered_color, Tuple::color(0, 0, 0, 1));
+    Color rendered_color = w.color_at(r);
+    EXPECT_EQ(rendered_color, Color::black());
 }
 
 TEST(WorldTestSuite, ColorWhenRayHits) {
     World w = World::DefaultWorld();
     Ray r = Ray(Tuple::point(0, 0, -5), Tuple::vector(0, 0, 1));
-    Tuple rendered_color = w.color_at(r);
-    EXPECT_EQ(rendered_color, Tuple::color(0.38066, 0.47583, 0.2855, 1));
+    Color rendered_color = w.color_at(r);
+    EXPECT_EQ(rendered_color, Color(0.38066, 0.47583, 0.2855, 1));
 }
 
 TEST(WorldTestSuite, ColorWithIntersectionBehindSphere) {
@@ -117,7 +117,7 @@ TEST(WorldTestSuite, ColorWithIntersectionBehindSphere) {
     outer->material.ambient = 1;
     inner->material.ambient = 1;
     Ray r = Ray(Tuple::point(0, 0, 0.75), Tuple::vector(0, 0, -1));
-    Tuple rendered_color = w.color_at(r);
+    Color rendered_color = w.color_at(r);
     EXPECT_EQ(rendered_color, inner->material.color);
 }
 

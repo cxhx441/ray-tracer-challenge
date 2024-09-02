@@ -14,14 +14,14 @@ class Canvas {
 public:
     int width;
     int height;
-    Tuple** pixels;
+    Color** pixels;
     // TODO implement the big five or refactor for std::vector
 
     Canvas(int width, int height);
     ~Canvas();
 
-    void fill_pixels(const Tuple& color);
-    void write_pixel(int x, int y, const Tuple& color);
+    void fill_pixels(const Color &color);
+    void write_pixel(int x, int y, const Color &color);
     static Canvas render(Camera &c, World &w, bool shadows_enabled=true, int num_reflections=3);
     static int map_color_value(float colorVal, int maxValue);
 

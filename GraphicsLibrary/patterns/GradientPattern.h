@@ -9,12 +9,12 @@
 
 class GradientPattern : public Pattern{
 private:
-    Tuple color_a;
-    Tuple color_b;
+    Color color_a;
+    Color color_b;
 public:
-    GradientPattern(Tuple color_a, Tuple color_b);
+    GradientPattern(Color color_a, Color color_b);
 
-    Tuple pattern_color_at(const Tuple &pattern_point) const override;
+    Color pattern_color_at(const Tuple &pattern_point) const override;
 
     std::shared_ptr<Pattern> clone() const override {
         return std::make_shared<GradientPattern>(*this);

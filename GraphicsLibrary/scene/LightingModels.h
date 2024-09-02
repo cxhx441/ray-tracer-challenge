@@ -13,7 +13,8 @@
 
 class LightingModels {
 public:
-    static Tuple phong_lighting(const Material &material, const Shape& shape, const PointLight &light, const Tuple &point, const Tuple &eyev, const Tuple &normalv, bool is_shadowed);
+    static Color
+    phong_lighting(const Material &material, const Shape& shape, const PointLight &light, const Tuple &point, const Tuple &eyev, const Tuple &normalv, bool is_shadowed);
 };
 
 

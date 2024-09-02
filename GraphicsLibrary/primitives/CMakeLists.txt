@@ -6,6 +6,7 @@ add_library(primitives STATIC
         Ray.cpp
         Transformation.cpp
         Tuple.cpp
+        Color.cpp
 )
 
 #target_include_directories(primitives PUBLIC ${PROJECT_SOURCE_DIR}/GraphicsLibrary)

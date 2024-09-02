@@ -4,7 +4,7 @@
 
 #include "Material.h"
 
-Material::Material(Tuple color, float ambient, float diffuse, float specular, float shininess, float reflective) :
+Material::Material(Color color, float ambient, float diffuse, float specular, float shininess, float reflective) :
         color(color),
         ambient(ambient),
         diffuse(diffuse),
@@ -20,7 +20,7 @@ Material::Material(Tuple color, float ambient, float diffuse, float specular, fl
 
 Material::Material(){
     /** default material **/
-    color = Tuple::color(1, 1, 1, 1);
+    color = Color::white();
     ambient = 0.1;
     diffuse = 0.9;
     specular = 0.9;
@@ -42,8 +42,8 @@ bool Material::has_pattern() const {
     return not patterns.empty();
 }
 
-Tuple Material::get_pattern_color(const Tuple &model_point) const {
-    Tuple resulting_color(0, 0, 0, 0);
+Color Material::get_pattern_color(const Tuple &model_point) const {
+    Color resulting_color(0, 0, 0, 0);
     for (const auto &pattern: patterns) {
         resulting_color += pattern->color_at(model_point);
     }

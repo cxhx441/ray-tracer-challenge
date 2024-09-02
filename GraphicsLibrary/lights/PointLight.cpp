@@ -4,5 +4,5 @@
 
 #include "PointLight.h"
 
-PointLight::PointLight(Tuple point, Tuple color) : point(point), color(color){}
+PointLight::PointLight(Tuple point, Color color) : point(point), color(color){}
 

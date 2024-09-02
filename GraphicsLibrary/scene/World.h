@@ -22,10 +22,10 @@ public:
     static World DefaultWorld();
 
     std::vector<Intersection> intersect_world(Ray& r);
-    Tuple shade_hit(PreparedComputation& precompute, bool shadows_enabled=false, int remaining_reflections=0);
-    Tuple color_at(Ray& r, bool shadows_enabled=false, int remaining_reflections=0);
+    Color shade_hit(PreparedComputation& precompute, bool shadows_enabled=false, int remaining_reflections=0);
+    Color color_at(Ray& r, bool shadows_enabled=false, int remaining_reflections=0);
     bool is_shadowed(PointLight &l, Tuple &p);
-    Tuple reflected_color(PreparedComputation& precompute, bool shadows_enabled=false, int remaining_reflections=0);
+    Color reflected_color(PreparedComputation& precompute, bool shadows_enabled=false, int remaining_reflections=0);
 
 };
 

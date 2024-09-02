@@ -16,12 +16,12 @@ protected:
     PatternFixture() : white(), black() {} // Initialize pointers to nullptr
 
     // Member variables
-    Tuple white;
-    Tuple black;
+    Color white;
+    Color black;
 
     void SetUp() override {
-        white = Tuple::color(1, 1, 1, 1);
-        black = Tuple::color(0, 0, 0, 1);
+        white = Color::white();
+        black = Color::black();
     }
 
     void TearDown() override {
@@ -100,9 +100,9 @@ TEST_F(PatternFixture, StripesWithObjectAndPatternTransformation){
 TEST_F(PatternFixture, GradiatentPatternLinearlyInterpolatesBetweenColors){
     GradientPattern p(white, black);
     EXPECT_EQ(p.pattern_color_at(Tuple::point(0, 0, 0)), white);
-    EXPECT_EQ(p.pattern_color_at(Tuple::point(0.25, 0, 0)), Tuple::color(0.75, 0.75, 0.75, 1));
-    EXPECT_EQ(p.pattern_color_at(Tuple::point(0.5, 0, 0)), Tuple::color(0.5, 0.5, 0.5, 1));
-    EXPECT_EQ(p.pattern_color_at(Tuple::point(0.75, 0, 0)), Tuple::color(0.25, 0.25, 0.25, 1));
+    EXPECT_EQ(p.pattern_color_at(Tuple::point(0.25, 0, 0)), Color(0.75, 0.75, 0.75, 1));
+    EXPECT_EQ(p.pattern_color_at(Tuple::point(0.5, 0, 0)), Color(0.5, 0.5, 0.5, 1));
+    EXPECT_EQ(p.pattern_color_at(Tuple::point(0.75, 0, 0)), Color(0.25, 0.25, 0.25, 1));
 }
 
 TEST_F(PatternFixture, RingShouldExtendInBothXAndZ){
@@ -151,8 +151,8 @@ TEST(TestPatternFixture, TestPatternWIthAnObjectTranformation){
     s.set_transform(Transformation::scaling(2));
     TestPattern p;
     s.material.set_pattern(p);
-    Tuple c = s.pattern_at(Tuple::point(2, 3, 4));
-    EXPECT_EQ(c, Tuple::color(1, 1.5, 2, 1));
+    Color c = s.pattern_at(Tuple::point(2, 3, 4));
+    EXPECT_EQ(c, Color(1, 1.5, 2, 1));
 }
 
 TEST(TestPatternFixture, TestPatternWithPatternTranformation){
@@ -160,8 +160,8 @@ TEST(TestPatternFixture, TestPatternWithPatternTranformation){
     TestPattern p;
     p.set_transform(Transformation::scaling(2));
     s.material.set_pattern(p);
-    Tuple c = s.pattern_at(Tuple::point(2, 3, 4));
-    EXPECT_EQ(c, Tuple::color(1, 1.5, 2, 1));
+    Color c = s.pattern_at(Tuple::point(2, 3, 4));
+    EXPECT_EQ(c, Color(1, 1.5, 2, 1));
 }
 
 TEST(TestPatternFixture, TestPatternWithBothObjectAndPatternTranformation){
@@ -171,7 +171,7 @@ TEST(TestPatternFixture, TestPatternWithBothObjectAndPatternTranformation){
     p.set_transform(Transformation::translation(0.5, 1, 1.5));
 
     s.material.set_pattern(p);
-    Tuple c = s.pattern_at(Tuple::point(2.5, 3, 3.5));
-    EXPECT_EQ(c, Tuple::color(0.75, .5, .25, 1));
+    Color c = s.pattern_at(Tuple::point(2.5, 3, 3.5));
+    EXPECT_EQ(c, Color(0.75, .5, .25, 1));
 }
 

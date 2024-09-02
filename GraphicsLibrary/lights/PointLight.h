@@ -6,13 +6,14 @@
 #define RAYTRACERCHAELLENGE_POINTLIGHT_H
 
 #include "../primitives/Tuple.h"
+#include "../primitives/Color.h"
 
 class PointLight {
 public:
     Tuple point; // position
-    Tuple color; // intensity
+    Color color; // intensity
 
-    PointLight(Tuple point, Tuple color);
+    PointLight(Tuple point, Color color);
 };
 
 

@@ -62,5 +62,5 @@ TEST(CameraTestSuite, RenderingAWorldWithACamera){
     c.set_transform(Transformation::view_transform(from, to, up));
 
     Canvas image = Canvas::render(c, w);
-    EXPECT_EQ(image.pixels[5][5], Tuple::color(0.38066, 0.47583, 0.2855, 1) );
+    EXPECT_EQ(image.pixels[5][5], Color(0.38066, 0.47583, 0.2855, 1) );
 }

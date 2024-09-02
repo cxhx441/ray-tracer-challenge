@@ -6,13 +6,14 @@
 #define RAYTRACERCHAELLENGE_MATERIAL_H
 
 #include "../primitives/Tuple.h"
+#include "../primitives/Color.h"
 #include "../patterns/Pattern.h"
 
 class Material {
 private:
     std::vector<std::shared_ptr<Pattern>> patterns;
 public:
-    Tuple color;
+    Color color;
     float ambient;
     float diffuse;
     float specular;
@@ -20,7 +21,7 @@ public:
     float reflective; // 0 to 1 from non-reflective to mirror
 
     Material();
-    Material(Tuple color, float ambient, float diffuse, float specular, float shininess, float reflective);
+    Material(Color color, float ambient, float diffuse, float specular, float shininess, float reflective);
 
     void set_pattern(const Pattern& in_pattern);
 
@@ -28,7 +29,7 @@ public:
 
     bool has_pattern() const;
 
-    Tuple get_pattern_color(const Tuple &model_point) const;
+    Color get_pattern_color(const Tuple &model_point) const;
 
     bool operator==(const Material& other) const;
     bool operator!=(const Material& other) const;

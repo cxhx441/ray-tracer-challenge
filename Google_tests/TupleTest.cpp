@@ -167,37 +167,6 @@ TEST(TupleTestSuite, CrossProductOfTwoTuples) {
     EXPECT_EQ(Tuple::cross(v2, v1), Tuple::vector(1, -2, 1) );
 }
 
-TEST(TupleTestSuite, ColorsAreRGB) {
-    Tuple c = Tuple::color(-0.5, 0.4, 1.7, 1);
-    EXPECT_FLOAT_EQ(c.r(), -0.5);
-    EXPECT_FLOAT_EQ(c.g(), 0.4);
-    EXPECT_FLOAT_EQ(c.b(), 1.7);
-    EXPECT_FLOAT_EQ(c.a(), 1);
-}
-
-TEST(TupleTestSuite, ColorEqualityAfterAddition) {
-    Tuple c1 = Tuple::color(0.9, 0.6, 0.75, 1);
-    Tuple c2 = Tuple::color(0.7, 0.1, 0.25, 1);
-    EXPECT_EQ(c1 + c2, Tuple::color(1.6, 0.7, 1, 2));
-}
-
-TEST(TupleTestSuite, ColorEqualityAfterSubtraction) {
-    Tuple c1 = Tuple::color(0.9, 0.6, 0.75, 1);
-    Tuple c2 = Tuple::color(0.7, 0.1, 0.25, 1);
-    EXPECT_EQ(c1 - c2, Tuple::color(0.2, 0.5, 0.5, 0));
-}
-
-TEST(TupleTestSuite, ColorEqualityAfterScalarMultiplication) {
-    Tuple c1 = Tuple::color(0.2, 0.3, 0.4, 1);
-    EXPECT_EQ(c1 * 2, Tuple::color(0.4, 0.6, 0.8, 2));
-}
-
-TEST(TupleTestSuite, ColorEqualityAfterMultiplication) {
-    Tuple c1 = Tuple::color(1, 0.2, 0.4, 1);
-    Tuple c2 = Tuple::color(0.9, 1, 0.1, 1);
-    EXPECT_EQ(c1 * c2, Tuple::color(0.9, 0.2, 0.04, 1));
-}
-
 TEST(TupleTestSuite, ReflectVectorApproachingAt45Deg) {
     Tuple inV = Tuple::vector(1, -1, 0);
     Tuple n = Tuple::vector(0, 1, 0);

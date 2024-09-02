@@ -10,11 +10,11 @@
 #include <cmath>
 
 Canvas::Canvas(int width, int height) : width(width), height(height){
-    pixels = new Tuple*[height];
+    pixels = new Color*[height];
     for (int h = 0; h < height; ++h){
-        pixels[h] = new Tuple[width];
+        pixels[h] = new Color[width];
     }
-    fill_pixels(Tuple(0, 0, 0, 1));
+    fill_pixels(Color(0, 0, 0));
 };
 
 Canvas::~Canvas() {
@@ -25,7 +25,7 @@ Canvas::~Canvas() {
     delete[] pixels;
 }
 
-void Canvas::fill_pixels(const Tuple& color){
+void Canvas::fill_pixels(const Color &color){
     for (int h = 0; h < height; ++h){
         for (int w = 0; w < width; ++w){
             pixels[h][w] = color;
@@ -33,7 +33,7 @@ void Canvas::fill_pixels(const Tuple& color){
     }
 }
 
-void Canvas::write_pixel(int x, int y, const Tuple& color){
+void Canvas::write_pixel(int x, int y, const Color &color){
     if (x > width - 1 || x < 0 || y > height - 1 || y < 0) {
         throw std::invalid_argument("X or y exceeds the limits of the canvas");
     }
@@ -55,10 +55,10 @@ std::string Canvas::to_ppm_str() {
     for (int h = 0; h < height; ++h) {
         std::string s_row;
         for (int w = 0; w < width; ++w) {
-            Tuple &color = pixels[h][w];
-            int r = map_color_value(color.r(), 255);
-            int g = map_color_value(color.g(), 255);
-            int b = map_color_value(color.b(), 255);
+            Color &color = pixels[h][w];
+            int r = map_color_value(color.r, 255);
+            int g = map_color_value(color.g, 255);
+            int b = map_color_value(color.b, 255);
             int colorRGB[3] = {r, g, b};
             for (int i: colorRGB) {
                 std::string s_color_val = std::to_string(i);
@@ -103,7 +103,7 @@ int Canvas::map_color_value(float colorVal, int maxValue){
 std::ostream& operator<<(std::ostream& os, const Canvas& canvas) {
     for (int h = 0; h < canvas.height; ++h) {
         for (int w = 0; w < canvas.width; ++w) {
-            Tuple c = canvas.pixels[h][w];
+            Color c = canvas.pixels[h][w];
             os << c;
         }
         os << std::endl;
@@ -118,7 +118,7 @@ Canvas Canvas::render(Camera &c, World &w, bool shadows_enabled, int num_reflect
             std::cout << y << " / " << c.vsize << std::endl;
         for (int x = 0; x < c.hsize; ++x){
             Ray r = Camera::ray_for_pixel(c, x, y);
-            Tuple color = w.color_at(r, shadows_enabled, num_reflections);
+            Color color = w.color_at(r, shadows_enabled, num_reflections);
             image.write_pixel(x, y, color);
         }
     }

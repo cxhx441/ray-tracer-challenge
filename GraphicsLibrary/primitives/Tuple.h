@@ -16,15 +16,6 @@ public:
 
     static Tuple point(float x, float y, float z);
     static Tuple vector(float x, float y, float z);
-    static Tuple color(float r, float g, float b, float a);
-    float r() const;
-    float g() const;
-    float b() const;
-    float a() const;
-    void r(float r_val);
-    void g(float g_val);
-    void b(float b_val);
-    void a(float a_val);
 
     float magnitude() const;
     [[nodiscard]] bool isPoint() const;
@@ -43,6 +34,7 @@ public:
     Tuple operator*(float scalar) const;
     Tuple operator*(const Tuple& other) const;
     Tuple operator/(float scalar) const;
+    Tuple operator/(const Tuple &other) const;
     Tuple& operator+=(const Tuple& other);
     Tuple& operator-=(const Tuple& other);
     Tuple& operator*=(float scalar);

@@ -38,7 +38,7 @@ public:
 //    Sphere& operator=(const Sphere& other);     // Copy assignment operator
 //    Sphere& operator=(Sphere&& other) noexcept; // Move assignment operator
 
-    Tuple pattern_at(const Tuple& world_point) const;
+    Color pattern_at(const Tuple& world_point) const;
 
     virtual std::vector<Intersection> intersect(const Ray& world_ray) const final;
     virtual std::vector<Intersection> model_intersect(const Ray& model_ray) const = 0;

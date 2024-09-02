@@ -13,22 +13,21 @@ TEST(CanvasTestSuite, CreateACanvasAllBlack) {
     EXPECT_EQ(c.height, 20);
     for (int h = 0; h < c.height; ++h){
         for (int w = 0; w < c.width; ++w) {
-            EXPECT_EQ(c.pixels[h][w], Tuple::color(0, 0, 0, 1));
+            EXPECT_EQ(c.pixels[h][w], Color::black());
         }
     }
 }
 
 TEST(CanvasTestSuite, WriteToPixel) {
     Canvas c(10, 20);
-    Tuple red = Tuple::color(1, 0, 0, 1);
-    c.write_pixel(2, 3, red);
+    c.write_pixel(2, 3, Color::red());
     for (int h = 0; h < c.height; ++h){
         for (int w = 0; w < c.width; ++w) {
             if (h == 3 && w == 2){
-                EXPECT_EQ(c.pixels[h][w], Tuple::color(1, 0, 0, 1));
+                EXPECT_EQ(c.pixels[h][w], Color::red());
             }
             else
-                EXPECT_EQ(c.pixels[h][w], Tuple::color(0, 0, 0, 1));
+                EXPECT_EQ(c.pixels[h][w], Color::black());
         }
     }
 }
@@ -51,9 +50,9 @@ TEST(CanvasTestSUite, ConstructPPMHeader){
 TEST(CanvasTestSUite, ConstructPPMPixelData){
     Canvas c(5, 3);
 
-    Tuple c1 = Tuple::color(1.5, 0.0, 0.0, 1.0);
-    Tuple c2 = Tuple::color(0.0, 0.5, 0.0, 1.0);
-    Tuple c3 = Tuple::color(-0.5, 0.0, 1.0, 1.0);
+    Color c1 = Color(1.5, 0.0, 0.0, 1.0);
+    Color c2 = Color(0.0, 0.5, 0.0, 1.0);
+    Color c3 = Color(-0.5, 0.0, 1.0, 1.0);
 
     c.write_pixel(0, 0, c1);
     c.write_pixel(2, 1, c2);
@@ -79,7 +78,7 @@ TEST(CanvasTestSUite, ConstructPPMPixelData){
 TEST(CanvasTestSUite, PPMSplitLongLines){
     Canvas c(10, 2);
 
-    Tuple c1 = Tuple::color(1, 0.8, 0.6, 1);
+    Color c1 = Color(1, 0.8, 0.6, 1);
     c.fill_pixels(c1);
 
     std::string ppm = c.to_ppm_str();

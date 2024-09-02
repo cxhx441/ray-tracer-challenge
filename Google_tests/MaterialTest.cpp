@@ -11,7 +11,7 @@
 
 TEST(MaterialTestSuite, DefaultMaterial){
     Material m = Material();
-    EXPECT_EQ(m.color, Tuple::color(1, 1, 1, 1));
+    EXPECT_EQ(m.color, Color::white());
     EXPECT_FLOAT_EQ(m.ambient, 0.1);
     EXPECT_FLOAT_EQ(m.diffuse, 0.9);
     EXPECT_FLOAT_EQ(m.specular, 0.9);
@@ -22,16 +22,16 @@ TEST(MaterialTestSuite, DefaultMaterial){
 
 TEST(MaterialTestSuite, LightingWithPatternApplied){
     Sphere s;
-    StripedPattern p = StripedPattern(Tuple::color(1, 1, 1, 1), Tuple::color(0, 0, 0, 1));
+    StripedPattern p = StripedPattern(Color::white(), Color::black());
     s.material.set_pattern(p);
     s.material.ambient = 1;
     s.material.diffuse = 0;
     s.material.specular = 0;
     Tuple eyev = Tuple::vector(0, 0, -1);
     Tuple normalv = Tuple::vector(0, 0, -1);
-    PointLight light(Tuple::point(0, 0, -10), Tuple::color(1, 1, 1, 1));
-    Tuple c1 = LightingModels::phong_lighting(s.material, s, light, Tuple::point(0.9, 0, 0), eyev, normalv, false);
-    Tuple c2 = LightingModels::phong_lighting(s.material, s, light, Tuple::point(1.1, 0, 0), eyev, normalv, false);
-    EXPECT_EQ(c1, Tuple::color(1, 1, 1, 1));
-    EXPECT_EQ(c2, Tuple::color(0, 0, 0, 1));
+    PointLight light(Tuple::point(0, 0, -10), Color::white());
+    Color c1 = LightingModels::phong_lighting(s.material, s, light, Tuple::point(0.9, 0, 0), eyev, normalv, false);
+    Color c2 = LightingModels::phong_lighting(s.material, s, light, Tuple::point(1.1, 0, 0), eyev, normalv, false);
+    EXPECT_EQ(c1, Color::white());
+    EXPECT_EQ(c2, Color::black());
 }

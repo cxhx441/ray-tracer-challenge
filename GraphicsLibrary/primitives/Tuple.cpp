@@ -16,18 +16,6 @@ Tuple Tuple::vector(float x, float y, float z) {
     return {x, y, z, 0.0f};
 }
 
-Tuple Tuple::color(float r, float g, float b, float a) {
-    return {r, g, b, a};
-}
-float Tuple::r() const { return x; }
-float Tuple::g() const { return y; }
-float Tuple::b() const { return z; }
-float Tuple::a() const { return w; }
-void Tuple::r(float r) { x = r; }
-void Tuple::g(float g) { y = g; }
-void Tuple::b(float b) { z = b; }
-void Tuple::a(float a) { w = a; }
-
 bool Tuple::isPoint() const { return w != 0.0f; }
 bool Tuple::isVector() const { return w == 0.0f; }
 
@@ -117,6 +105,16 @@ Tuple Tuple::operator/(const float scalar) const {
             w / scalar
     };
 }
+
+Tuple Tuple::operator/(const Tuple &other) const {
+    return {
+            x / other.x,
+            y / other.y,
+            z / other.z,
+            w / other.w
+    };
+}
+
 
 Tuple& Tuple::operator+=(const Tuple& other) {
     x += other.x;

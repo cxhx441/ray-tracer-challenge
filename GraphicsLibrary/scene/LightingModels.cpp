@@ -5,33 +5,33 @@
 #include "LightingModels.h"
 #include <cmath>
 
-Tuple LightingModels::phong_lighting(const Material &material, const Shape &shape, const PointLight &light, const Tuple &point, const Tuple &eyev,
+Color LightingModels::phong_lighting(const Material &material, const Shape &shape, const PointLight &light, const Tuple &point, const Tuple &eyev,
                                      const Tuple &normalv, bool is_shadowed) {
 
     // TODO i think this could be simplified by calling a "color_at" function on the shape.
-    Tuple base_color = material.color;
+    Color base_color = material.color;
     if ( material.has_pattern() )
         base_color = shape.pattern_at(point);
 
-    Tuple effective_color = base_color * light.color;
-    Tuple ambient = Tuple();
-    Tuple diffuse = Tuple();
-    Tuple specular = Tuple();
+    Color effective_color = base_color * light.color;
+    Color ambient;
+    Color diffuse;
+    Color specular;
 
     // point to light. Ambient is always added.
     Tuple lightv = Tuple::normalized(light.point - point);
     ambient = effective_color * material.ambient;
 
     if (is_shadowed){
-        ambient.w = 1;
+        ambient.a = 1;
         return ambient;
     }
 
     // if the angle between light and normal is greater than 90 degrees, no diffuse or specular because light is on other side of surface.
     float light_dot_normal = Tuple::dot(lightv, normalv);
     if (light_dot_normal < 0){
-        diffuse = Tuple::color(0, 0, 0, 1);
-        specular = Tuple::color(0, 0, 0, 1);
+        diffuse = Color::black();
+        specular = Color::black();
     }
     else{
         diffuse = effective_color * material.diffuse * light_dot_normal;
@@ -41,13 +41,13 @@ Tuple LightingModels::phong_lighting(const Material &material, const Shape &shap
         // if the angle between reflected ray and the eye vector is greater than or equal to 90 degrees, no specular because light is reflected away from the eye.
         float reflect_dot_eye = Tuple::dot(reflectv, eyev);
         if (reflect_dot_eye <= 0)
-            specular = Tuple::color(0, 0, 0, 1);
+            specular = Color::black();
         else{
-            float factor = pow(reflect_dot_eye, material.shininess);
+            float factor = powf(reflect_dot_eye, material.shininess);
             specular = light.color * material.specular * factor;
         }
     }
-    Tuple lit_color = ambient + diffuse + specular;
-    lit_color.w = 1;
+    Color lit_color = ambient + diffuse + specular;
+    lit_color.a = 1;
     return lit_color;
 }
