@@ -6,6 +6,7 @@
 #include "scene/World.h"
 #include "primitives/Ray.h"
 #include "primitives/Intersection.h"
+#include <cmath>
 
 TEST(WorldTestSuite, CreateDefaultWorld){
     World w = World::DefaultWorld();

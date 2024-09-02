@@ -1353,10 +1353,10 @@ void basic_blended_sphere_patterns_with_reflections_example(){
     ring_sphere.material.set_pattern(rings);
     checkered_sphere.material.set_pattern(checkers);
 
-    striped_sphere.material.add_pattern(stripes_rot);
-    gradient_sphere.material.add_pattern(stripes_rot);
-    ring_sphere.material.add_pattern(stripes_rot);
-    checkered_sphere.material.add_pattern(stripes_rot);
+//    striped_sphere.material.add_pattern(stripes_rot);
+//    gradient_sphere.material.add_pattern(stripes_rot);
+//    ring_sphere.material.add_pattern(stripes_rot);
+//    checkered_sphere.material.add_pattern(stripes_rot);
 
 
     float ref = 0.5;
@@ -1379,7 +1379,7 @@ void basic_blended_sphere_patterns_with_reflections_example(){
 //    world.planes.insert(world.planes.end(), {striped_plane, gradient_plane, ring_plane, checkered_plane} );
     world.lights.push_back(light);
 
-    int factor = 30;
+    int factor = 10;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.set_transform(
             Transformation::view_transform(

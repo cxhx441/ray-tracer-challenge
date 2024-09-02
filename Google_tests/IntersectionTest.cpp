@@ -5,6 +5,7 @@
 #include "gtest/gtest.h"
 #include "primitives/Ray.h"
 #include "scene/World.h"
+#include <cmath>
 
 
 TEST(IntersectionTestSuite, IntersectionEncapsulatesTandShape){
