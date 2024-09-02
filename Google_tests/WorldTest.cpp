@@ -102,7 +102,7 @@ TEST(WorldTestSuite, ShadeHitIsGivenAnIntersectionInShadow) {
     Ray r = Ray(Tuple::point(0, 0, 5), Tuple::vector(0, 0, 1));
     Intersection x = Intersection(4, &s2);
     PreparedComputation comps(x, r);
-    Tuple rendered_color = w.shade_hit(comps);
+    Tuple rendered_color = w.shade_hit(comps, true);
     EXPECT_EQ( rendered_color, Tuple::color(0.1, 0.1, 0.1, 1) );
 }
 
@@ -129,7 +129,7 @@ TEST(WorldTestSuite, ReflectedColorForReflectiveMaterial) {
     Ray r = Ray(Tuple::point(0, 0, -3), Tuple::vector(0, -sqrtf(2)/2, sqrtf(2)/2));
     Intersection x = Intersection(sqrtf(2), &p);
     PreparedComputation comps(x, r);
-    Tuple reflected_color = w.reflected_color(comps);
+    Tuple reflected_color = w.reflected_color(comps, 3);
 //    EXPECT_EQ( reflected_color, Tuple::color(0.19032, 0.2379, 0.14274, 1) );
     EXPECT_EQ( reflected_color, Tuple::color(0.190503, 0.238129, 0.142877, 1) );
 }
@@ -146,7 +146,7 @@ TEST(WorldTestSuite, ShadeHitWithReflectiveMaterial) {
     Ray r = Ray(Tuple::point(0, 0, -3), Tuple::vector(0, -sqrtf(2)/2, sqrtf(2)/2));
     Intersection x = Intersection(sqrtf(2), &p);
     PreparedComputation comps(x, r);
-    Tuple color = w.shade_hit(comps);
+    Tuple color = w.shade_hit(comps, true, 3);
 //    EXPECT_EQ( color, Tuple::color(0.87677, 0.92436, 0.82918, 1) );
     EXPECT_EQ( color, Tuple::color(0.876928, 0.924554, 0.829303, 1) );
 }

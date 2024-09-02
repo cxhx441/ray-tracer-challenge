@@ -49,16 +49,17 @@ std::vector<Intersection> World::intersect_world(Ray &r) {
     return world_xs;
 }
 
-Tuple World::shade_hit(PreparedComputation &precompute, int remaining_reflections) {
+Tuple World::shade_hit(PreparedComputation &precompute, bool shadows_enabled, int remaining_reflections) {
     Tuple surface_color(0, 0, 0, 0);
     for (auto light : lights){
+        bool shadowed = shadows_enabled && is_shadowed(light, precompute.over_point);
         Tuple phong_color = LightingModels::phong_lighting(precompute.object->material,
                                                            *precompute.object,
                                                            light,
                                                            precompute.point,
                                                            precompute.eyev,
                                                            precompute.normalv,
-                                                           is_shadowed(light, precompute.over_point)
+                                                           shadowed
                                                      );
         surface_color += phong_color;
     }
@@ -70,12 +71,12 @@ Tuple World::shade_hit(PreparedComputation &precompute, int remaining_reflection
     return rendered_color;
 }
 
-Tuple World::color_at(Ray &r, int remaining_reflections) {
+Tuple World::color_at(Ray &r, bool shadows_enabled, int remaining_reflections) {
     std::vector<Intersection> xs = intersect_world(r);
     std::optional<Intersection> hit = Intersection::get_hit(xs);
     if (hit != std::nullopt){
         auto comps = PreparedComputation(*hit, r);
-        Tuple rendered_color = shade_hit(comps, remaining_reflections);
+        Tuple rendered_color = shade_hit(comps, shadows_enabled, remaining_reflections);
         return rendered_color;
     }
     return Tuple::color(0, 0, 0, 1);

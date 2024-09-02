@@ -111,14 +111,14 @@ std::ostream& operator<<(std::ostream& os, const Canvas& canvas) {
     return os;
 }
 
-Canvas Canvas::render(Camera &c, World &w) {
+Canvas Canvas::render(Camera &c, World &w, bool shadows, int num_reflections) {
     Canvas image(c.hsize, c.vsize);
     for (int y = 0; y < c.vsize; ++y){
         if (y % 100 == 0)
             std::cout << y << " / " << c.vsize << std::endl;
         for (int x = 0; x < c.hsize; ++x){
             Ray r = Camera::ray_for_pixel(c, x, y);
-            Tuple color = w.color_at(r);
+            Tuple color = w.color_at(r, num_reflections);
             image.write_pixel(x, y, color);
         }
     }
