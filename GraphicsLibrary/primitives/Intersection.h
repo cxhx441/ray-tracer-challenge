@@ -9,8 +9,6 @@
 #include <vector>
 #include <optional>
 
-#define SHADOW_EPSILON 0.001
-
 class Intersection {
 public:
     float t;
@@ -25,7 +23,7 @@ public:
     bool operator>=(const Intersection& other) const;
 
     /** @return the Intersection object with the lowest positive t */
-    static std::optional<Intersection> get_hit(std::vector<Intersection> &xs);
+    static std::optional<Intersection> get_hit(const std::vector<Intersection> &xs);
 };
 
 

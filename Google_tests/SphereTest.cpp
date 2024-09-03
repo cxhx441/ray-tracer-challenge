@@ -140,3 +140,10 @@ TEST(SphereTestSuite, SphereMayBeAssignedMaterial) {
     s.material = m;
     EXPECT_EQ(s.material, m);
 }
+
+TEST(SphereTestSuite, GlassSphere) {
+    Sphere s = Sphere::glass_sphere();
+    EXPECT_EQ(s.get_transform(), Matrix::identity(4));
+    EXPECT_FLOAT_EQ(s.material.transparency, 1);
+    EXPECT_FLOAT_EQ(s.material.refractive_index, 1.5);
+}

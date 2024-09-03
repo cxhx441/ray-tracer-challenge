@@ -162,3 +162,61 @@ TEST(ShadowTestSuite, PrecomputingTheReflectionVector) {
     PreparedComputation comps(i, r);
     EXPECT_EQ(comps.reflectv , Tuple::vector(0, sqrtf(2)/2 , sqrtf(2)/2));
 }
+
+TEST(ShadowTestSuite, PrecomputingN1N2AtVariousIntersections) {
+    Sphere A = Sphere::glass_sphere();
+    Sphere B = Sphere::glass_sphere();
+    Sphere C = Sphere::glass_sphere();
+
+    A.set_transform(Transformation::scaling(2));
+    B.set_transform(Transformation::translation(0, 0, -0.25));
+    C.set_transform(Transformation::translation(0, 0, 0.25));
+
+    A.material.refractive_index = 1.5;
+    B.material.refractive_index = 2.0;
+    C.material.refractive_index = 2.5;
+
+    Ray r(Tuple::point(0, 0, -4), Tuple::vector(0, 0, 1));
+    std::vector<Intersection> xs = {Intersection(2.00, &A),
+                                    Intersection(2.75, &B),
+                                    Intersection(3.25, &C),
+                                    Intersection(4.75, &B),
+                                    Intersection(5.25, &C),
+                                    Intersection(6.00, &A) };
+
+    std::vector<PreparedComputation> comps;
+    for (auto x : xs){
+        comps.push_back(PreparedComputation(x, r, xs));
+    }
+
+    EXPECT_FLOAT_EQ(comps[0].n1, 1.0);
+    EXPECT_FLOAT_EQ(comps[0].n2, 1.5);
+
+    EXPECT_FLOAT_EQ(comps[1].n1, 1.5);
+    EXPECT_FLOAT_EQ(comps[1].n2, 2.0);
+
+    EXPECT_FLOAT_EQ(comps[2].n1, 2.0);
+    EXPECT_FLOAT_EQ(comps[2].n2, 2.5);
+
+    EXPECT_FLOAT_EQ(comps[3].n1, 2.5);
+    EXPECT_FLOAT_EQ(comps[3].n2, 2.5);
+
+    EXPECT_FLOAT_EQ(comps[4].n1, 2.5);
+    EXPECT_FLOAT_EQ(comps[4].n2, 1.5);
+
+    EXPECT_FLOAT_EQ(comps[5].n1, 1.5);
+    EXPECT_FLOAT_EQ(comps[5].n2, 1.0);
+}
+
+TEST(ShadowTestSuite, UnderPointIsOffsetbelowTheSurface) {
+    Ray r(Tuple::point(0, 0, -5), Tuple::vector(0, 0, 1));
+    Sphere shape = Sphere::glass_sphere();
+    shape.set_transform(Transformation::translation(0, 0, 1));
+    Intersection i(5, &shape);
+    std::vector<Intersection> xs = {i};
+
+    PreparedComputation comps = PreparedComputation(i, r, xs);
+
+    EXPECT_GT(comps.under_point.z, REFRACTION_EPSILON/2.f);
+    EXPECT_LT(comps.point.z, comps.under_point.z);
+}

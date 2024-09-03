@@ -35,3 +35,10 @@ TEST(MaterialTestSuite, LightingWithPatternApplied){
     EXPECT_EQ(c1, Color::white());
     EXPECT_EQ(c2, Color::black());
 }
+
+TEST(MaterialTestSuite, TransparencyAndRefractiveIndexForDefaultMaterial){
+    Material m;
+    EXPECT_EQ(m.transparency, 0.0);
+    EXPECT_EQ(m.refractive_index, 1.0);
+}
+

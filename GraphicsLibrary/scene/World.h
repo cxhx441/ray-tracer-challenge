@@ -13,6 +13,8 @@
 #include "../primitives/Intersection.h"
 
 class World {
+private:
+    static bool total_internal_reflection(PreparedComputation &precompute);
 public:
     std::vector<PointLight> lights;
     std::vector<Sphere> spheres;
@@ -22,10 +24,11 @@ public:
     static World DefaultWorld();
 
     std::vector<Intersection> intersect_world(Ray& r);
-    Color shade_hit(PreparedComputation& precompute, bool shadows_enabled=false, int remaining_reflections=0);
-    Color color_at(Ray& r, bool shadows_enabled=false, int remaining_reflections=0);
+    Color shade_hit(PreparedComputation& precompute, bool shadows_enabled=false, int remaining_rays=0);
+    Color color_at(Ray& r, bool shadows_enabled=false, int remaining_rays=0);
     bool is_shadowed(PointLight &l, Tuple &p);
     Color reflected_color(PreparedComputation& precompute, bool shadows_enabled=false, int remaining_reflections=0);
+    Color refracted_color(PreparedComputation& precompute, bool shadows_enabled=false, int remaining_reflections=0);
 
 };
 

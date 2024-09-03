@@ -6,10 +6,16 @@
 #include <cmath>
 #include <utility>
 
+Sphere Sphere::glass_sphere() {
+    Sphere s;
+    s.material.transparency = 1.f;
+    s.material.refractive_index = Material::RefractiveIndices::glass;
+    return s;
+}
+
 Tuple Sphere::model_normal_at(const Tuple &model_point) const {
     return model_point - Tuple::point(0, 0, 0);
 }
-
 std::vector<Intersection> Sphere::model_intersect(const Ray &model_ray) const {
     /**
         Return the times t when the ray intersects the sphere.
@@ -30,3 +36,4 @@ std::vector<Intersection> Sphere::model_intersect(const Ray &model_ray) const {
     float t2 = (-b + (float) sqrt(discriminant))  / ( 2 * a );
     return {Intersection(t1, (void *) this), Intersection(t2, (void *) this)};
 }
+

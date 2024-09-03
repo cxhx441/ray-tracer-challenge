@@ -19,6 +19,8 @@ public:
     float specular;
     float shininess;
     float reflective; // 0 to 1 from non-reflective to mirror
+    float transparency; // 0 to 1 from opaque to see-through
+    float refractive_index; // 1.0 default makes object so no light bending.
 
     Material();
     Material(Color color, float ambient, float diffuse, float specular, float shininess, float reflective);
@@ -30,6 +32,10 @@ public:
     bool has_pattern() const;
 
     Color get_pattern_color(const Tuple &model_point) const;
+
+    struct RefractiveIndices{
+        static constexpr float glass = 1.5;
+    };
 
     bool operator==(const Material& other) const;
     bool operator!=(const Material& other) const;

@@ -4,6 +4,7 @@
 
 #include "World.h"
 #include <algorithm>
+#include <cmath>
 
 World World::DefaultWorld() {
     World w;
@@ -49,7 +50,7 @@ std::vector<Intersection> World::intersect_world(Ray &r) {
     return world_xs;
 }
 
-Color World::shade_hit(PreparedComputation &precompute, bool shadows_enabled, int remaining_reflections) {
+Color World::shade_hit(PreparedComputation &precompute, bool shadows_enabled, int remaining_rays) {
     Color surface_color(0, 0, 0, 0);
     for (auto light : lights){
         bool shadowed = shadows_enabled && is_shadowed(light, precompute.over_point);
@@ -66,17 +67,19 @@ Color World::shade_hit(PreparedComputation &precompute, bool shadows_enabled, in
     // average lights
     surface_color /= (float) lights.size();
 
-    Color rendered_color = surface_color + reflected_color(precompute, shadows_enabled, remaining_reflections);
+    Color reflected_col = reflected_color(precompute, shadows_enabled, remaining_rays);
+    Color refracted_col = refracted_color(precompute, shadows_enabled, remaining_rays);
+    Color rendered_color = surface_color + reflected_col + refracted_col;
     rendered_color.a = 1;
     return rendered_color;
 }
 
-Color World::color_at(Ray &r, bool shadows_enabled, int remaining_reflections) {
+Color World::color_at(Ray &r, bool shadows_enabled, int remaining_rays) {
     std::vector<Intersection> xs = intersect_world(r);
     std::optional<Intersection> hit = Intersection::get_hit(xs);
     if (hit != std::nullopt){
         auto comps = PreparedComputation(*hit, r);
-        Color rendered_color = shade_hit(comps, shadows_enabled, remaining_reflections);
+        Color rendered_color = shade_hit(comps, shadows_enabled, remaining_rays);
         return rendered_color;
     }
     return Color::black();
@@ -103,4 +106,33 @@ Color World::reflected_color(PreparedComputation &precompute, bool shadows_enabl
     Color ref_color = color * precompute.object->material.reflective;
     ref_color.a = 1;
     return ref_color;
+}
+
+Color World::refracted_color(PreparedComputation &precompute, bool shadows_enabled, int remaining_refractions) {
+    if (precompute.object->material.transparency == 0 || remaining_refractions <= 0)
+        return Color::black();
+
+    // check for total internal reflection sin(theta_i) / sin(theta_t) = n2 / n1 ---> i is incoming ray, t is refracted
+    float n_ratio = precompute.n1 / precompute.n2;
+    float cos_i = Tuple::dot(precompute.eyev, precompute.normalv ); // cos(theta_i) same as dot()
+    float sin2_t = powf(n_ratio, 2) * (1 - powf(cos_i, 2)); // trig
+    if ( sin2_t > 1.f ) // total internal reflection
+        return Color::black();
+
+    // otherwise get refracted ray
+    float cos_t = sqrtf(1.0f - sin2_t); // trig identity
+    Tuple refracted_direction = precompute.normalv * (n_ratio * cos_i - cos_t) - precompute.eyev * n_ratio;
+    Ray refracted_ray = Ray(precompute.under_point, refracted_direction);
+    Color color = color_at(refracted_ray, shadows_enabled, remaining_refractions - 1);
+    Color refracted_color = color * precompute.object->material.transparency;
+    refracted_color.a = 1;
+    return refracted_color;
+
+
+
+//    Ray refracted_ray(precompute.under_point, precompute.);
+//    Color color = color_at(reflected_ray, shadows_enabled, remaining_reflections-1);
+//    Color ref_color = color * precompute.object->material.reflective;
+//    ref_color.a = 1;
+    return Color::white();
 }

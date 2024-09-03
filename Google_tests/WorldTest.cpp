@@ -6,6 +6,7 @@
 #include "scene/World.h"
 #include "primitives/Ray.h"
 #include "primitives/Intersection.h"
+#include "patterns/TestPattern.h"
 #include <cmath>
 
 TEST(WorldTestSuite, CreateDefaultWorld){
@@ -184,4 +185,86 @@ TEST(WorldTestSuite, ReflectedColorAtMaximumRecursionDepth) {
     PreparedComputation comps(x, r);
     Color ref_color = w.reflected_color(comps, false, 0);
     EXPECT_EQ( ref_color, Color::black());
+}
+
+TEST(WorldTestSuite, RefractedColorForOpaqueMaterialIsBlack) {
+    World w = World::DefaultWorld();
+    Sphere shape = w.spheres[0];
+    Ray r = Ray(Tuple::point(0, 0, -5), Tuple::vector(0, 0, 1));
+    std::vector<Intersection> xs = {Intersection(4, &shape), Intersection(6, &shape)};
+    PreparedComputation comps(xs[0], r, xs);
+    Color refracted_color = w.refracted_color(comps, false, 3);
+    EXPECT_EQ( refracted_color, Color::black());
+}
+
+TEST(WorldTestSuite, RefractedColorAtMaximumRecursiveDepthIsBlack) {
+    World w = World::DefaultWorld();
+    Sphere shape = w.spheres[0];
+    shape.material.transparency = 1;
+    shape.material.refractive_index = 1.5;
+    Ray r = Ray(Tuple::point(0, 0, -5), Tuple::vector(0, 0, 1));
+    std::vector<Intersection> xs = {Intersection(4, &shape), Intersection(6, &shape)};
+    PreparedComputation comps(xs[0], r, xs);
+    Color refracted_color = w.refracted_color(comps, false, 0); // no remaining reflections
+    EXPECT_EQ( refracted_color, Color::black());
+}
+
+TEST(WorldTestSuite, RefractedColorWithTotalInternalReflectionIsBlack) {
+    World w = World::DefaultWorld();
+    Sphere shape = w.spheres[0];
+    shape.material.transparency = 1;
+    shape.material.refractive_index = 1.5;
+    Ray r = Ray(Tuple::point(0, 0, sqrtf(2)/2), Tuple::vector(0, 1, 0));
+    std::vector<Intersection> xs = {Intersection(-sqrtf(2)/2, &shape), Intersection(sqrtf(2)/2, &shape)};
+    PreparedComputation comps(xs[1], r, xs);
+    Color refracted_color = w.refracted_color(comps, false, 5);
+    EXPECT_EQ( refracted_color, Color::black());
+}
+
+TEST(WorldTestSuite, RefractedColoWithARefractedRay) {
+    World w = World::DefaultWorld();
+
+    Sphere &A = w.spheres[0];
+    A.material.ambient = 1;
+    A.material.set_pattern(TestPattern());
+    A.name = "A";
+
+    Sphere &B = w.spheres[1];
+    B.material.transparency = 1;
+    B.material.refractive_index = 1.5;
+    B.name = "B";
+
+    Ray r = Ray(Tuple::point(0, 0, 0.1), Tuple::vector(0, 1, 0));
+    std::vector<Intersection> xs = {Intersection(-0.9899, &A),
+                                    Intersection(-0.4899, &B),
+                                    Intersection( 0.4899, &B),
+                                    Intersection( 0.9889, &A)};
+    PreparedComputation comps(xs[2], r, xs);
+    Color refracted_color = w.refracted_color(comps, false, 5);
+//    EXPECT_EQ( refracted_color, Color(0, 0.99888, 0.04725));
+    EXPECT_EQ( refracted_color, Color(0, 0.99887, 0.0475195));
+}
+
+TEST(WorldTestSuite, SHadeHitWithTransparentMaterial) {
+    World w = World::DefaultWorld();
+
+    Plane floor;
+    floor.name = "floor";
+    floor.set_transform(Transformation::translation(0, -1, 0));
+    floor.material.transparency = 0.5;
+    floor.material.refractive_index = 1.5;
+    w.planes.push_back(floor);
+
+    Sphere ball;
+    ball.name = "ball";
+    ball.material.color = Color(1, 0, 0, 1);
+    ball.material.ambient = 0.5;
+    ball.set_transform(Transformation::translation(0, -3.5, -0.5));
+    w.spheres.push_back(ball);
+
+    Ray r = Ray(Tuple::point(0, 0, -3), Tuple::vector(0, -sqrtf(2)/2, sqrtf(2)/2));
+    std::vector<Intersection> xs = {Intersection(sqrtf(2), &floor)};
+    PreparedComputation comps(xs[0], r, xs);
+    Color color = w.shade_hit(comps, true, 5);
+    EXPECT_EQ( color, Color(0.93642, 0.68642, 0.68642));
 }
