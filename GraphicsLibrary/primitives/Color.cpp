@@ -19,7 +19,7 @@ Color Color::cyan()    { return {0.00, 1.00, 1.00}; }
 Color Color::white()   { return {1.00, 1.00, 1.00}; }
 Color Color::black()   { return {0.00, 0.00, 0.00}; }
 Color Color::silver()  { return {0.75, 0.75, 0.75}; }
-Color Color::gray()    { return {0.50, 0.50, 0.00}; }
+Color Color::gray()    { return {0.50, 0.50, 0.50}; }
 Color Color::maroon()  { return {0.50, 0.00, 0.00}; };
 Color Color::orange()  { return {1.00, 0.65, 0.00}; };
 Color Color::navy()    { return {0.00, 0.00, 0.50}; };

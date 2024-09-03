@@ -29,6 +29,7 @@ public:
     bool is_shadowed(PointLight &l, Tuple &p);
     Color reflected_color(PreparedComputation& precompute, bool shadows_enabled=false, int remaining_reflections=0);
     Color refracted_color(PreparedComputation& precompute, bool shadows_enabled=false, int remaining_reflections=0);
+    static float schlick_reflectance(PreparedComputation& precompute);
 
 };
 

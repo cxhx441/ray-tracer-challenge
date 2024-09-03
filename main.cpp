@@ -1598,6 +1598,254 @@ void challenge_plane_w_reflections(){
 
 
 }
+
+void glass_spheres(){
+    Plane floor;
+    Plane ceiling;
+    Plane back_wall;
+    Plane front_wall;
+    Plane left_wall;
+    Plane right_wall;
+
+    ceiling.set_transform(Transformation::translation(0, 11, 0) * Transformation::rotation_x(M_PI));
+    back_wall.set_transform(Transformation::translation(0, 0, 3) * Transformation::rotation_x(M_PI_2));
+    front_wall.set_transform(Transformation::translation(0, 0, -11) * Transformation::rotation_x(-M_PI_2));
+    left_wall.set_transform(Transformation::translation(-11, 0, 0) * Transformation::rotation_z(M_PI_2));
+    right_wall.set_transform(Transformation::translation(11, 0, 0) * Transformation::rotation_z(M_PI_2));
+
+    Color red = Color::red();
+    Color green = Color::green();
+    Color blue = Color::blue();
+    Color white = Color::white();
+    floor.material.add_pattern(CheckerPattern(red, white));
+    ceiling.material.add_pattern(CheckerPattern(red, white));
+    back_wall.material.add_pattern(CheckerPattern(green, white));
+    front_wall.material.add_pattern(CheckerPattern(green, white));
+    left_wall.material.add_pattern(CheckerPattern(blue, white));
+    right_wall.material.add_pattern(CheckerPattern(blue, white));
+
+//    floor.material.reflective = .1;
+//    ceiling.material.reflective = .1;
+//    back_wall.material.reflective = .1;
+//    front_wall.material.reflective = .1;
+//    left_wall.material.reflective = .1;
+//    right_wall.material.reflective = .1;
+
+    // Shapes
+    Sphere s1;
+    Sphere s2;
+    Sphere s3;
+    Sphere s4;
+
+    float sphere_size = .9;
+    float delta = 2.2;
+    float two = -delta / 2;
+    float three = delta / 2;
+    float one = two - delta;
+    float four = three + delta;
+
+    float y_up = 1;
+    s1.set_transform(Transformation::translation(one, y_up, 1) * Transformation::scaling(sphere_size));
+    s2.set_transform(Transformation::translation(two, y_up, 1) * Transformation::scaling(sphere_size));
+    s3.set_transform(Transformation::translation(three, y_up, 1) * Transformation::scaling(sphere_size));
+    s4.set_transform(Transformation::translation(four, y_up, 1) * Transformation::scaling(sphere_size));
+
+    s1.material.color = Color::black();
+    s2.material.color = Color::black();
+    s3.material.color = Color::black();
+    s4.material.color = Color::black();
+
+    s1.material.transparency = 1;
+    s2.material.transparency = 1;
+    s3.material.transparency = 1;
+    s4.material.transparency = 1;
+
+    s1.material.refractive_index = 1.5;
+    s2.material.refractive_index = 1.5;
+    s3.material.refractive_index = 1.5;
+    s4.material.refractive_index = 1.5;
+
+    s1.material.reflective = 1;
+    s2.material.reflective = 1;
+    s3.material.reflective = 1;
+    s4.material.reflective = 1;
+
+    PointLight light(Tuple::point(0, 10, 0), Color::white());
+
+    World world;
+    world.spheres.insert(world.spheres.end(), {s1, s2, s3, s4} );
+    world.planes.insert(world.planes.end(), {floor, ceiling, back_wall, front_wall, left_wall, right_wall});//, front_wall, left_wall, right_wall});
+    world.lights.push_back(light);
+
+    int factor = 10;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 4., -5),
+                    Tuple::point(0, 1, 0),
+                    Tuple::vector(0, 1, 0)
+            )
+    );
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(two, 5., 1),
+                    Tuple::point(two, 1, 1),
+                    Tuple::vector(0, 0, 1)
+            )
+    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, world, true, 3);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+}
+
+void single_simple_glass_sphere_checkered_floor(){
+    Plane floor;
+    floor.material.add_pattern(CheckerPattern(Color::blue(), Color::white()));
+
+    Plane ceiling;
+    ceiling.set_transform(Transformation::translation(0, 15, 0));
+    ceiling.material.add_pattern(RingPattern(Color::red(), Color::blue()));
+
+    Sphere orb;
+    orb.material.color = Color::black();
+    orb.set_transform(Transformation::translation(0, 1, 0));
+    orb.material.transparency = 1;
+    orb.material.refractive_index = 1.5;
+    orb.material.reflective = 0;
+    orb.material.diffuse = 0.1;
+    orb.material.ambient = 0.1;
+    orb.material.specular = 1;
+    orb.material.shininess = 300;
+
+    Sphere inner;
+    inner.material.color = Color::black();
+    inner.set_transform(Transformation::translation(0, 1, 0) * Transformation::scaling(0.5));
+    inner.material.transparency = 1;
+    inner.material.refractive_index = 1.0;
+    inner.material.reflective = 0;
+
+    PointLight light(Tuple::point(10, 10, -10), Color::white());
+
+    World world;
+    world.spheres.insert(world.spheres.end(), {orb, inner} );
+    world.planes.insert(world.planes.end(), {floor});
+    world.lights.push_back(light);
+
+    int factor = 10;
+    Camera camera(50*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 6, 0),
+                    Tuple::point(0, 0, 0),
+                    Tuple::vector(0, 0, 1)
+            )
+    );
+
+//    camera.set_transform(
+//            Transformation::view_transform(
+//                    Tuple::point(0, 2, -4),
+//                    Tuple::point(0, 1, 0),
+//                    Tuple::vector(0, 1, 0)
+//            )
+//    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, world, false, 5);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+}
+
+void water_rocks(){
+    World world;
+
+    Plane sky;
+    sky.set_transform(Transformation::translation(0, 20, 0));
+    sky.material.color = Color::cyan();
+
+    Plane water;
+    water.material.transparency = 1;
+    water.material.refractive_index = 1.33;
+//    water.material.color = 1;
+    water.material.reflective = 0;
+    water.material.diffuse = 0.;
+    water.material.ambient = 0.;
+    water.material.specular = 1;
+    water.material.shininess = 300;
+    water.set_transform(Transformation::translation(0, 1, 0));
+    world.planes.insert(world.planes.end(), {water, sky});
+
+    Sphere rock1;
+    Sphere rock2;
+    Sphere rock3;
+    Sphere rock4;
+    rock1.material.color = Color::red();
+    rock2.material.color = Color::green();
+    rock3.material.color = Color::blue();
+    rock4.material.color = Color::orange();
+    rock1.set_transform(Transformation::translation(-1, 0, -1));
+    rock2.set_transform(Transformation::translation(-1, 0, 1));
+    rock3.set_transform(Transformation::translation(1, 0, -1));
+    rock4.set_transform(Transformation::translation(1, 0, 1));
+//    world.spheres.insert(world.spheres.end(), {rock2});
+    world.spheres.insert(world.spheres.end(), {rock1, rock2, rock3, rock4} );
+
+
+    PointLight light(Tuple::point(10, 10, -10), Color::white());
+    world.lights.push_back(light);
+
+//    Sphere center;
+//    world.spheres.push_back(center);
+
+    int factor = 10;
+    Camera camera(50*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 6, 0),
+                    Tuple::point(0, 0, 0),
+                    Tuple::vector(0, 0, 1)
+            )
+    );
+
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 2, -4),
+                    Tuple::point(0, 1, 0),
+                    Tuple::vector(0, 1, 0)
+            )
+    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, world, false, 5);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+}
+
 int main()
 {
 //    challenge_world_w_spheres();
@@ -1623,6 +1871,9 @@ int main()
 //    basic_ring_patterns_sphere_example();
 //    basic_checker_pattern_sphere_example();
 
-    challenge_plane_w_reflections();
+//    challenge_plane_w_reflections();
+//    glass_spheres();
+    single_simple_glass_sphere_checkered_floor();
+//    water_rocks();
     return 0;
 }

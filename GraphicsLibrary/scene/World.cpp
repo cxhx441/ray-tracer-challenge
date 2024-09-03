@@ -69,7 +69,15 @@ Color World::shade_hit(PreparedComputation &precompute, bool shadows_enabled, in
 
     Color reflected_col = reflected_color(precompute, shadows_enabled, remaining_rays);
     Color refracted_col = refracted_color(precompute, shadows_enabled, remaining_rays);
-    Color rendered_color = surface_color + reflected_col + refracted_col;
+    Material material = precompute.object->material;
+    Color rendered_color(0, 0, 0, 0);
+    if ( material.reflective > 0 && material.transparency > 0 ){
+        float reflectance = schlick_reflectance(precompute);
+        rendered_color = surface_color + (reflected_col * reflectance) + (refracted_col * (1 - reflectance));
+    }
+    else
+        rendered_color = surface_color + reflected_col + refracted_col;
+
     rendered_color.a = 1;
     return rendered_color;
 }
@@ -78,7 +86,7 @@ Color World::color_at(Ray &r, bool shadows_enabled, int remaining_rays) {
     std::vector<Intersection> xs = intersect_world(r);
     std::optional<Intersection> hit = Intersection::get_hit(xs);
     if (hit != std::nullopt){
-        auto comps = PreparedComputation(*hit, r);
+        auto comps = PreparedComputation(*hit, r, xs);
         Color rendered_color = shade_hit(comps, shadows_enabled, remaining_rays);
         return rendered_color;
     }
@@ -136,3 +144,26 @@ Color World::refracted_color(PreparedComputation &precompute, bool shadows_enabl
 //    ref_color.a = 1;
     return Color::white();
 }
+
+float World::schlick_reflectance(PreparedComputation &precompute) {
+    float n1 = precompute.n1;
+    float n2 = precompute.n2;
+
+    float cos = Tuple::dot(precompute.eyev, precompute.normalv);
+
+    // total internal reflection can only occur if n1 > n2
+    if ( n1 > n2 ){
+        float n_ratio = n1 / n2;
+        float sin2_t = powf(n_ratio, 2) * (1 - powf(cos, 2)); // trig
+        if ( sin2_t > 1.0 )
+            return 1.0;
+
+        float cos_t = sqrtf(1.0f - sin2_t); // trig identity
+
+        // when n1 > n2, use cos(theta_t) instead
+        cos = cos_t;
+    }
+    float r0 = powf((n1 - n2) / (n1 + n2), 2);
+    return r0 + (1 - r0) * powf(1 - cos, 5);
+}
+

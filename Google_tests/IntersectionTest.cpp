@@ -220,3 +220,32 @@ TEST(ShadowTestSuite, UnderPointIsOffsetbelowTheSurface) {
     EXPECT_GT(comps.under_point.z, REFRACTION_EPSILON/2.f);
     EXPECT_LT(comps.point.z, comps.under_point.z);
 }
+
+TEST(SchlickReflectanceTestSuite, SchlickAppoxUnderTotalInternalReflection) {
+    Sphere shape = Sphere::glass_sphere();
+    Ray r(Tuple::point(0, 0, sqrtf(2)/2), Tuple::vector(0, 1, 0));
+    std::vector<Intersection> xs = {{-sqrtf(2)/2, &shape}, {sqrtf(2)/2, &shape}};
+    PreparedComputation comps = PreparedComputation(xs[1], r, xs);
+    float reflectance = World::schlick_reflectance(comps);
+    EXPECT_FLOAT_EQ(reflectance, 1);
+}
+
+TEST(SchlickReflectanceTestSuite, SchlickAppoxWithPerpendicularViewingAngle) {
+    Sphere shape = Sphere::glass_sphere();
+    Ray r(Tuple::point(0, 0, 0), Tuple::vector(0, 1, 0));
+    std::vector<Intersection> xs = {{-1, &shape}, {1, &shape}};
+    PreparedComputation comps = PreparedComputation(xs[1], r, xs);
+    float reflectance = World::schlick_reflectance(comps);
+    EXPECT_FLOAT_EQ(reflectance, 0.04);
+}
+
+TEST(SchlickReflectanceTestSuite, SchlickAppoxWithSmallAngleAndN2GreaterThanN1) {
+    Sphere shape = Sphere::glass_sphere();
+    Ray r(Tuple::point(0, 0.99, -2), Tuple::vector(0, 0, 1));
+    std::vector<Intersection> xs = {{1.8589, &shape}};
+    PreparedComputation comps = PreparedComputation(xs[0], r, xs);
+    float reflectance = World::schlick_reflectance(comps);
+//    EXPECT_FLOAT_EQ(reflectance, 0.48873);
+    EXPECT_FLOAT_EQ(reflectance, 0.4887307);
+}
+

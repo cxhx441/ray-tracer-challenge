@@ -245,7 +245,7 @@ TEST(WorldTestSuite, RefractedColoWithARefractedRay) {
     EXPECT_EQ( refracted_color, Color(0, 0.99887, 0.0475195));
 }
 
-TEST(WorldTestSuite, SHadeHitWithTransparentMaterial) {
+TEST(WorldTestSuite, ShadeHitWithTransparentMaterial) {
     World w = World::DefaultWorld();
 
     Plane floor;
@@ -267,4 +267,29 @@ TEST(WorldTestSuite, SHadeHitWithTransparentMaterial) {
     PreparedComputation comps(xs[0], r, xs);
     Color color = w.shade_hit(comps, true, 5);
     EXPECT_EQ( color, Color(0.93642, 0.68642, 0.68642));
+}
+
+TEST(WorldTestSuite, ShadeHitWithReflectiveAndTransparentMaterial) {
+    World w = World::DefaultWorld();
+    Ray r = Ray(Tuple::point(0, 0, -3), Tuple::vector(0, -sqrtf(2)/2, sqrtf(2)/2));
+
+    Plane floor;
+    floor.name = "floor";
+    floor.set_transform(Transformation::translation(0, -1, 0));
+    floor.material.reflective = 0.5;
+    floor.material.transparency = 0.5;
+    floor.material.refractive_index = 1.5;
+    w.planes.push_back(floor);
+
+    Sphere ball;
+    ball.name = "ball";
+    ball.material.color = Color(1, 0, 0, 1);
+    ball.material.ambient = 0.5;
+    ball.set_transform(Transformation::translation(0, -3.5, -0.5));
+    w.spheres.push_back(ball);
+
+    std::vector<Intersection> xs = {Intersection(sqrtf(2), &floor)};
+    PreparedComputation comps(xs[0], r, xs);
+    Color color = w.shade_hit(comps, true, 5);
+    EXPECT_EQ( color, Color(0.93391, 0.69643, 0.69243));
 }
