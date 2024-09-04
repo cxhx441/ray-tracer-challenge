@@ -8,6 +8,7 @@
 #include "../lights/PointLight.h"
 #include "../shapes/Sphere.h"
 #include "../shapes/Plane.h"
+#include "../shapes/HollowGlassSphere.h"
 #include "PreparedComputation.h"
 #include "LightingModels.h"
 #include "../primitives/Intersection.h"
@@ -22,6 +23,16 @@ public:
 
     World() = default;
     static World DefaultWorld();
+
+    void add(const PointLight &in_pointlight) ;
+    void add(const Sphere &in_sphere) ;
+    void add(const Plane &in_plane) ;
+    void add(const std::vector<PointLight> &in_pointlights) ;
+    void add(const std::vector<Sphere> &in_spheres) ;
+    void add(const std::vector<Plane> &in_planes) ;
+
+    void add(const HollowGlassSphere &hollow_glass_sphere) ;
+    void add(const std::vector<HollowGlassSphere> &hollow_glass_spheres) ;
 
     std::vector<Intersection> intersect_world(Ray& r);
     Color shade_hit(PreparedComputation& precompute, bool shadows_enabled=false, int remaining_rays=0);

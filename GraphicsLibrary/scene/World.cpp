@@ -28,6 +28,29 @@ World World::DefaultWorld() {
     return w;
 }
 
+void World::add(const PointLight &in_pointlight) { lights.push_back(in_pointlight); }
+void World::add(const Sphere &in_sphere) { spheres.push_back(in_sphere); }
+void World::add(const Plane &in_plane) { planes.push_back(in_plane); }
+void World::add(const std::vector<PointLight> &in_pointlights) {
+    lights.insert(lights.end(), in_pointlights.begin(), in_pointlights.end());
+}
+void World::add(const std::vector<Sphere> &in_spheres) {
+    spheres.insert(spheres.end(), in_spheres.begin(), in_spheres.end());
+}
+void World::add(const std::vector<Plane> &in_planes) {
+    planes.insert(planes.end(), in_planes.begin(), in_planes.end());
+}
+
+void World::add(const HollowGlassSphere &hollow_glass_sphere) {
+    add(hollow_glass_sphere.inner);
+    add(hollow_glass_sphere.outer);
+}
+
+void World::add(const std::vector<HollowGlassSphere> &hollow_glass_spheres) {
+    for (const auto &hs : hollow_glass_spheres)
+        add(hs);
+}
+
 std::vector<Intersection> World::intersect_world(Ray &r) {
     std::vector<Intersection> world_xs;
     // Iterate over Spheres.
@@ -166,4 +189,5 @@ float World::schlick_reflectance(PreparedComputation &precompute) {
     float r0 = powf((n1 - n2) / (n1 + n2), 2);
     return r0 + (1 - r0) * powf(1 - cos, 5);
 }
+
 

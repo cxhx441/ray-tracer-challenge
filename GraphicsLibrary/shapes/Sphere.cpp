@@ -6,7 +6,7 @@
 #include <cmath>
 #include <utility>
 
-Sphere Sphere::glass_sphere() {
+Sphere Sphere::solid_glass_sphere() {
     Sphere s;
     s.material.transparency = 1.f;
     s.material.refractive_index = Material::RefractiveIndices::glass;

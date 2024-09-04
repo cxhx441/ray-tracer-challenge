@@ -540,6 +540,7 @@ void non_transformed_patterns(){
     World world;
 
     world.spheres.insert(world.spheres.end(), {origin, redDome, blueDisk, blueDome, redDisk} );
+    world.spheres.insert(world.spheres.end(), {origin, redDome, blueDisk, blueDome, redDisk} );
 
     world.planes.insert(world.planes.end(), {floor, back_wall});
 
