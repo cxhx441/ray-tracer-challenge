@@ -26,7 +26,7 @@ public:
     Tuple under_point;
     float n1, n2; // refractive indices of the material being exited, entered.
 
-    PreparedComputation(Intersection &hit, Ray &r, const std::vector<Intersection> &xs = {});
+    PreparedComputation(Intersection &hit, Ray &r, const std::vector<Intersection> &xs);
     ~PreparedComputation() = default;
 };
 

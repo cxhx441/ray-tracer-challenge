@@ -69,7 +69,7 @@ TEST(WorldTestSuite, PrecomputeStateOfIntersection) {
     Ray r = Ray(Tuple::point(0, 0, -5), Tuple::vector(0, 0, 1));
     Sphere shape = Sphere();
     Intersection i = Intersection(4, &shape);
-    PreparedComputation comps(i, r);
+    PreparedComputation comps(i, r, {});
     EXPECT_EQ(comps.t, i.t);
     EXPECT_EQ(comps.object, &shape);
     EXPECT_EQ(comps.point, Tuple::point(0, 0, -1) );
@@ -81,7 +81,7 @@ TEST(WorldTestSuite, HitWhenIntersectionOccursOnOutsideOfShape) {
     Ray r = Ray(Tuple::point(0, 0, -5), Tuple::vector(0, 0, 1));
     Sphere shape = Sphere();
     Intersection i = Intersection(4, &shape);
-    PreparedComputation comps(i, r);
+    PreparedComputation comps(i, r, {});
     EXPECT_FALSE(comps.inside);
 }
 
@@ -89,7 +89,7 @@ TEST(WorldTestSuite, HitWhenIntersectionOccursOnInsideOfShape) {
     Ray r = Ray(Tuple::point(0, 0, 0), Tuple::vector(0, 0, 1));
     Sphere shape = Sphere();
     Intersection i = Intersection(1, &shape);
-    PreparedComputation comps(i, r);
+    PreparedComputation comps(i, r, {});
     EXPECT_EQ(comps.point, Tuple::point(0, 0, 1) );
     EXPECT_EQ(comps.eyev, Tuple::vector(0, 0, -1) );
     EXPECT_TRUE(comps.inside);
@@ -150,7 +150,7 @@ TEST(ShadowTestSuite, HitShouldOffsetThePoint) {
     Sphere shape;
     shape.set_transform(Transformation::translation(0, 0, 1));
     Intersection i = Intersection(5, &shape);
-    PreparedComputation comps(i, r);
+    PreparedComputation comps(i, r, {});
     EXPECT_LT(comps.over_point.z , -SHADOW_EPSILON/2 ) ;
     EXPECT_GT(comps.point.z , comps.over_point.z);
 }
@@ -159,7 +159,7 @@ TEST(ShadowTestSuite, PrecomputingTheReflectionVector) {
     Plane shape;
     Ray r(Tuple::point(0, 1, -1), Tuple::vector(0, -sqrtf(2)/2 , sqrtf(2)/2));
     Intersection i = Intersection(sqrtf(2), &shape);
-    PreparedComputation comps(i, r);
+    PreparedComputation comps(i, r, {});
     EXPECT_EQ(comps.reflectv , Tuple::vector(0, sqrtf(2)/2 , sqrtf(2)/2));
 }
 

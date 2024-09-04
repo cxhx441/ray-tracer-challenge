@@ -1608,7 +1608,7 @@ void glass_spheres(){
     Plane right_wall;
 
     ceiling.set_transform(Transformation::translation(0, 11, 0) * Transformation::rotation_x(M_PI));
-    back_wall.set_transform(Transformation::translation(0, 0, 3) * Transformation::rotation_x(M_PI_2));
+    back_wall.set_transform(Transformation::translation(0, 0, 6) * Transformation::rotation_x(M_PI_2));
     front_wall.set_transform(Transformation::translation(0, 0, -11) * Transformation::rotation_x(-M_PI_2));
     left_wall.set_transform(Transformation::translation(-11, 0, 0) * Transformation::rotation_z(M_PI_2));
     right_wall.set_transform(Transformation::translation(11, 0, 0) * Transformation::rotation_z(M_PI_2));
@@ -1636,6 +1636,8 @@ void glass_spheres(){
     Sphere s2;
     Sphere s3;
     Sphere s4;
+    Sphere s2_in;
+    Sphere s4_in;
 
     float sphere_size = .9;
     float delta = 2.2;
@@ -1650,34 +1652,77 @@ void glass_spheres(){
     s3.set_transform(Transformation::translation(three, y_up, 1) * Transformation::scaling(sphere_size));
     s4.set_transform(Transformation::translation(four, y_up, 1) * Transformation::scaling(sphere_size));
 
+    s2_in.set_transform(Transformation::translation(two, y_up, 1) * Transformation::scaling(sphere_size-0.04));
+    s4_in.set_transform(Transformation::translation(four, y_up, 1) * Transformation::scaling(sphere_size-0.04));
+
     s1.material.color = Color::black();
     s2.material.color = Color::black();
     s3.material.color = Color::black();
     s4.material.color = Color::black();
+    s2_in.material.color = Color::black();
+    s4_in.material.color = Color::black();
+    auto rings = RingPattern(Color::orange(), Color::blue());
+    rings.set_transform(Transformation::rotation_x(-M_PI_2/2) * Transformation::scaling(0.05));
+    s2.material.set_pattern(rings);
+    s3.material.set_pattern(rings);
 
     s1.material.transparency = 1;
-    s2.material.transparency = 1;
-    s3.material.transparency = 1;
+    s2.material.transparency = .8;
+    s3.material.transparency = .7;
     s4.material.transparency = 1;
+    s2_in.material.transparency = 1;
+    s4_in.material.transparency = 1;
 
     s1.material.refractive_index = 1.5;
     s2.material.refractive_index = 1.5;
     s3.material.refractive_index = 1.5;
     s4.material.refractive_index = 1.5;
+    s2_in.material.refractive_index = 1.;
+    s4_in.material.refractive_index = 1.;
 
     s1.material.reflective = 1;
     s2.material.reflective = 1;
     s3.material.reflective = 1;
     s4.material.reflective = 1;
+    s2_in.material.reflective = 1;
+    s4_in.material.reflective = 1;
+
+//    Sphere orb;
+    s1.material.diffuse = 0.1;
+    s2.material.diffuse = 0.3;
+    s3.material.diffuse = 0.3;
+    s4.material.diffuse = 0.1;
+    s1.material.ambient = 0.1;
+    s2.material.ambient = 0.1;
+    s3.material.ambient = 0.1;
+    s4.material.ambient = 0.1;
+    s1.material.specular = 1;
+    s2.material.specular = 1;
+    s3.material.specular = 1;
+    s4.material.specular = 1;
+    s1.material.shininess = 300;
+    s2.material.shininess = 300;
+    s3.material.shininess = 300;
+    s4.material.shininess = 300;
+    s2_in.material.diffuse = 0.1;
+    s4_in.material.diffuse = 0.1;
+    s2_in.material.ambient = 0.1;
+    s4_in.material.ambient = 0.1;
+    s2_in.material.specular = 1;
+    s4_in.material.specular = 1;
+    s2_in.material.shininess = 300;
+    s4_in.material.shininess = 300;
+
 
     PointLight light(Tuple::point(0, 10, 0), Color::white());
 
     World world;
     world.spheres.insert(world.spheres.end(), {s1, s2, s3, s4} );
+    world.spheres.insert(world.spheres.end(), {s2_in, s4_in} );
     world.planes.insert(world.planes.end(), {floor, ceiling, back_wall, front_wall, left_wall, right_wall});//, front_wall, left_wall, right_wall});
     world.lights.push_back(light);
 
-    int factor = 10;
+    int factor = 60;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.set_transform(
             Transformation::view_transform(
@@ -1686,17 +1731,17 @@ void glass_spheres(){
                     Tuple::vector(0, 1, 0)
             )
     );
-    camera.set_transform(
-            Transformation::view_transform(
-                    Tuple::point(two, 5., 1),
-                    Tuple::point(two, 1, 1),
-                    Tuple::vector(0, 0, 1)
-            )
-    );
+//    camera.set_transform(
+//            Transformation::view_transform(
+//                    Tuple::point(two, 5., 1),
+//                    Tuple::point(two, 1, 1),
+//                    Tuple::vector(0, 0, 1)
+//            )
+//    );
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    Canvas canvas = Canvas::render(camera, world, true, 3);
+    Canvas canvas = Canvas::render(camera, world, false, 5);
 
     auto stop = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = stop - start;
@@ -1718,10 +1763,10 @@ void single_simple_glass_sphere_checkered_floor(){
 
     Sphere orb;
     orb.material.color = Color::black();
-    orb.set_transform(Transformation::translation(0, 1, 0));
+    orb.set_transform(Transformation::translation(0, 1.01, 0));
     orb.material.transparency = 1;
     orb.material.refractive_index = 1.5;
-    orb.material.reflective = 0;
+    orb.material.reflective = 1;
     orb.material.diffuse = 0.1;
     orb.material.ambient = 0.1;
     orb.material.specular = 1;
@@ -1729,10 +1774,10 @@ void single_simple_glass_sphere_checkered_floor(){
 
     Sphere inner;
     inner.material.color = Color::black();
-    inner.set_transform(Transformation::translation(0, 1, 0) * Transformation::scaling(0.5));
+    inner.set_transform(Transformation::translation(0, 1.01, 0) * Transformation::scaling(0.5));
     inner.material.transparency = 1;
     inner.material.refractive_index = 1.0;
-    inner.material.reflective = 0;
+    inner.material.reflective = 1;
 
     PointLight light(Tuple::point(10, 10, -10), Color::white());
 
@@ -1741,11 +1786,11 @@ void single_simple_glass_sphere_checkered_floor(){
     world.planes.insert(world.planes.end(), {floor});
     world.lights.push_back(light);
 
-    int factor = 10;
+    int factor = 30;
     Camera camera(50*factor, 50*factor, M_PI/3.f);
     camera.set_transform(
             Transformation::view_transform(
-                    Tuple::point(0, 6, 0),
+                    Tuple::point(0, 3, 0),
                     Tuple::point(0, 0, 0),
                     Tuple::vector(0, 0, 1)
             )
@@ -1872,8 +1917,8 @@ int main()
 //    basic_checker_pattern_sphere_example();
 
 //    challenge_plane_w_reflections();
-//    glass_spheres();
-    single_simple_glass_sphere_checkered_floor();
+    glass_spheres();
+//    single_simple_glass_sphere_checkered_floor();
 //    water_rocks();
     return 0;
 }

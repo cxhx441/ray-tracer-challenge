@@ -31,8 +31,6 @@ PreparedComputation::PreparedComputation(Intersection &hit, Ray &r, const std::v
 
 void PreparedComputation::set_refraction_details( Intersection &hit, const std::vector<Intersection> &xs ){
     std::vector<void*> containers;
-//    std::vector<Intersection> new_xs = xs;
-//    new_xs.push_back(hit);
 
     for ( auto i : xs ){
         // For N1
