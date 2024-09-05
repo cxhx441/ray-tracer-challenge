@@ -24,9 +24,8 @@ public:
     // virtual destructor
     virtual ~Shape() = default;
 
-    // virtual method to clone the shape
-//    virtual Shape* clone() const = 0;
     std::string name = "not_given";
+    bool casts_shadow = true;
 
     void set_transform(const Matrix& m);
     Matrix get_transform() const;

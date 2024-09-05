@@ -34,7 +34,7 @@ public:
     void add(const HollowGlassSphere &hollow_glass_sphere) ;
     void add(const std::vector<HollowGlassSphere> &hollow_glass_spheres) ;
 
-    std::vector<Intersection> intersect_world(Ray& r);
+    std::vector<Intersection> intersect_world(Ray& r, bool for_shadows=false);
     Color shade_hit(PreparedComputation& precompute, bool shadows_enabled=false, int remaining_rays=0);
     Color color_at(Ray& r, bool shadows_enabled=false, int remaining_rays=0);
     bool is_shadowed(PointLight &l, Tuple &p);

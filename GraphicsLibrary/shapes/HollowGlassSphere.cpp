@@ -15,6 +15,7 @@ HollowGlassSphere::HollowGlassSphere() {
     outer.material.shininess = 300;
 
     inner.material.color = Color::black();
+    inner.casts_shadow = false;
     inner.set_transform(Transformation::scaling(0.99));
     inner.material.transparency = 1;
     inner.material.refractive_index = 1.0;

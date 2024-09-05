@@ -1842,6 +1842,7 @@ void water_rocks(){
     sky.material.color = Color::cyan();
 
     Plane water;
+    water.casts_shadow = false;
     water.material.transparency = 1;
     water.material.refractive_index = 1.33;
 //    water.material.color = 1;
@@ -1850,7 +1851,7 @@ void water_rocks(){
     water.material.ambient = 0.;
     water.material.specular = 1;
     water.material.shininess = 300;
-    water.set_transform(Transformation::translation(0, 1, 0));
+    water.set_transform(Transformation::translation(0, 1.01, 0));
     world.planes.insert(world.planes.end(), {water, sky});
 
     Sphere rock1;
@@ -1895,7 +1896,7 @@ void water_rocks(){
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    Canvas canvas = Canvas::render(camera, world, false, 5);
+    Canvas canvas = Canvas::render(camera, world, true, 5);
 
     auto stop = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = stop - start;
@@ -1924,20 +1925,12 @@ void glass_spheres_class(){
     hgs_front.set_color(Color::maroon());
     world.add(hgs_front);
 
-//    auto orb = Sphere::solid_glass_sphere();
-//    orb.set_transform(Transformation::translation(0, 0, 3));
-//    world.add(orb);
-
-//    auto hgs_rear = HollowGlassSphere();
-//    hgs_rear.set_transform(Transformation::translation(0, 0, 3));
-//    world.add(hgs_rear);
-
     int factor = 10;
     Camera camera = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
 //    Camera camera = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
 //    Camera camera = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
 
-    render_time_and_save(camera, world, false, 4, __FUNCTION__);
+    render_time_and_save(camera, world, true, 4, __FUNCTION__);
 }
 
 void glass_spheres_recursive(){
@@ -2012,8 +2005,8 @@ int main()
 //    challenge_plane_w_reflections();
 //    glass_spheres();
 //    single_simple_glass_sphere_checkered_floor();
-    water_rocks();
-//    glass_spheres_class();
+//    water_rocks();
+    glass_spheres_class();
 //    glass_spheres_recursive();
     return 0;
 }

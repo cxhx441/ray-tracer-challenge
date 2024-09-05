@@ -51,10 +51,13 @@ void World::add(const std::vector<HollowGlassSphere> &hollow_glass_spheres) {
         add(hs);
 }
 
-std::vector<Intersection> World::intersect_world(Ray &r) {
+std::vector<Intersection> World::intersect_world(Ray &r, bool for_shadows) {
     std::vector<Intersection> world_xs;
     // Iterate over Spheres.
     for (auto& sphere : spheres){
+        if ( for_shadows && !sphere.casts_shadow )
+            continue;
+
         std::vector<Intersection> object_xs = sphere.intersect(r);
         for (auto& x : object_xs){
             world_xs.push_back(x);
@@ -63,6 +66,9 @@ std::vector<Intersection> World::intersect_world(Ray &r) {
 
     // Iterate over Planes.
     for (auto& plane : planes){
+        if ( for_shadows && !plane.casts_shadow )
+            continue;
+
         std::vector<Intersection> object_xs = plane.intersect(r);
         for (auto& x : object_xs){
             world_xs.push_back(x);
@@ -121,7 +127,7 @@ bool World::is_shadowed(PointLight &l, Tuple &p) {
     float distance = p_to_light.magnitude();
     Tuple direction = Tuple::normalized(p_to_light);
     Ray r(p, direction);
-    std::vector<Intersection> xs = intersect_world(r);
+    std::vector<Intersection> xs = intersect_world(r, true);
     std::optional<Intersection> hit = Intersection::get_hit(xs);
     if (hit != std::nullopt && hit->t < distance)
         return true;
