@@ -10,6 +10,21 @@
 #include <cmath>
 #include <chrono>
 
+void render_time_and_save(Camera &camera, World &world, bool shadows_enabled, int num_reflections, std::string function_name){
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, world, shadows_enabled, num_reflections);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(function_name + "_" + std::to_string(shadows_enabled) + "shad_" + std::to_string(num_reflections) + "ref");
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+}
+
 struct Projectile
 {
     Tuple position;
@@ -1892,6 +1907,83 @@ void water_rocks(){
     canvas.to_ppm_file(filename);
 }
 
+void glass_spheres_class(){
+    auto world = World();
+
+    auto pointlight = PointLight(Tuple::point(10, 10, -10), Color::white());
+    world.add(pointlight);
+
+    auto plane = Plane();
+    auto checkers = CheckerPattern();
+//    checkers.set_transform(Transformation::scaling(0.66));
+    plane.material.set_pattern(checkers);
+    plane.set_transform(Transformation::translation(0, -1.01, 0));
+    world.add(plane);
+
+    auto hgs_front = HollowGlassSphere();
+    hgs_front.set_color(Color::maroon());
+    world.add(hgs_front);
+
+//    auto orb = Sphere::solid_glass_sphere();
+//    orb.set_transform(Transformation::translation(0, 0, 3));
+//    world.add(orb);
+
+//    auto hgs_rear = HollowGlassSphere();
+//    hgs_rear.set_transform(Transformation::translation(0, 0, 3));
+//    world.add(hgs_rear);
+
+    int factor = 10;
+    Camera camera = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
+//    Camera camera = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
+//    Camera camera = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
+
+    render_time_and_save(camera, world, false, 4, __FUNCTION__);
+}
+
+void glass_spheres_recursive(){
+    auto world = World();
+
+    auto pointlight = PointLight(Tuple::point(10, 5, -10), Color::white());
+    world.add(pointlight);
+
+    auto plane = Plane();
+    auto checkers = CheckerPattern();
+    plane.material.set_pattern(checkers);
+    plane.set_transform(Transformation::translation(0, -1.01, 0));
+    world.add(plane);
+
+    auto hgs0 = HollowGlassSphere();
+    auto hgs1 = HollowGlassSphere();
+    auto hgs2 = HollowGlassSphere();
+    auto hgs3 = HollowGlassSphere();
+    auto hgs4 = HollowGlassSphere();
+
+    hgs1.set_transform(Transformation::translation(-0.30, 0.00, -0.30) * Transformation::scaling(0.85));
+    hgs2.set_transform(Transformation::translation(0.20, 0.20, 0.20) * Transformation::scaling(0.7));
+//    hgs3.set_transform(Transformation::translation(0.00, 0.00, 0.00) * Transformation::scaling(0.4));
+//    hgs4.set_transform(Transformation::translation(0.00, 0.00, 0.00) * Transformation::scaling(0.2));
+
+    world.add(hgs0);
+    world.add(hgs1);
+    world.add(hgs2);
+//    world.add(hgs3);
+//    world.add(hgs4);
+
+    int factor = 20;
+    Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
+    Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
+    Camera camera_bird = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
+
+    // num refractions needs to be 2 * num overlapping spheres. each hollow glass is 2 spheres. so 4 * num hgs;
+//    render_time_and_save(camera_elv, world, true, 2 * world.spheres.size(), __FUNCTION__);
+//    render_time_and_save(camera_elv, world, false, 2 * world.spheres.size(), __FUNCTION__);
+//    render_time_and_save(camera_ang, world, true, 2 * world.spheres.size(), __FUNCTION__);
+    render_time_and_save(camera_ang, world, false, 2 * world.spheres.size(), __FUNCTION__);
+//    render_time_and_save(camera_bird, world, true, 2 * world.spheres.size(), __FUNCTION__);
+    render_time_and_save(camera_bird, world, false, 2 * world.spheres.size(), __FUNCTION__);
+
+}
+
 int main()
 {
 //    challenge_world_w_spheres();
@@ -1918,8 +2010,10 @@ int main()
 //    basic_checker_pattern_sphere_example();
 
 //    challenge_plane_w_reflections();
-    glass_spheres();
+//    glass_spheres();
 //    single_simple_glass_sphere_checkered_floor();
-//    water_rocks();
+    water_rocks();
+//    glass_spheres_class();
+//    glass_spheres_recursive();
     return 0;
 }

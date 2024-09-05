@@ -15,7 +15,11 @@ public:
     HollowGlassSphere();
     ~HollowGlassSphere() = default;
 
+    void set_color(const Color &color);
+    void set_pattern(const Pattern &pattern);
+
     void add_transform(const Matrix &transform);
+    void set_transform(const Matrix &transform);
 };
 
 

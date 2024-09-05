@@ -7,6 +7,7 @@
 #include "primitives/Ray.h"
 #include "primitives/Intersection.h"
 #include "patterns/TestPattern.h"
+#include "shapes/HollowGlassSphere.h"
 #include <cmath>
 
 TEST(WorldTestSuite, CreateDefaultWorld){
@@ -292,4 +293,13 @@ TEST(WorldTestSuite, ShadeHitWithReflectiveAndTransparentMaterial) {
     PreparedComputation comps(xs[0], r, xs);
     Color color = w.shade_hit(comps, true, 5);
     EXPECT_EQ( color, Color(0.93391, 0.69643, 0.69243));
+}
+
+TEST(WorldTestSuite, CanAddHollowGlassSphere) {
+    World w;
+    auto hgs = HollowGlassSphere();
+    w.add(hgs);
+    EXPECT_EQ(w.spheres.size(), 2);
+    EXPECT_EQ(w.spheres[0].material.refractive_index, 1);
+    EXPECT_EQ(w.spheres[1].material.refractive_index, 1.5);
 }

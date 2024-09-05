@@ -10,10 +10,11 @@
 #include "../primitives/Color.h"
 
 class RadialGradientPattern : public Pattern{
-private:
-    Color color_a;
-    Color color_b;
 public:
+    Color color_a = Color::black();
+    Color color_b = Color::white();
+
+    RadialGradientPattern() = default;
     RadialGradientPattern(Color color_a, Color color_b);
 
     Color pattern_color_at(const Tuple &pattern_point) const override;
