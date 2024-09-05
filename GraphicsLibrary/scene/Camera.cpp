@@ -85,6 +85,18 @@ Camera Camera::unit_sphere_plane_angled(int h, int v) {
     return camera;
 }
 
+Camera Camera::unit_sphere_plane_isometric(int h, int v) {
+    Camera camera(h, v, M_PI/4.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(2, 2, -2),
+                    Tuple::point(0, 0.5, 0),
+                    Tuple::vector(0, 1, 0)
+            )
+    );
+    return camera;
+}
+
 Camera Camera::unit_sphere_plane_birds_eye(int h, int v) {
     Camera camera(h, v, M_PI/4.f);
     camera.set_transform(

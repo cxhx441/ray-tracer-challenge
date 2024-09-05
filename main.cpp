@@ -1933,7 +1933,7 @@ void glass_spheres_class(){
     render_time_and_save(camera, world, true, 4, __FUNCTION__);
 }
 
-void glass_spheres_recursive(){
+void hollow_glass_spheres_recursive(){
     auto world = World();
 
     auto pointlight = PointLight(Tuple::point(10, 5, -10), Color::white());
@@ -1951,8 +1951,93 @@ void glass_spheres_recursive(){
     auto hgs3 = HollowGlassSphere();
     auto hgs4 = HollowGlassSphere();
 
+    hgs1.set_transform(Transformation::translation(0.00, 0.00, 0.00) * Transformation::scaling(0.8));
+    hgs2.set_transform(Transformation::translation(0.00, 0.00, 0.00) * Transformation::scaling(0.6));
+    hgs3.set_transform(Transformation::translation(0.00, 0.00, 0.00) * Transformation::scaling(0.4));
+    hgs4.set_transform(Transformation::translation(0.00, 0.00, 0.00) * Transformation::scaling(0.2));
+
+    world.add(hgs0);
+    world.add(hgs1);
+    world.add(hgs2);
+    world.add(hgs3);
+    world.add(hgs4);
+
+    int factor = 50;
+    Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
+    Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
+    Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
+    Camera camera_bird = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
+
+    // num refractions needs to be 2 * num overlapping spheres. each hollow glass is 2 spheres. so 4 * num hgs;
+    render_time_and_save(camera_elv, world, false, 2 * world.spheres.size(), __FUNCTION__);
+    render_time_and_save(camera_ang, world, false, 2 * world.spheres.size(), __FUNCTION__);
+    render_time_and_save(camera_iso, world, false, 2 * world.spheres.size(), __FUNCTION__);
+    render_time_and_save(camera_bird, world, false, 2 * world.spheres.size(), __FUNCTION__);
+
+}
+
+void hollow_glass_spheres_bulbs(){
+    auto world = World();
+
+    auto pointlight = PointLight(Tuple::point(10, 5, -10), Color::white());
+    world.add(pointlight);
+
+    auto plane = Plane();
+    auto checkers = CheckerPattern();
+    plane.material.set_pattern(checkers);
+    plane.set_transform(Transformation::translation(0, -1.01, 0));
+    world.add(plane);
+
+    auto hgs0 = HollowGlassSphere();
+    auto hgs1 = HollowGlassSphere();
+    auto hgs2 = HollowGlassSphere();
+
     hgs1.set_transform(Transformation::translation(-0.30, 0.00, -0.30) * Transformation::scaling(0.85));
     hgs2.set_transform(Transformation::translation(0.20, 0.20, 0.20) * Transformation::scaling(0.7));
+
+    world.add(hgs0);
+    world.add(hgs1);
+    world.add(hgs2);
+
+    int factor = 60;
+    Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
+    Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
+    Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
+    Camera camera_bird = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
+
+    // num refractions needs to be 2 * num overlapping spheres. each hollow glass is 2 spheres. so 4 * num hgs;
+    render_time_and_save(camera_elv, world, false, 2 * world.spheres.size(), __FUNCTION__);
+    render_time_and_save(camera_ang, world, false, 2 * world.spheres.size(), __FUNCTION__);
+    render_time_and_save(camera_iso, world, false, 2 * world.spheres.size(), __FUNCTION__);
+    render_time_and_save(camera_bird, world, false, 2 * world.spheres.size(), __FUNCTION__);
+
+}
+
+void hollow_glass_sphere_color_addition(){
+    auto world = World();
+
+    auto pointlight = PointLight(Tuple::point(10, 5, -10), Color::white());
+    world.add(pointlight);
+
+    auto plane = Plane();
+    auto checkers = CheckerPattern();
+    plane.material.set_pattern(checkers);
+    plane.set_transform(Transformation::translation(0, -1.01, 0));
+    world.add(plane);
+
+    auto hgs0 = HollowGlassSphere();
+    hgs0.set_color(Color::red());
+    auto hgs1 = HollowGlassSphere();
+    hgs1.set_color(Color::green());
+    auto hgs2 = HollowGlassSphere();
+    hgs2.set_color(Color::blue());
+
+    float sphere_scale = 0.65;
+    float rad = 0.7 * sphere_scale;
+    hgs0.set_transform(Transformation::translation(0.00, 0.00, rad) * Transformation::scaling(sphere_scale));
+    hgs1.set_transform(Transformation::rotation_y(2 * (M_PI / 3) ) * Transformation::translation(0.00, 0.00, rad) * Transformation::scaling(sphere_scale));
+    hgs2.set_transform(Transformation::rotation_y(4 * (M_PI / 3) ) * Transformation::translation(0.00, 0.00, rad) * Transformation::scaling(sphere_scale));
+//    hgs2.set_transform(Transformation::translation(0.00, 0.00, 1) * Transformation::scaling(1));
 //    hgs3.set_transform(Transformation::translation(0.00, 0.00, 0.00) * Transformation::scaling(0.4));
 //    hgs4.set_transform(Transformation::translation(0.00, 0.00, 0.00) * Transformation::scaling(0.2));
 
@@ -1962,17 +2047,139 @@ void glass_spheres_recursive(){
 //    world.add(hgs3);
 //    world.add(hgs4);
 
-    int factor = 20;
+    int factor = 60;
     Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
     Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
+    Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
     Camera camera_bird = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
 
     // num refractions needs to be 2 * num overlapping spheres. each hollow glass is 2 spheres. so 4 * num hgs;
-//    render_time_and_save(camera_elv, world, true, 2 * world.spheres.size(), __FUNCTION__);
-//    render_time_and_save(camera_elv, world, false, 2 * world.spheres.size(), __FUNCTION__);
-//    render_time_and_save(camera_ang, world, true, 2 * world.spheres.size(), __FUNCTION__);
+    render_time_and_save(camera_elv, world, false, 2 * world.spheres.size(), __FUNCTION__);
     render_time_and_save(camera_ang, world, false, 2 * world.spheres.size(), __FUNCTION__);
-//    render_time_and_save(camera_bird, world, true, 2 * world.spheres.size(), __FUNCTION__);
+    render_time_and_save(camera_iso, world, false, 2 * world.spheres.size(), __FUNCTION__);
+    render_time_and_save(camera_bird, world, false, 2 * world.spheres.size(), __FUNCTION__);
+
+}
+
+void orb_recursive(){
+    auto world = World();
+
+    auto pointlight = PointLight(Tuple::point(10, 5, -10), Color::white());
+    world.add(pointlight);
+
+    auto plane = Plane();
+    auto checkers = CheckerPattern();
+    plane.material.set_pattern(checkers);
+    plane.set_transform(Transformation::translation(0, -1.01, 0));
+    world.add(plane);
+
+    auto orb0 = Sphere::solid_glass_sphere();
+    auto orb1 = Sphere::solid_glass_sphere();
+    auto orb2 = Sphere::solid_glass_sphere();
+    auto orb3 = Sphere::solid_glass_sphere();
+    auto orb4 = Sphere::solid_glass_sphere();
+
+    orb1.set_transform(Transformation::translation(0.00, 0.00, 0.00) * Transformation::scaling(0.8));
+    orb2.set_transform(Transformation::translation(0.00, 0.00, 0.00) * Transformation::scaling(0.6));
+    orb3.set_transform(Transformation::translation(0.00, 0.00, 0.00) * Transformation::scaling(0.4));
+    orb4.set_transform(Transformation::translation(0.00, 0.00, 0.00) * Transformation::scaling(0.2));
+
+    world.add(orb0);
+    world.add(orb1);
+    world.add(orb2);
+    world.add(orb3);
+    world.add(orb4);
+
+    int factor = 30;
+    Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
+    Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
+    Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
+    Camera camera_bird = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
+
+    // num refractions needs to be 2 * num overlapping spheres. each hollow glass is 2 spheres. so 4 * num hgs;
+    render_time_and_save(camera_elv, world, false, 2 * world.spheres.size(), __FUNCTION__);
+    render_time_and_save(camera_ang, world, false, 2 * world.spheres.size(), __FUNCTION__);
+    render_time_and_save(camera_iso, world, false, 2 * world.spheres.size(), __FUNCTION__);
+    render_time_and_save(camera_bird, world, false, 2 * world.spheres.size(), __FUNCTION__);
+
+}
+
+void orb_bulbs(){
+    auto world = World();
+
+    auto pointlight = PointLight(Tuple::point(10, 5, -10), Color::white());
+    world.add(pointlight);
+
+    auto plane = Plane();
+    auto checkers = CheckerPattern();
+    plane.material.set_pattern(checkers);
+    plane.set_transform(Transformation::translation(0, -1.01, 0));
+    world.add(plane);
+
+    auto orb0 = Sphere::solid_glass_sphere();
+    auto orb1 = Sphere::solid_glass_sphere();
+    auto orb2 = Sphere::solid_glass_sphere();
+
+    orb1.set_transform(Transformation::translation(-0.30, 0.00, -0.30) * Transformation::scaling(0.85));
+    orb2.set_transform(Transformation::translation(0.20, 0.20, 0.20) * Transformation::scaling(0.7));
+
+    world.add(orb0);
+    world.add(orb1);
+    world.add(orb2);
+
+    int factor = 60;
+    Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
+    Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
+    Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
+    Camera camera_bird = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
+
+    // num refractions needs to be 2 * num overlapping spheres. each hollow glass is 2 spheres. so 4 * num hgs;
+    render_time_and_save(camera_elv, world, false, 2 * world.spheres.size(), __FUNCTION__);
+    render_time_and_save(camera_ang, world, false, 2 * world.spheres.size(), __FUNCTION__);
+    render_time_and_save(camera_iso, world, false, 2 * world.spheres.size(), __FUNCTION__);
+    render_time_and_save(camera_bird, world, false, 2 * world.spheres.size(), __FUNCTION__);
+
+}
+
+void orb_color_addition(){
+    auto world = World();
+
+    auto pointlight = PointLight(Tuple::point(10, 5, -10), Color::white());
+    world.add(pointlight);
+
+    auto plane = Plane();
+    auto checkers = CheckerPattern();
+    plane.material.set_pattern(checkers);
+    plane.set_transform(Transformation::translation(0, -1.01, 0));
+    world.add(plane);
+
+    auto orb0 = Sphere::solid_glass_sphere();
+    orb0.material.color = Color::red();
+    auto orb1 = Sphere::solid_glass_sphere();
+    orb1.material.color = Color::green();
+    auto orb2 = Sphere::solid_glass_sphere();
+    orb2.material.color = Color::blue();
+
+    float sphere_scale = 0.65;
+    float rad = 0.7 * sphere_scale;
+    orb0.set_transform(Transformation::translation(0.00, 0.00, rad) * Transformation::scaling(sphere_scale));
+    orb1.set_transform(Transformation::rotation_y(2 * (M_PI / 3) ) * Transformation::translation(0.00, 0.00, rad) * Transformation::scaling(sphere_scale));
+    orb2.set_transform(Transformation::rotation_y(4 * (M_PI / 3) ) * Transformation::translation(0.00, 0.00, rad) * Transformation::scaling(sphere_scale));
+
+    world.add(orb0);
+    world.add(orb1);
+    world.add(orb2);
+
+    int factor = 60;
+    Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
+    Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
+    Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
+    Camera camera_bird = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
+
+    // num refractions needs to be 2 * num overlapping spheres. each hollow glass is 2 spheres. so 4 * num hgs;
+    render_time_and_save(camera_elv, world, false, 2 * world.spheres.size(), __FUNCTION__);
+    render_time_and_save(camera_ang, world, false, 2 * world.spheres.size(), __FUNCTION__);
+    render_time_and_save(camera_iso, world, false, 2 * world.spheres.size(), __FUNCTION__);
     render_time_and_save(camera_bird, world, false, 2 * world.spheres.size(), __FUNCTION__);
 
 }
@@ -2006,7 +2213,12 @@ int main()
 //    glass_spheres();
 //    single_simple_glass_sphere_checkered_floor();
 //    water_rocks();
-    glass_spheres_class();
-//    glass_spheres_recursive();
+//    glass_spheres_class();
+    hollow_glass_sphere_color_addition();
+    hollow_glass_spheres_bulbs();
+    orb_bulbs();
+    orb_color_addition();
+    hollow_glass_spheres_recursive();
+////    orb_recursive();
     return 0;
 }
