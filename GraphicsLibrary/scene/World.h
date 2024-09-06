@@ -10,9 +10,11 @@
 #include "../shapes/Plane.h"
 #include "../shapes/Cube.h"
 #include "../shapes/Cylinder.h"
+#include "../shapes/Cone.h"
 #include "../shapes/HollowGlassSphere.h"
 #include "../shapes/HollowGlassCube.h"
 #include "../shapes/HollowGlassCylinder.h"
+#include "../shapes/HollowGlassCone.h"
 #include "PreparedComputation.h"
 #include "LightingModels.h"
 #include "../primitives/Intersection.h"
@@ -26,6 +28,7 @@ public:
     std::vector<Plane> planes;
     std::vector<Cube> cubes;
     std::vector<Cylinder> cylinders;
+    std::vector<Cone> cones;
 
     World() = default;
     static World DefaultWorld();
@@ -35,18 +38,23 @@ public:
     void add(const Plane &in_plane) ;
     void add(const Cube &in_cube) ;
     void add(const Cylinder &in_cylinder) ;
+    void add(const Cone &in_cone) ;
+
     void add(const std::vector<PointLight> &in_pointlights) ;
     void add(const std::vector<Sphere> &in_spheres) ;
     void add(const std::vector<Plane> &in_planes) ;
     void add(const std::vector<Cube> &in_cubes) ;
     void add(const std::vector<Cylinder> &in_cylinders) ;
+    void add(const std::vector<Cone> &in_cones) ;
 
     void add(const HollowGlassSphere &hollow_glass_sphere) ;
     void add(const HollowGlassCube &hollow_glass_cube) ;
     void add(const HollowGlassCylinder &hollow_glass_cylinder) ;
-    void add(const std::vector<HollowGlassSphere> &hollow_glass_sphere) ;
-    void add(const std::vector<HollowGlassCube> &hollow_glass_cube) ;
-    void add(const std::vector<HollowGlassCylinder> &hollow_glass_cylinder) ;
+    void add(const HollowGlassCone &hollow_glass_cone) ;
+    void add(const std::vector<HollowGlassSphere> &hollow_glass_spheres) ;
+    void add(const std::vector<HollowGlassCube> &hollow_glass_cubes) ;
+    void add(const std::vector<HollowGlassCylinder> &hollow_glass_cylinders) ;
+    void add(const std::vector<HollowGlassCone> &hollow_glass_cones) ;
 
     std::vector<Intersection> intersect_world(Ray& r, bool test_for_shadows=false);
     Color shade_hit(PreparedComputation& precompute, bool shadows_enabled=false, int remaining_rays=0);

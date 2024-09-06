@@ -33,6 +33,7 @@ void World::add(const Sphere &in_sphere) { spheres.push_back(in_sphere); }
 void World::add(const Plane &in_plane) { planes.push_back(in_plane); }
 void World::add(const Cube &in_cube) { cubes.push_back(in_cube); }
 void World::add(const Cylinder &in_cylinder) { cylinders.push_back(in_cylinder); }
+void World::add(const Cone &in_cone) { cones.push_back(in_cone); }
 void World::add(const std::vector<PointLight> &in_pointlights) {
     lights.insert(lights.end(), in_pointlights.begin(), in_pointlights.end());
 }
@@ -47,6 +48,9 @@ void World::add(const std::vector<Cube> &in_cubes) {
 }
 void World::add(const std::vector<Cylinder> &in_cylinders) {
     cylinders.insert(cylinders.end(), in_cylinders.begin(), in_cylinders.end());
+}
+void World::add(const std::vector<Cone> &in_cones) {
+    cones.insert(cones.end(), in_cones.begin(), in_cones.end());
 }
 
 void World::add(const HollowGlassSphere &hollow_glass_sphere) {
@@ -64,6 +68,11 @@ void World::add(const HollowGlassCylinder &hollow_glass_cylinder) {
     add(hollow_glass_cylinder.outer);
 }
 
+void World::add(const HollowGlassCone &hollow_glass_cone) {
+    add(hollow_glass_cone.inner);
+    add(hollow_glass_cone.outer);
+}
+
 void World::add(const std::vector<HollowGlassSphere> &hollow_glass_spheres) {
     for (const auto &hs : hollow_glass_spheres)
         add(hs);
@@ -74,8 +83,13 @@ void World::add(const std::vector<HollowGlassCube> &hollow_glass_cubes) {
         add(hc);
 }
 
-void World::add(const std::vector<HollowGlassCylinder> &hollow_glass_cylinder) {
-    for (const auto &hc : hollow_glass_cylinder)
+void World::add(const std::vector<HollowGlassCylinder> &hollow_glass_cylinders) {
+    for (const auto &hc : hollow_glass_cylinders)
+        add(hc);
+}
+
+void World::add(const std::vector<HollowGlassCone> &hollow_glass_cones) {
+    for (const auto &hc : hollow_glass_cones)
         add(hc);
 }
 
@@ -97,7 +111,9 @@ std::vector<Intersection> World::intersect_world(Ray &r, bool test_for_shadows) 
         if (test_for_shadows && !plane.casts_shadow ) continue;
 
         std::vector<Intersection> object_xs = plane.intersect(r);
-        for (auto& x : object_xs){ world_xs.push_back(x); }
+        for (auto& x : object_xs){
+            world_xs.push_back(x);
+        }
     }
 
     // Iterate over Cubes.
@@ -111,12 +127,23 @@ std::vector<Intersection> World::intersect_world(Ray &r, bool test_for_shadows) 
         }
     }
 
-    // Iterate over Cubes.
+    // Iterate over Cylinders.
     for (auto& cylinder : cylinders){
         if (test_for_shadows && !cylinder.casts_shadow )
             continue;
 
         std::vector<Intersection> object_xs = cylinder.intersect(r);
+        for (auto& x : object_xs){
+            world_xs.push_back(x);
+        }
+    }
+
+    // Iterate over Cones.
+    for (auto& cone : cones){
+        if (test_for_shadows && !cone.casts_shadow )
+            continue;
+
+        std::vector<Intersection> object_xs = cone.intersect(r);
         for (auto& x : object_xs){
             world_xs.push_back(x);
         }
