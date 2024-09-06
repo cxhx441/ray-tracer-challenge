@@ -2404,6 +2404,52 @@ void simple_cylinder(){
 
 }
 
+void simple_cone(){
+    auto world = World();
+
+    auto pointlight = PointLight(Tuple::point(1, 10, -10), Color::white());
+    world.add(pointlight);
+
+    auto plane = Plane();
+    auto checkers = CheckerPattern();
+    plane.material.set_pattern(checkers);
+    plane.set_transform(Transformation::translation(0, 0, -15) * Transformation::rotation_x(M_PI_2));
+    world.add(plane);
+
+//    auto cone = Cone::solid_glass_cone();
+//    cone.material.color = Color::maroon();
+
+    auto cone = Cone();
+    cone.material.reflective = 0.5;
+    cone.material.specular = 1;
+    cone.material.shininess = 200;
+    cone.material.color = Color::maroon();
+
+    cone.minimum = 0;
+    cone.maximum = 0.3;
+//    cone.closed = true;
+
+//    auto hgcone = HollowGlassCone();
+//    hgcone.set_color(Color::red());
+//    hgcone.set_minimum(0.4);
+//    hgcone.set_maximum(0.9);
+//    hgcone.set_closed(true);
+
+    world.add(cone);
+
+    int factor = 15;
+    Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
+    Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
+    Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
+    Camera camera_bird = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
+
+    // num refractions needs to be 2 * num overlapping spheres. each hollow glass is 2 spheres. so 4 * num hgs;
+    render_time_and_save(camera_elv, world, true, 5, __FUNCTION__);
+    render_time_and_save(camera_ang, world, true, 5, __FUNCTION__);
+    render_time_and_save(camera_iso, world, true, 5, __FUNCTION__);
+    render_time_and_save(camera_bird, world, true, 5, __FUNCTION__);
+
+}
 int main()
 {
 //    challenge_world_w_spheres();
@@ -2443,6 +2489,7 @@ int main()
 //    simple_cube();
 //    glass_cubes();
 //    hollow_glass_cube_class();
-    simple_cylinder();
+//    simple_cylinder();
+    simple_cone();
     return 0;
 }

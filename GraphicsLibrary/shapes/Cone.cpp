@@ -3,6 +3,7 @@
 //
 
 #include "Cone.h"
+#include <cmath>
 
 Cone Cone::solid_glass_cone() {
     Cone c;
@@ -26,7 +27,15 @@ Tuple Cone::model_normal_at(const Tuple &model_point) const {
     else if (dist < 1 && model_point.y <= (minimum + 0.001))
         return {0, -1, 0, 0};
 
-    return {model_point.x, 0, model_point.z, 0};
+
+    // for non-caps
+    float y = sqrtf(
+            powf(model_point.x, 2) +
+            powf(model_point.z, 2)
+    );
+    y = model_point.y > 0 ? -y : y;
+
+    return Tuple::vector(model_point.x, y, model_point.z);
 }
 
 std::vector<Intersection> Cone::model_intersect(const Ray &model_ray) const {
@@ -86,25 +95,24 @@ std::vector<Intersection> Cone::model_intersect(const Ray &model_ray) const {
 }
 
 void Cone::intersect_caps(const Ray &r, std::vector<Intersection> &xs) const {
-    if (!closed || std::abs(r.direction.y) < 0.0001)
+    if (!closed || std::fabs(r.direction.y) < 0.0001)
         return;
 
     // check intersection with lower cap
     float t_min = (minimum - r.origin.y) / r.direction.y;
-    if (check_caps(r, t_min))
+    if (check_caps(r, t_min, std::fabs(minimum)))
         xs.push_back({t_min, (void*) this});
 
     // check intersection with higher cap
     float t_max = (maximum - r.origin.y) / r.direction.y;
-    if (check_caps(r, t_max))
+    if (check_caps(r, t_max, std::fabs(maximum)))
         xs.push_back({t_max, (void*) this});
 }
 
-bool Cone::check_caps(const Ray &r, float t) {
+bool Cone::check_caps(const Ray &r, float t, float cap_radius) {
     float x = r.origin.x + t * r.direction.x;
     float z = r.origin.z + t * r.direction.z;
-//    return pow(x, 2) + pow(z, 2) <= 1;
-    return pow(x, 2) + pow(z, 2) - 1 < 0.000001;
+    return pow(x, 2) + pow(z, 2) - cap_radius < 0.000001;
 }
 
 

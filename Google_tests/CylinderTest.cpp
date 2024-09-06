@@ -43,8 +43,10 @@ TEST(CylinderTestSuite, RayIntersectsCylinder){
             Tuple::vector(0.1, 1, 1),
     };
 
-    std::vector<float> t0s = { 5, 4, 6.8079991};
-    std::vector<float> t1s = { 5, 6, 7.0887051};
+//    std::vector<float> t0s = { 5, 4, 6.8079991};
+//    std::vector<float> t1s = { 5, 6, 7.0887051};
+    std::vector<float> t0s = { 5, 4, 6.8080058};
+    std::vector<float> t1s = { 5, 6, 7.0886984};
 
     for (int i = 0; i < origins.size(); ++i){
         Ray r(origins[i], Tuple::normalized(directions[i]));

@@ -6,7 +6,7 @@
 #define RAYTRACERCHALLENGE_CONE_H
 
 #include "shape.h"
-#include <limits.h>
+#include <limits>
 
 class Cone : public Shape {
 public:
@@ -23,7 +23,7 @@ public:
     Tuple model_normal_at(const Tuple& model_point) const override;
 private:
     void intersect_caps(const Ray &r, std::vector<Intersection> &xs) const;
-    static bool check_caps(const Ray &r, float t);
+    static bool check_caps(const Ray &r, float t, float cap_radius);
 };
 
 #endif //RAYTRACERCHALLENGE_CONE_H

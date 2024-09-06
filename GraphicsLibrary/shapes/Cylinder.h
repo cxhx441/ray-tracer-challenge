@@ -6,7 +6,7 @@
 #define RAYTRACERCHALLENGE_CYLINDER_H
 
 #include "shape.h"
-#include <limits.h>
+#include <limits>
 
 class Cylinder : public Shape {
 public:
