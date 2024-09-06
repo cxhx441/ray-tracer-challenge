@@ -32,6 +32,7 @@ void World::add(const PointLight &in_pointlight) { lights.push_back(in_pointligh
 void World::add(const Sphere &in_sphere) { spheres.push_back(in_sphere); }
 void World::add(const Plane &in_plane) { planes.push_back(in_plane); }
 void World::add(const Cube &in_cube) { cubes.push_back(in_cube); }
+void World::add(const Cylinder &in_cylinder) { cylinders.push_back(in_cylinder); }
 void World::add(const std::vector<PointLight> &in_pointlights) {
     lights.insert(lights.end(), in_pointlights.begin(), in_pointlights.end());
 }
@@ -43,6 +44,9 @@ void World::add(const std::vector<Plane> &in_planes) {
 }
 void World::add(const std::vector<Cube> &in_cubes) {
     cubes.insert(cubes.end(), in_cubes.begin(), in_cubes.end());
+}
+void World::add(const std::vector<Cylinder> &in_cylinders) {
+    cylinders.insert(cylinders.end(), in_cylinders.begin(), in_cylinders.end());
 }
 
 void World::add(const HollowGlassSphere &hollow_glass_sphere) {
@@ -65,11 +69,11 @@ void World::add(const std::vector<HollowGlassCube> &hollow_glass_cubes) {
         add(hc);
 }
 
-std::vector<Intersection> World::intersect_world(Ray &r, bool for_shadows) {
+std::vector<Intersection> World::intersect_world(Ray &r, bool test_for_shadows) {
     std::vector<Intersection> world_xs;
     // Iterate over Spheres.
     for (auto& sphere : spheres){
-        if ( for_shadows && !sphere.casts_shadow )
+        if (test_for_shadows && !sphere.casts_shadow )
             continue;
 
         std::vector<Intersection> object_xs = sphere.intersect(r);
@@ -80,18 +84,15 @@ std::vector<Intersection> World::intersect_world(Ray &r, bool for_shadows) {
 
     // Iterate over Planes.
     for (auto& plane : planes){
-        if ( for_shadows && !plane.casts_shadow )
-            continue;
+        if (test_for_shadows && !plane.casts_shadow ) continue;
 
         std::vector<Intersection> object_xs = plane.intersect(r);
-        for (auto& x : object_xs){
-            world_xs.push_back(x);
-        }
+        for (auto& x : object_xs){ world_xs.push_back(x); }
     }
 
     // Iterate over Cubes.
     for (auto& cube : cubes){
-        if ( for_shadows && !cube.casts_shadow )
+        if (test_for_shadows && !cube.casts_shadow )
             continue;
 
         std::vector<Intersection> object_xs = cube.intersect(r);
@@ -99,6 +100,18 @@ std::vector<Intersection> World::intersect_world(Ray &r, bool for_shadows) {
             world_xs.push_back(x);
         }
     }
+
+    // Iterate over Cubes.
+    for (auto& cylinder : cylinders){
+        if (test_for_shadows && !cylinder.casts_shadow )
+            continue;
+
+        std::vector<Intersection> object_xs = cylinder.intersect(r);
+        for (auto& x : object_xs){
+            world_xs.push_back(x);
+        }
+    }
+
 
     std::sort(world_xs.begin(), world_xs.end());
     return world_xs;

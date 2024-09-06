@@ -9,6 +9,7 @@
 #include "../shapes/Sphere.h"
 #include "../shapes/Plane.h"
 #include "../shapes/Cube.h"
+#include "../shapes/Cylinder.h"
 #include "../shapes/HollowGlassSphere.h"
 #include "../shapes/HollowGlassCube.h"
 #include "PreparedComputation.h"
@@ -23,6 +24,7 @@ public:
     std::vector<Sphere> spheres;
     std::vector<Plane> planes;
     std::vector<Cube> cubes;
+    std::vector<Cylinder> cylinders;
 
     World() = default;
     static World DefaultWorld();
@@ -31,17 +33,19 @@ public:
     void add(const Sphere &in_sphere) ;
     void add(const Plane &in_plane) ;
     void add(const Cube &in_cube) ;
+    void add(const Cylinder &in_cylinder) ;
     void add(const std::vector<PointLight> &in_pointlights) ;
     void add(const std::vector<Sphere> &in_spheres) ;
     void add(const std::vector<Plane> &in_planes) ;
     void add(const std::vector<Cube> &in_cubes) ;
+    void add(const std::vector<Cylinder> &in_cylinders) ;
 
     void add(const HollowGlassSphere &hollow_glass_sphere) ;
     void add(const HollowGlassCube &hollow_glass_cube) ;
     void add(const std::vector<HollowGlassSphere> &hollow_glass_sphere) ;
     void add(const std::vector<HollowGlassCube> &hollow_glass_cube) ;
 
-    std::vector<Intersection> intersect_world(Ray& r, bool for_shadows=false);
+    std::vector<Intersection> intersect_world(Ray& r, bool test_for_shadows=false);
     Color shade_hit(PreparedComputation& precompute, bool shadows_enabled=false, int remaining_rays=0);
     Color color_at(Ray& r, bool shadows_enabled=false, int remaining_rays=0);
     bool is_shadowed(PointLight &l, Tuple &p);
