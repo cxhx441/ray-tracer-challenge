@@ -1,10 +1,10 @@
 //
-// Created by Craig Harris on 9/4/24.
+// Created by craig on 9/5/2024.
 //
 
-#include "HollowGlassSphere.h"
+#include "HollowGlassCube.h"
 
-HollowGlassSphere::HollowGlassSphere() {
+HollowGlassCube::HollowGlassCube() {
     outer.material.color = Color::black();
     outer.material.transparency = 1;
     outer.material.refractive_index = 1.5;
@@ -26,20 +26,20 @@ HollowGlassSphere::HollowGlassSphere() {
     inner.material.shininess = 0;
 }
 
-void HollowGlassSphere::add_transform(const Matrix &transform) {
+void HollowGlassCube::add_transform(const Matrix &transform) {
     inner.set_transform(transform * inner.get_transform());
     outer.set_transform(transform * outer.get_transform());
 }
 
-void HollowGlassSphere::set_transform(const Matrix &transform) {
+void HollowGlassCube::set_transform(const Matrix &transform) {
     inner.set_transform(transform * Transformation::scaling(default_inner_scale));
     outer.set_transform(transform);
 }
 
-void HollowGlassSphere::set_color(const Color &color) {
+void HollowGlassCube::set_color(const Color &color) {
     outer.material.color = color;
 }
 
-void HollowGlassSphere::set_pattern(const Pattern &pattern) {
+void HollowGlassCube::set_pattern(const Pattern &pattern) {
     outer.material.set_pattern(pattern);
 }

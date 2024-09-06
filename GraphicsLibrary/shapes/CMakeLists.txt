@@ -7,6 +7,8 @@ add_library(shapes STATIC
         Sphere.cpp
         TestShape.cpp
         HollowGlassSphere.cpp
+        Cube.cpp
+        HollowGlassCube.cpp
 )
 target_include_directories(shapes PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}

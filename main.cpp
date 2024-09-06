@@ -2,6 +2,7 @@
 #include "GraphicsLibrary/display/Canvas.h"
 #include "GraphicsLibrary/shapes/Sphere.h"
 #include "GraphicsLibrary/shapes/Plane.h"
+#include "GraphicsLibrary/shapes/Cube.h"
 #include "GraphicsLibrary/patterns/StripedPattern.h"
 #include "GraphicsLibrary/patterns/RingPattern.h"
 #include "GraphicsLibrary/patterns/GradientPattern.h"
@@ -1999,7 +2000,7 @@ void hollow_glass_spheres_bulbs(){
     world.add(hgs1);
     world.add(hgs2);
 
-    int factor = 60;
+    int factor = 100;
     Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
     Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
     Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
@@ -2047,7 +2048,7 @@ void hollow_glass_sphere_color_addition(){
 //    world.add(hgs3);
 //    world.add(hgs4);
 
-    int factor = 60;
+    int factor = 100;
     Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
     Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
     Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
@@ -2127,7 +2128,7 @@ void orb_bulbs(){
     world.add(orb1);
     world.add(orb2);
 
-    int factor = 60;
+    int factor = 100;
     Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
     Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
     Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
@@ -2170,7 +2171,7 @@ void orb_color_addition(){
     world.add(orb1);
     world.add(orb2);
 
-    int factor = 60;
+    int factor = 100;
     Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
     Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
     Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
@@ -2182,6 +2183,173 @@ void orb_color_addition(){
     render_time_and_save(camera_iso, world, false, 2 * world.spheres.size(), __FUNCTION__);
     render_time_and_save(camera_bird, world, false, 2 * world.spheres.size(), __FUNCTION__);
 
+}
+
+void simple_cube(){
+    auto world = World();
+
+    auto pointlight = PointLight(Tuple::point(1, 2, -10), Color::white());
+    world.add(pointlight);
+
+    auto plane = Plane();
+    auto checkers = CheckerPattern();
+    plane.material.set_pattern(checkers);
+    plane.set_transform(Transformation::translation(0, -.01, 0));
+//    plane.set_transform(Transformation::translation(0, 0, -20) * Transformation::rotation_x(M_PI_2));
+    world.add(plane);
+
+//    auto ceiling = Plane();
+//    ceiling.set_transform(Transformation::translation(0, 20, 0));
+//    auto rings = RingPattern();
+//    ceiling.material.set_pattern(rings);
+//    world.add(ceiling);
+
+    Cube cube;
+    cube.set_transform(Transformation::rotation_x(-M_PI_2) * Transformation::scaling(0.5));
+    cube.material.reflective = 0.5;
+    cube.material.specular = 1;
+    cube.material.shininess = 200;
+    cube.material.color = Color::maroon();
+
+    world.add(cube);
+
+    int factor = 10;
+    Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
+    Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
+    Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
+    Camera camera_bird = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
+
+    // num refractions needs to be 2 * num overlapping spheres. each hollow glass is 2 spheres. so 4 * num hgs;
+    render_time_and_save(camera_elv, world, true, 5, __FUNCTION__);
+    render_time_and_save(camera_ang, world, true, 5, __FUNCTION__);
+    render_time_and_save(camera_iso, world, true, 5, __FUNCTION__);
+    render_time_and_save(camera_bird, world, true, 5, __FUNCTION__);
+
+}
+
+void hollow_glass_cube_class(){
+    auto world = World();
+
+    auto pointlight = PointLight(Tuple::point(10, 10, -10), Color::white());
+    world.add(pointlight);
+
+    auto plane = Plane();
+    auto rings = RingPattern();
+    rings.set_transform(Transformation::scaling(0.4));
+    plane.material.set_pattern(rings);
+    plane.set_transform(Transformation::translation(0, -1.01, 0));
+    world.add(plane);
+
+    auto backwall = Plane();
+    auto checkers = CheckerPattern();
+    backwall.material.set_pattern(checkers);
+    backwall.set_transform(Transformation::translation(0, 0, 5) * Transformation::rotation_x(M_PI_2));
+    world.add(backwall);
+
+    auto hgc = HollowGlassCube();
+    hgc.set_color(Color::maroon());
+    hgc.set_transform(Transformation::rotation_y(M_PI/2 / 6) * Transformation::scaling(0.5));
+    world.add(hgc);
+
+    int factor = 100;
+    Camera camera_elev = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
+    Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
+    Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
+    Camera camera_bird = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
+
+    render_time_and_save(camera_elev, world, false, 4 * world.cubes.size(), __FUNCTION__);
+    render_time_and_save(camera_ang, world, false, 4 * world.cubes.size(), __FUNCTION__);
+    render_time_and_save(camera_iso, world, false, 4 * world.cubes.size(), __FUNCTION__);
+    render_time_and_save(camera_bird, world, false, 4 * world.cubes.size(), __FUNCTION__);
+}
+
+void glass_cubes(){
+    Plane floor;
+    Plane ceiling;
+    Plane back_wall;
+    Plane front_wall;
+    Plane left_wall;
+    Plane right_wall;
+
+    ceiling.set_transform(Transformation::translation(0, 11, 0) * Transformation::rotation_x(M_PI));
+    back_wall.set_transform(Transformation::translation(0, 0, 6) * Transformation::rotation_x(M_PI_2));
+    front_wall.set_transform(Transformation::translation(0, 0, -11) * Transformation::rotation_x(-M_PI_2));
+    left_wall.set_transform(Transformation::translation(-11, 0, 0) * Transformation::rotation_z(M_PI_2));
+    right_wall.set_transform(Transformation::translation(11, 0, 0) * Transformation::rotation_z(M_PI_2));
+
+    Color red = Color::red();
+    Color green = Color::green();
+    Color blue = Color::blue();
+    Color white = Color::white();
+    floor.material.add_pattern(CheckerPattern(red, white));
+    ceiling.material.add_pattern(CheckerPattern(red, white));
+    back_wall.material.add_pattern(CheckerPattern(green, white));
+    front_wall.material.add_pattern(CheckerPattern(green, white));
+    left_wall.material.add_pattern(CheckerPattern(blue, white));
+    right_wall.material.add_pattern(CheckerPattern(blue, white));
+
+//    floor.material.reflective = .1;
+//    ceiling.material.reflective = .1;
+//    back_wall.material.reflective = .1;
+//    front_wall.material.reflective = .1;
+//    left_wall.material.reflective = .1;
+//    right_wall.material.reflective = .1;
+
+    // Shapes
+    auto c1 = Cube::solid_glass_cube();
+    auto c2 = HollowGlassCube();
+    auto c3 = Cube::solid_glass_cube();
+    auto c4 = HollowGlassCube();
+
+    float sphere_size = .9;
+    float delta = 2.2;
+    float two = -delta / 2;
+    float three = delta / 2;
+    float one = two - delta;
+    float four = three + delta;
+
+    float y_up = 1;
+    c1.set_transform(Transformation::translation(one, y_up, 1) * Transformation::scaling(sphere_size));
+    c2.add_transform(Transformation::translation(two, y_up, 1) * Transformation::scaling(sphere_size));
+    c3.set_transform(Transformation::translation(three, y_up, 1) * Transformation::scaling(sphere_size));
+    c4.add_transform(Transformation::translation(four, y_up, 1) * Transformation::scaling(sphere_size));
+
+    auto rings = RingPattern(Color::orange(), Color::blue());
+    rings.set_transform(Transformation::rotation_x(-M_PI_2/2) * Transformation::scaling(0.05));
+    c2.set_pattern(rings);
+    c3.material.set_pattern(rings);
+
+    c2.outer.material.diffuse = 0.3;
+    c3.material.diffuse = 0.3;
+
+    PointLight light(Tuple::point(0, 10, 0), Color::white());
+
+    World world;
+//    world.add(c1);
+    world.add(c2);
+//    world.add(c3);
+//    world.add(c4);
+    world.planes.insert(world.planes.end(), {floor, ceiling, back_wall, front_wall, left_wall, right_wall});//, front_wall, left_wall, right_wall});
+    world.lights.push_back(light);
+
+    int factor = 40;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 4., -7),
+                    Tuple::point(0, 1, 0),
+                    Tuple::vector(0, 1, 0)
+            )
+    );
+//    camera.set_transform(
+//            Transformation::view_transform(
+//                    Tuple::point(two, 5., 1),
+//                    Tuple::point(two, 1, 1),
+//                    Tuple::vector(0, 0, 1)
+//            )
+//    );
+
+    render_time_and_save(camera, world, false, 8, __FUNCTION__);
 }
 
 int main()
@@ -2214,11 +2382,14 @@ int main()
 //    single_simple_glass_sphere_checkered_floor();
 //    water_rocks();
 //    glass_spheres_class();
-    hollow_glass_sphere_color_addition();
-    hollow_glass_spheres_bulbs();
-    orb_bulbs();
-    orb_color_addition();
-    hollow_glass_spheres_recursive();
-////    orb_recursive();
+//    hollow_glass_sphere_color_addition();
+//    hollow_glass_spheres_bulbs();
+//    orb_bulbs();
+//    orb_color_addition();
+//    hollow_glass_spheres_recursive();
+//    orb_recursive();
+//    simple_cube();
+    glass_cubes();
+//    hollow_glass_cube_class();
     return 0;
 }
