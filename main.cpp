@@ -2414,31 +2414,33 @@ void simple_cone(){
     auto checkers = CheckerPattern();
     plane.material.set_pattern(checkers);
 //    plane.set_transform(Transformation::translation(0, 0, -15) * Transformation::rotation_x(M_PI_2));
-    plane.set_transform(Transformation::translation(0, -1, 0));
+    plane.set_transform(Transformation::translation(0, 0, 0));
     world.add(plane);
 
 //    auto cone = Cone::solid_glass_cone();
 //    cone.material.color = Color::maroon();
 
-    auto cone = Cone();
-    cone.material.reflective = 0.5;
-    cone.material.specular = 1;
-    cone.material.shininess = 200;
-    cone.material.color = Color::maroon();
+//    auto cone = Cone();
+//    cone.material.reflective = 0.5;
+//    cone.material.specular = 1;
+//    cone.material.shininess = 200;
+//    cone.material.color = Color::maroon();
 
-    cone.minimum = 0;
-    cone.maximum = 0.3;
-    cone.closed = true;
+//    cone.minimum = 0;
+//    cone.maximum = 0.3;
+//    cone.closed = true;
+//    cone.set_transform(Transformation::rotation_z(M_PI_2/2) * Transformation::scaling(1, 4, 1));
 
-//    auto hgcone = HollowGlassCone();
-//    hgcone.set_color(Color::red());
-//    hgcone.set_minimum(0.4);
-//    hgcone.set_maximum(0.9);
+    auto hgcone = HollowGlassCone();
+    hgcone.set_color(Color::maroon());
+    hgcone.set_minimum(0);
+    hgcone.set_maximum(0.3);
 //    hgcone.set_closed(true);
+    hgcone.set_transform(Transformation::rotation_z(M_PI_2/2) * Transformation::scaling(1, 3.5, 1));
 
-    world.add(cone);
+    world.add(hgcone);
 
-    int factor = 15;
+    int factor = 30;
     Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
     Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
     Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);

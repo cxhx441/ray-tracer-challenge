@@ -24,7 +24,7 @@ public:
     void add_transform(const Matrix &transform);
     void set_transform(const Matrix &transform);
 private:
-    float default_inner_scale = 0.99;
+    float default_inner_scale = 0.9; // Todo: Acne...
 };
 
 #endif //RAYTRACERCHALLENGE_HOLLOWGLASSCONE_H
