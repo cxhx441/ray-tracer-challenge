@@ -22,6 +22,7 @@ add_executable(Google_Tests_run
         PlaneTest.cpp
         PatternTest.cpp
         ColorTest.cpp
+        CubeTest.cpp
 )
 
 target_link_libraries(Google_Tests_run PRIVATE GraphicsLibrary_lib)

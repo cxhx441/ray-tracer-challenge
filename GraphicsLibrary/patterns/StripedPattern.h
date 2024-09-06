@@ -9,9 +9,10 @@
 
 class StripedPattern : public Pattern{
 public:
-    Color color_a;
-    Color color_b;
+    Color color_a = Color::black();
+    Color color_b = Color::white();
 
+    StripedPattern() = default;
     StripedPattern(Color color_a, Color color_b);
 
     Color pattern_color_at(const Tuple &pattern_point) const override;

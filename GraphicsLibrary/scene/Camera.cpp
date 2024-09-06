@@ -3,6 +3,7 @@
 //
 
 #include "Camera.h"
+#include "../primitives/Transformation.h"
 #include <cmath>
 
 Camera::Camera(int hsize, int vsize, float fov) {
@@ -58,4 +59,52 @@ Matrix Camera::get_transform() {
 
 Matrix Camera::get_inverse_transform() {
     return inverse_transform;
+}
+
+Camera Camera::unit_sphere_plane_elevation(int h, int v) {
+    Camera camera(h, v, M_PI/4.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 0.4, -5),
+                    Tuple::point(0, 0.5, 0),
+                    Tuple::vector(0, 1, 0)
+            )
+    );
+    return camera;
+}
+
+Camera Camera::unit_sphere_plane_angled(int h, int v) {
+    Camera camera(h, v, M_PI/4.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 2, -5),
+                    Tuple::point(0, 0.5, 0),
+                    Tuple::vector(0, 1, 0)
+            )
+    );
+    return camera;
+}
+
+Camera Camera::unit_sphere_plane_isometric(int h, int v) {
+    Camera camera(h, v, M_PI/4.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(2, 2, -2),
+                    Tuple::point(0, 0.5, 0),
+                    Tuple::vector(0, 1, 0)
+            )
+    );
+    return camera;
+}
+
+Camera Camera::unit_sphere_plane_birds_eye(int h, int v) {
+    Camera camera(h, v, M_PI/4.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 3, 0),
+                    Tuple::point(0, 0, 0),
+                    Tuple::vector(0, 0, 1)
+            )
+    );
+    return camera;
 }

@@ -28,10 +28,50 @@ World World::DefaultWorld() {
     return w;
 }
 
-std::vector<Intersection> World::intersect_world(Ray &r) {
+void World::add(const PointLight &in_pointlight) { lights.push_back(in_pointlight); }
+void World::add(const Sphere &in_sphere) { spheres.push_back(in_sphere); }
+void World::add(const Plane &in_plane) { planes.push_back(in_plane); }
+void World::add(const Cube &in_cube) { cubes.push_back(in_cube); }
+void World::add(const std::vector<PointLight> &in_pointlights) {
+    lights.insert(lights.end(), in_pointlights.begin(), in_pointlights.end());
+}
+void World::add(const std::vector<Sphere> &in_spheres) {
+    spheres.insert(spheres.end(), in_spheres.begin(), in_spheres.end());
+}
+void World::add(const std::vector<Plane> &in_planes) {
+    planes.insert(planes.end(), in_planes.begin(), in_planes.end());
+}
+void World::add(const std::vector<Cube> &in_cubes) {
+    cubes.insert(cubes.end(), in_cubes.begin(), in_cubes.end());
+}
+
+void World::add(const HollowGlassSphere &hollow_glass_sphere) {
+    add(hollow_glass_sphere.inner);
+    add(hollow_glass_sphere.outer);
+}
+
+void World::add(const HollowGlassCube &hollow_glass_cube) {
+    add(hollow_glass_cube.inner);
+    add(hollow_glass_cube.outer);
+}
+
+void World::add(const std::vector<HollowGlassSphere> &hollow_glass_spheres) {
+    for (const auto &hs : hollow_glass_spheres)
+        add(hs);
+}
+
+void World::add(const std::vector<HollowGlassCube> &hollow_glass_cubes) {
+    for (const auto &hc : hollow_glass_cubes)
+        add(hc);
+}
+
+std::vector<Intersection> World::intersect_world(Ray &r, bool for_shadows) {
     std::vector<Intersection> world_xs;
     // Iterate over Spheres.
     for (auto& sphere : spheres){
+        if ( for_shadows && !sphere.casts_shadow )
+            continue;
+
         std::vector<Intersection> object_xs = sphere.intersect(r);
         for (auto& x : object_xs){
             world_xs.push_back(x);
@@ -40,7 +80,21 @@ std::vector<Intersection> World::intersect_world(Ray &r) {
 
     // Iterate over Planes.
     for (auto& plane : planes){
+        if ( for_shadows && !plane.casts_shadow )
+            continue;
+
         std::vector<Intersection> object_xs = plane.intersect(r);
+        for (auto& x : object_xs){
+            world_xs.push_back(x);
+        }
+    }
+
+    // Iterate over Cubes.
+    for (auto& cube : cubes){
+        if ( for_shadows && !cube.casts_shadow )
+            continue;
+
+        std::vector<Intersection> object_xs = cube.intersect(r);
         for (auto& x : object_xs){
             world_xs.push_back(x);
         }
@@ -98,7 +152,7 @@ bool World::is_shadowed(PointLight &l, Tuple &p) {
     float distance = p_to_light.magnitude();
     Tuple direction = Tuple::normalized(p_to_light);
     Ray r(p, direction);
-    std::vector<Intersection> xs = intersect_world(r);
+    std::vector<Intersection> xs = intersect_world(r, true);
     std::optional<Intersection> hit = Intersection::get_hit(xs);
     if (hit != std::nullopt && hit->t < distance)
         return true;
@@ -166,4 +220,5 @@ float World::schlick_reflectance(PreparedComputation &precompute) {
     float r0 = powf((n1 - n2) / (n1 + n2), 2);
     return r0 + (1 - r0) * powf(1 - cos, 5);
 }
+
 

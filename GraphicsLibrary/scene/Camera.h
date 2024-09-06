@@ -21,6 +21,10 @@ public:
     float pixel_size;
 
     Camera(int hsize, int vsize, float fov);
+    static Camera unit_sphere_plane_elevation(int h, int v);
+    static Camera unit_sphere_plane_angled(int h, int v);
+    static Camera unit_sphere_plane_isometric(int h, int v);
+    static Camera unit_sphere_plane_birds_eye(int h, int v);
 
     void set_transform(Matrix m);
     Matrix get_transform();

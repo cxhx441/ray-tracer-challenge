@@ -6,10 +6,17 @@
 #include <cmath>
 #include <utility>
 
-Sphere Sphere::glass_sphere() {
+Sphere Sphere::solid_glass_sphere() {
     Sphere s;
-    s.material.transparency = 1.f;
+    s.material.color = Color::black();
+    s.material.transparency = 1;
     s.material.refractive_index = Material::RefractiveIndices::glass;
+    s.material.reflective = 1;
+    s.material.diffuse = 0.1;
+    s.material.ambient = 0.1;
+    s.material.specular = 1;
+    s.material.shininess = 300;
+
     return s;
 }
 

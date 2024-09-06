@@ -8,10 +8,11 @@
 #include "Pattern.h"
 
 class GradientPattern : public Pattern{
-private:
-    Color color_a;
-    Color color_b;
 public:
+    Color color_a = Color::black();
+    Color color_b = Color::white();
+
+    GradientPattern() = default;
     GradientPattern(Color color_a, Color color_b);
 
     Color pattern_color_at(const Tuple &pattern_point) const override;
