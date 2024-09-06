@@ -12,6 +12,7 @@
 #include "../shapes/Cylinder.h"
 #include "../shapes/HollowGlassSphere.h"
 #include "../shapes/HollowGlassCube.h"
+#include "../shapes/HollowGlassCylinder.h"
 #include "PreparedComputation.h"
 #include "LightingModels.h"
 #include "../primitives/Intersection.h"
@@ -42,8 +43,10 @@ public:
 
     void add(const HollowGlassSphere &hollow_glass_sphere) ;
     void add(const HollowGlassCube &hollow_glass_cube) ;
+    void add(const HollowGlassCylinder &hollow_glass_cylinder) ;
     void add(const std::vector<HollowGlassSphere> &hollow_glass_sphere) ;
     void add(const std::vector<HollowGlassCube> &hollow_glass_cube) ;
+    void add(const std::vector<HollowGlassCylinder> &hollow_glass_cylinder) ;
 
     std::vector<Intersection> intersect_world(Ray& r, bool test_for_shadows=false);
     Color shade_hit(PreparedComputation& precompute, bool shadows_enabled=false, int remaining_rays=0);

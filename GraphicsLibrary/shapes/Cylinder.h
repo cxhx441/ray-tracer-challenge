@@ -10,8 +10,9 @@
 
 class Cylinder : public Shape {
 public:
-    float minimum_y = -1 * std::numeric_limits<float>::infinity();
-    float maximum_y = std::numeric_limits<float>::infinity();
+    float minimum = -1 * std::numeric_limits<float>::infinity();
+    float maximum = std::numeric_limits<float>::infinity();
+    bool closed = false;
 
     Cylinder() = default;
     ~Cylinder() override = default;
@@ -20,6 +21,9 @@ public:
 
     std::vector<Intersection> model_intersect(const Ray& model_ray) const override;
     Tuple model_normal_at(const Tuple& model_point) const override;
+private:
+    void intersect_caps(const Ray &r, std::vector<Intersection> &xs) const;
+    static bool check_caps(const Ray &r, float t);
 };
 
 

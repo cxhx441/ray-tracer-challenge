@@ -80,14 +80,14 @@ TEST(CylinderTestSuite, NormalVectorOnCylinder){
 
 TEST(CylinderTestSuite, DefaultMinMaxHeight){
     Cylinder c;
-    EXPECT_EQ(c.minimum_y, -std::numeric_limits<float>::infinity());
-    EXPECT_EQ(c.maximum_y, std::numeric_limits<float>::infinity());
+    EXPECT_EQ(c.minimum, -std::numeric_limits<float>::infinity());
+    EXPECT_EQ(c.maximum, std::numeric_limits<float>::infinity());
 }
 
 TEST(CylinderTestSuite, IntersectingAConstrainedCylinder){
     Cylinder c;
-    c.minimum_y = 1;
-    c.maximum_y = 2;
+    c.minimum = 1;
+    c.maximum = 2;
 
     std::vector<Tuple> origins = {
             Tuple::point(0, 1.5, 0),
@@ -112,5 +112,70 @@ TEST(CylinderTestSuite, IntersectingAConstrainedCylinder){
         Ray r(origins[i], Tuple::normalized(directions[i]));
         std::vector<Intersection> xs = c.intersect(r);
         EXPECT_EQ(xs.size(), counts[i]);
+    }
+}
+
+TEST(CylinderTestSuite, DefaultClosedValueForCylinder){
+    Cylinder c;
+    EXPECT_FALSE(c.closed);
+}
+
+TEST(CylinderTestSuite, IntersectingTheCapsOfClosedCylinder){
+    Cylinder c;
+    c.minimum = 1;
+    c.maximum = 2;
+    c.closed = true;
+
+    std::vector<Tuple> origins = {
+            Tuple::point(0, 3, 0),
+            Tuple::point(0, 3, -2),
+            Tuple::point(0, 4, -2),
+            Tuple::point(0, 0, -2),
+            Tuple::point(0, -1, -2),
+    };
+    std::vector<Tuple> directions = {
+            Tuple::vector(0, -1, 0),
+            Tuple::vector(0, -1, 2),
+            Tuple::vector(0, -1, 1),
+            Tuple::vector(0, 1, 2),
+            Tuple::vector(0, 1, 1),
+    };
+
+    std::vector<int> counts = {2, 2, 2, 2, 2};
+
+    for (int i = 0; i < origins.size(); ++i){
+        Ray r(origins[i], Tuple::normalized(directions[i]));
+        std::vector<Intersection> xs = c.intersect(r);
+        EXPECT_EQ(xs.size(), counts[i]);
+    }
+}
+
+TEST(CylinderTestSuite, NormalVectorOnClosedCylinder){
+    Cylinder c;
+    c.minimum = 1;
+    c.maximum = 2;
+    c.closed = true;
+
+    std::vector<Tuple> points = {
+            Tuple::point(0, 1, 0),
+            Tuple::point(0.5, 1, 0),
+            Tuple::point(0, 1, 0.5),
+            Tuple::point(0, 2, 0),
+            Tuple::point(0.5, 2, 0),
+            Tuple::point(0, 2, 0.5),
+    };
+    std::vector<Tuple> normals = {
+            Tuple::vector(0, -1, 0),
+            Tuple::vector(0, -1, 0),
+            Tuple::vector(0, -1, 0),
+            Tuple::vector(0, 1, 0),
+            Tuple::vector(0, 1, 0),
+            Tuple::vector(0, 1, 0),
+    };
+
+    for (int i = 0; i < points.size(); ++i){
+        Tuple p = points[i];
+        Tuple normal = c.model_normal_at(p);
+        EXPECT_EQ(normal, normals[i]);
     }
 }

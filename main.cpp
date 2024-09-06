@@ -1,8 +1,5 @@
 #include <iostream>
 #include "GraphicsLibrary/display/Canvas.h"
-#include "GraphicsLibrary/shapes/Sphere.h"
-#include "GraphicsLibrary/shapes/Plane.h"
-#include "GraphicsLibrary/shapes/Cube.h"
 #include "GraphicsLibrary/patterns/StripedPattern.h"
 #include "GraphicsLibrary/patterns/RingPattern.h"
 #include "GraphicsLibrary/patterns/GradientPattern.h"
@@ -2352,6 +2349,61 @@ void glass_cubes(){
     render_time_and_save(camera, world, false, 8, __FUNCTION__);
 }
 
+void simple_cylinder(){
+    auto world = World();
+
+    auto pointlight = PointLight(Tuple::point(1, 2, -10), Color::white());
+    world.add(pointlight);
+
+    auto plane = Plane();
+    auto checkers = CheckerPattern();
+    plane.material.set_pattern(checkers);
+    plane.set_transform(Transformation::translation(0, -.01, 0));
+//    plane.set_transform(Transformation::translation(0, 0, -20) * Transformation::rotation_x(M_PI_2));
+    world.add(plane);
+
+//    auto ceiling = Plane();
+//    ceiling.set_transform(Transformation::translation(0, 20, 0));
+//    auto rings = RingPattern();
+//    ceiling.material.set_pattern(rings);
+//    world.add(ceiling);
+
+//    auto cylinder = Cylinder::solid_glass_cylinder();
+//    cylinder.material.color = Color::maroon();
+
+//    auto cylinder = Cylinder();
+//    cylinder.material.reflective = 0.5;
+//    cylinder.material.specular = 1;
+//    cylinder.material.shininess = 200;
+//    cylinder.material.color = Color::maroon();
+
+//    cylinder.minimum = 0.3;
+//    cylinder.maximum = 0.9;
+//    cylinder.closed = true;
+
+    auto hgcylinder = HollowGlassCylinder();
+    hgcylinder.set_color(Color::red());
+    hgcylinder.set_minimum(0.4);
+    hgcylinder.set_maximum(0.9);
+    hgcylinder.set_closed(true);
+
+
+    world.add(hgcylinder);
+
+    int factor = 5;
+    Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
+    Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
+    Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
+    Camera camera_bird = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
+
+    // num refractions needs to be 2 * num overlapping spheres. each hollow glass is 2 spheres. so 4 * num hgs;
+    render_time_and_save(camera_elv, world, true, 5, __FUNCTION__);
+    render_time_and_save(camera_ang, world, true, 5, __FUNCTION__);
+    render_time_and_save(camera_iso, world, true, 5, __FUNCTION__);
+    render_time_and_save(camera_bird, world, true, 5, __FUNCTION__);
+
+}
+
 int main()
 {
 //    challenge_world_w_spheres();
@@ -2389,7 +2441,8 @@ int main()
 //    hollow_glass_spheres_recursive();
 //    orb_recursive();
 //    simple_cube();
-    glass_cubes();
+//    glass_cubes();
 //    hollow_glass_cube_class();
+    simple_cylinder();
     return 0;
 }

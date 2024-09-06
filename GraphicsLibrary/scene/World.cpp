@@ -59,6 +59,11 @@ void World::add(const HollowGlassCube &hollow_glass_cube) {
     add(hollow_glass_cube.outer);
 }
 
+void World::add(const HollowGlassCylinder &hollow_glass_cylinder) {
+    add(hollow_glass_cylinder.inner);
+    add(hollow_glass_cylinder.outer);
+}
+
 void World::add(const std::vector<HollowGlassSphere> &hollow_glass_spheres) {
     for (const auto &hs : hollow_glass_spheres)
         add(hs);
@@ -66,6 +71,11 @@ void World::add(const std::vector<HollowGlassSphere> &hollow_glass_spheres) {
 
 void World::add(const std::vector<HollowGlassCube> &hollow_glass_cubes) {
     for (const auto &hc : hollow_glass_cubes)
+        add(hc);
+}
+
+void World::add(const std::vector<HollowGlassCylinder> &hollow_glass_cylinder) {
+    for (const auto &hc : hollow_glass_cylinder)
         add(hc);
 }
 
