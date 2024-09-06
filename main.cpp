@@ -2413,7 +2413,8 @@ void simple_cone(){
     auto plane = Plane();
     auto checkers = CheckerPattern();
     plane.material.set_pattern(checkers);
-    plane.set_transform(Transformation::translation(0, 0, -15) * Transformation::rotation_x(M_PI_2));
+//    plane.set_transform(Transformation::translation(0, 0, -15) * Transformation::rotation_x(M_PI_2));
+    plane.set_transform(Transformation::translation(0, -1, 0));
     world.add(plane);
 
 //    auto cone = Cone::solid_glass_cone();
@@ -2427,7 +2428,7 @@ void simple_cone(){
 
     cone.minimum = 0;
     cone.maximum = 0.3;
-//    cone.closed = true;
+    cone.closed = true;
 
 //    auto hgcone = HollowGlassCone();
 //    hgcone.set_color(Color::red());

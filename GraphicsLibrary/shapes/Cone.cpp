@@ -80,6 +80,9 @@ std::vector<Intersection> Cone::model_intersect(const Ray &model_ray) const {
     // If it is, return both t intersections.
     float t0 = (-b - (float) sqrt(discriminant))  / ( 2 * a );
     float t1 = (-b + (float) sqrt(discriminant))  / ( 2 * a );
+    if (t0 > t1){
+        std::swap(t0, t1);
+    }
 
     float y0 = model_ray.origin.y + t0 * model_ray.direction.y;
     if (minimum < y0 && y0 < maximum)

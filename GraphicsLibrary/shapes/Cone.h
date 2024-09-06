@@ -12,7 +12,7 @@ class Cone : public Shape {
 public:
     float minimum = -1 * std::numeric_limits<float>::infinity();
     float maximum = std::numeric_limits<float>::infinity();
-    bool closed = false;
+    bool closed = false; // TODO: Something is wrong with caps intersections when this is set to true.
 
     Cone() = default;
     ~Cone() override = default;
