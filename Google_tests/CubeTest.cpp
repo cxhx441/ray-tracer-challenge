@@ -7,7 +7,7 @@
 #include "primitives/Ray.h"
 #include "shapes/Cube.h"
 
-TEST(SphereTestSuite, RayIntersectsCube){
+TEST(CubeTestSuite, RayIntersectsCube){
     /* Create single cube, cast ray at each of its faces to test intersections work correctly. Also, one ray from inside. */
     Cube c;
 
@@ -42,7 +42,7 @@ TEST(SphereTestSuite, RayIntersectsCube){
     }
 }
 
-TEST(SphereTestSuite, RayMissesCube){
+TEST(CubeTestSuite, RayMissesCube){
     Cube c;
 
     std::vector<Tuple> origins = {
@@ -69,7 +69,7 @@ TEST(SphereTestSuite, RayMissesCube){
     }
 }
 
-TEST(SphereTestSuite, NormalAtFaceOfCube){
+TEST(CubeTestSuite, NormalAtFaceOfCube){
     Cube c;
 
     std::vector<Tuple> points = {

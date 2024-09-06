@@ -9,6 +9,8 @@ add_library(shapes STATIC
         HollowGlassSphere.cpp
         Cube.cpp
         HollowGlassCube.cpp
+        Cylinder.cpp
+        Cylinder.h
 )
 target_include_directories(shapes PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
