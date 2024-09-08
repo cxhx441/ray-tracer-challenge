@@ -16,5 +16,5 @@ std::vector<Intersection> Plane::model_intersect(const Ray &model_ray) const {
         return {};
     }
     float t = -model_ray.origin.y / model_ray.direction.y;
-    return {Intersection(t, (void *) this)};
+    return {Intersection(t,  std::shared_ptr<const Plane>(this))};
 }

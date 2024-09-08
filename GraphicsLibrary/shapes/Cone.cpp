@@ -58,7 +58,7 @@ std::vector<Intersection> Cone::model_intersect(const Ray &model_ray) const {
 
     // ray is parallel to one cone but hits the other
     if ( std::abs(a) < 0.0001 && std::abs(b) > 0.0001) {
-        xs.push_back({-c/(2.f*b), (void*) this});
+        xs.push_back({-c/(2.f*b), std::make_shared<Cone>(*this)});
         intersect_caps(model_ray, xs);
         return xs;
     }
@@ -86,11 +86,11 @@ std::vector<Intersection> Cone::model_intersect(const Ray &model_ray) const {
 
     float y0 = model_ray.origin.y + t0 * model_ray.direction.y;
     if (minimum < y0 && y0 < maximum)
-        xs.push_back(Intersection(t0, (void*) this));
+        xs.push_back(Intersection(t0, std::make_shared<Cone>(*this)));
 
     float y1 = model_ray.origin.y + t1 * model_ray.direction.y;
     if (minimum < y1 && y1 < maximum)
-        xs.push_back(Intersection(t1, (void*) this));
+        xs.push_back(Intersection(t1, std::make_shared<Cone>(*this)));
 
     intersect_caps(model_ray, xs);
 
@@ -104,12 +104,13 @@ void Cone::intersect_caps(const Ray &r, std::vector<Intersection> &xs) const {
     // check intersection with lower cap
     float t_min = (minimum - r.origin.y) / r.direction.y;
     if (check_caps(r, t_min, std::fabs(minimum)))
-        xs.push_back({t_min, (void*) this});
+//        xs.push_back({t_min, (void*) this});
+        xs.push_back({t_min, std::make_shared<Cone>(*this)});
 
     // check intersection with higher cap
     float t_max = (maximum - r.origin.y) / r.direction.y;
     if (check_caps(r, t_max, std::fabs(maximum)))
-        xs.push_back({t_max, (void*) this});
+        xs.push_back({t_max, std::make_shared<Cone>(*this)});
 }
 
 bool Cone::check_caps(const Ray &r, float t, float cap_radius) {

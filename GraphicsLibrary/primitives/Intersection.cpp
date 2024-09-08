@@ -4,7 +4,7 @@
 
 #include "Intersection.h"
 
-Intersection::Intersection(float t, void* object) : t(t), object(object) {}
+Intersection::Intersection(float t, std::shared_ptr<const Shape> object) : t(t), object(std::move(object)) {}
 
 bool Intersection::operator==(const Intersection& other) const {
     if (t == other.t and object == other.object)

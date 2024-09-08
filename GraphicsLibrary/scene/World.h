@@ -24,37 +24,26 @@ private:
     static bool total_internal_reflection(PreparedComputation &precompute);
 public:
     std::vector<PointLight> lights;
-    std::vector<Sphere> spheres;
-    std::vector<Plane> planes;
-    std::vector<Cube> cubes;
-    std::vector<Cylinder> cylinders;
-    std::vector<Cone> cones;
+    std::vector<std::shared_ptr<Shape>> shapes;
 
     World() = default;
     static World DefaultWorld();
 
-    void add(const PointLight &in_pointlight) ;
-    void add(const Sphere &in_sphere) ;
-    void add(const Plane &in_plane) ;
-    void add(const Cube &in_cube) ;
-    void add(const Cylinder &in_cylinder) ;
-    void add(const Cone &in_cone) ;
+    void add(PointLight &in_pointlight) ;
+    void add(const std::shared_ptr<Shape> &in_shape);
 
-    void add(const std::vector<PointLight> &in_pointlights) ;
-    void add(const std::vector<Sphere> &in_spheres) ;
-    void add(const std::vector<Plane> &in_planes) ;
-    void add(const std::vector<Cube> &in_cubes) ;
-    void add(const std::vector<Cylinder> &in_cylinders) ;
-    void add(const std::vector<Cone> &in_cones) ;
+    void add(std::vector<PointLight> &in_pointlights) ;
+//    void add(std::vector<Shape*> in_shapes);
 
-    void add(const HollowGlassSphere &hollow_glass_sphere) ;
-    void add(const HollowGlassCube &hollow_glass_cube) ;
-    void add(const HollowGlassCylinder &hollow_glass_cylinder) ;
-    void add(const HollowGlassCone &hollow_glass_cone) ;
-    void add(const std::vector<HollowGlassSphere> &hollow_glass_spheres) ;
-    void add(const std::vector<HollowGlassCube> &hollow_glass_cubes) ;
-    void add(const std::vector<HollowGlassCylinder> &hollow_glass_cylinders) ;
-    void add(const std::vector<HollowGlassCone> &hollow_glass_cones) ;
+//    void add(HollowGlassSphere &hollow_glass_sphere) ;
+//    void add(HollowGlassCube &hollow_glass_cube) ;
+//    void add(HollowGlassCylinder &hollow_glass_cylinder) ;
+//    void add(HollowGlassCone &hollow_glass_cone) ;
+
+//    void add(std::vector<HollowGlassSphere> &hollow_glass_spheres) ;
+//    void add(std::vector<HollowGlassCube> &hollow_glass_cubes) ;
+//    void add(std::vector<HollowGlassCylinder> &hollow_glass_cylinders) ;
+//    void add(std::vector<HollowGlassCone> &hollow_glass_cones) ;
 
     std::vector<Intersection> intersect_world(Ray& r, bool test_for_shadows=false);
     Color shade_hit(PreparedComputation& precompute, bool shadows_enabled=false, int remaining_rays=0);

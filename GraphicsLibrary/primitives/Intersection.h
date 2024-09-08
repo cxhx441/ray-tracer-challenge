@@ -8,13 +8,16 @@
 
 #include <vector>
 #include <optional>
+#include <memory>
+
+class Shape;
 
 class Intersection {
 public:
     float t;
-    void* object;
+    std::shared_ptr<const Shape> object;
 
-    Intersection(float t, void* object);
+    Intersection(float t, std::shared_ptr<const Shape> object);
 
     bool operator==(const Intersection& other) const;
     bool operator<(const Intersection& other) const;

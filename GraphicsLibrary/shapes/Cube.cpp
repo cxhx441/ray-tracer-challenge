@@ -56,7 +56,7 @@ std::vector<Intersection> Cube::model_intersect(const Ray &model_ray) const {
     if (t_min > t_max)
         return {};
 
-    return {Intersection(t_min, (void *) this), Intersection(t_max, (void *) this)};
+    return {Intersection(t_min, std::make_shared<Cube>(*this)), Intersection(t_max, std::make_shared<Cube>(*this))};
 }
 
 std::tuple<float, float> Cube::check_axis(float origin, float direction) {
