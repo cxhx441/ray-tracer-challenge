@@ -33,16 +33,16 @@ TEST(WorldTestSuite, IntersectAWorldWithARay) {
     ASSERT_EQ(xs.size(), 4);
 
     EXPECT_FLOAT_EQ(xs[0].t, 4);
-    EXPECT_EQ(xs[0].object, w.shapes[0]);
+    EXPECT_EQ(xs[0].shape, w.shapes[0]);
 
     EXPECT_FLOAT_EQ(xs[1].t, 4.5);
-    EXPECT_EQ(xs[1].object, w.shapes[1]);
+    EXPECT_EQ(xs[1].shape, w.shapes[1]);
 
     EXPECT_FLOAT_EQ(xs[2].t, 5.5);
-    EXPECT_EQ(xs[2].object, w.shapes[1]);
+    EXPECT_EQ(xs[2].shape, w.shapes[1]);
 
     EXPECT_FLOAT_EQ(xs[3].t, 6);
-    EXPECT_EQ(xs[3].object, w.shapes[0]);
+    EXPECT_EQ(xs[3].shape, w.shapes[0]);
 }
 
 TEST(WorldTestSuite, ShadingAnIntersectionFromOutside) {
@@ -95,8 +95,8 @@ TEST(WorldTestSuite, ShadeHitIsGivenAnIntersectionInShadow) {
     World w;
     PointLight l1 = PointLight(Tuple::point(0, 0, -10), Color::white());
     w.lights.push_back(l1);
-    auto s1 = std::shared_ptr<Sphere>();
-    auto s2 = std::shared_ptr<Sphere>();
+    auto s1 = std::make_shared<Sphere>();
+    auto s2 = std::make_shared<Sphere>();
     s2->set_transform(Transformation::translation(0, 0, 10));
     w.add(s1);
     w.add(s2);
@@ -122,7 +122,7 @@ TEST(WorldTestSuite, ReflectedColorForNonReflectiveMaterialIsBlack) {
 TEST(WorldTestSuite, ReflectedColorForReflectiveMaterial) {
     World w = World::DefaultWorld();
 
-    auto p = std::shared_ptr<Plane>();
+    auto p = std::make_shared<Plane>();
     p->name = std::string("p");
     p->material.reflective = 0.5;
     p->set_transform(Transformation::translation(0, -1, 0));
@@ -139,7 +139,7 @@ TEST(WorldTestSuite, ReflectedColorForReflectiveMaterial) {
 TEST(WorldTestSuite, ShadeHitWithReflectiveMaterial) {
     World w = World::DefaultWorld();
 
-    auto p = std::shared_ptr<Plane>();
+    auto p = std::make_shared<Plane>();
     p->name = std::string("p");
     p->material.reflective = 0.5;
     p->set_transform(Transformation::translation(0, -1, 0));
@@ -157,11 +157,11 @@ TEST(WorldTestSuite, ParallelReflectivePlanesStopsRecursion) {
     World w;
     w.lights.push_back(PointLight(Tuple::point(0, 0, 0), Color::white()));
 
-    auto lower = std::shared_ptr<Plane>();
+    auto lower = std::make_shared<Plane>();
     lower->name = std::string("lower");
     lower->material.reflective = 1;
     lower->set_transform(Transformation::translation(0, -1, 0));
-    auto upper = std::shared_ptr<Plane>();
+    auto upper = std::make_shared<Plane>();
     upper->name = std::string("lower");
     upper->material.reflective = 1;
     upper->set_transform(Transformation::translation(0, 1, 0));
@@ -174,7 +174,7 @@ TEST(WorldTestSuite, ParallelReflectivePlanesStopsRecursion) {
 
 TEST(WorldTestSuite, ReflectedColorAtMaximumRecursionDepth) {
     World w = World::DefaultWorld();
-    auto p = std::shared_ptr<Plane>();
+    auto p = std::make_shared<Plane>();
     p->name = std::string("p");
     p->material.reflective = 0.5;
     p->set_transform(Transformation::translation(0, -1, 0));
@@ -249,14 +249,14 @@ TEST(WorldTestSuite, RefractedColoWithARefractedRay) {
 TEST(WorldTestSuite, ShadeHitWithTransparentMaterial) {
     World w = World::DefaultWorld();
 
-    auto floor = std::shared_ptr<Plane>();
+    auto floor = std::make_shared<Plane>();
     floor->name = "floor";
     floor->set_transform(Transformation::translation(0, -1, 0));
     floor->material.transparency = 0.5;
     floor->material.refractive_index = 1.5;
     w.add(floor);
 
-    auto ball = std::shared_ptr<Sphere>();
+    auto ball = std::make_shared<Sphere>();
     ball->name = "ball";
     ball->material.color = Color(1, 0, 0, 1);
     ball->material.ambient = 0.5;
@@ -274,7 +274,7 @@ TEST(WorldTestSuite, ShadeHitWithReflectiveAndTransparentMaterial) {
     World w = World::DefaultWorld();
     Ray r = Ray(Tuple::point(0, 0, -3), Tuple::vector(0, -sqrtf(2)/2, sqrtf(2)/2));
 
-    auto floor = std::shared_ptr<Plane>();
+    auto floor = std::make_shared<Plane>();
     floor->name = "floor";
     floor->set_transform(Transformation::translation(0, -1, 0));
     floor->material.reflective = 0.5;
@@ -282,7 +282,7 @@ TEST(WorldTestSuite, ShadeHitWithReflectiveAndTransparentMaterial) {
     floor->material.refractive_index = 1.5;
     w.add(floor);
 
-    auto ball = std::shared_ptr<Sphere>();
+    auto ball = std::make_shared<Sphere>();
     ball->name = "ball";
     ball->material.color = Color(1, 0, 0, 1);
     ball->material.ambient = 0.5;

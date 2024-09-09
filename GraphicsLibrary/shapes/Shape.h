@@ -10,7 +10,7 @@
 #include "Material.h"
 
 
-class Shape {
+class Shape : public std::enable_shared_from_this<Shape>{
 private:
     Matrix transform = Matrix::identity(4);
     Matrix inverse_transform = Matrix::inverse(transform);

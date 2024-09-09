@@ -31,12 +31,13 @@ public:
 
     void add(PointLight &in_pointlight) ;
     void add(const std::shared_ptr<Shape> &in_shape);
+    void add(const std::vector<std::shared_ptr<Shape>> &in_shapes);
 
     void add(std::vector<PointLight> &in_pointlights) ;
 //    void add(std::vector<Shape*> in_shapes);
 
 //    void add(HollowGlassSphere &hollow_glass_sphere) ;
-//    void add(HollowGlassCube &hollow_glass_cube) ;
+    void add(HollowGlassCube &hollow_glass_cube) ;
 //    void add(HollowGlassCylinder &hollow_glass_cylinder) ;
 //    void add(HollowGlassCone &hollow_glass_cone) ;
 

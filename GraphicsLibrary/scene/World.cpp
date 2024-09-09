@@ -33,7 +33,9 @@ World World::DefaultWorld() {
 }
 
 void World::add(PointLight &in_pointlight) { lights.push_back(in_pointlight); }
-void World::add(const std::shared_ptr<Shape> &in_shape) { shapes.push_back(in_shape);
+void World::add(const std::shared_ptr<Shape> &in_shape) { shapes.push_back(in_shape); }
+void World::add(const std::vector<std::shared_ptr<Shape>> &in_shapes){
+    shapes.insert(shapes.end(), in_shapes.begin(), in_shapes.end());
 }
 
 void World::add(std::vector<PointLight> &in_pointlights) {
@@ -42,17 +44,17 @@ void World::add(std::vector<PointLight> &in_pointlights) {
 //void World::add(std::vector<Shape*> in_shape) {
 //    shapes.insert(shapes.end(), in_shape.begin(), in_shape.end());
 //}
-//
+
 //void World::add(HollowGlassSphere &hollow_glass_sphere) {
 //    add(&hollow_glass_sphere.inner);
 //    add(&hollow_glass_sphere.outer);
 //}
-//
-//void World::add(HollowGlassCube &hollow_glass_cube) {
-//    add(&hollow_glass_cube.inner);
-//    add(&hollow_glass_cube.outer);
-//}
-//
+
+void World::add(HollowGlassCube &hollow_glass_cube) {
+    add(std::make_shared<Cube>(hollow_glass_cube.inner));
+    add(std::make_shared<Cube>(hollow_glass_cube.outer));
+}
+
 //void World::add(HollowGlassCylinder &hollow_glass_cylinder) {
 //    add(&hollow_glass_cylinder.inner);
 //    add(&hollow_glass_cylinder.outer);

@@ -35,8 +35,8 @@ TEST(PlaneTestSuite, RayOriginIsAbovePlane){
     auto xs = p->model_intersect(r);
     EXPECT_EQ(xs.size(), 1);
     EXPECT_EQ(xs[0].t, 1);
-    std::cout << xs[0].object << ": " << p << std::endl;
-    EXPECT_EQ(xs[0].object, p);
+    std::cout << xs[0].shape << ": " << p << std::endl;
+    EXPECT_EQ(xs[0].shape, p);
 }
 
 TEST(PlaneTestSuite, RayOriginIsBelowPlane){
@@ -46,7 +46,7 @@ TEST(PlaneTestSuite, RayOriginIsBelowPlane){
     auto xs = p->model_intersect(r);
     EXPECT_EQ(xs.size(), 1);
     EXPECT_EQ(xs[0].t, 1);
-    EXPECT_EQ(xs[0].object, p);
+    EXPECT_EQ(xs[0].shape, p);
 }
 //TEST(SphereTestSuite, RayIntersectsSphereAtTangent){
 //    Ray r(Tuple::point(0, 1, -5), Tuple::vector(0, 0, 1) );

@@ -15,9 +15,9 @@ class Shape;
 class Intersection {
 public:
     float t;
-    std::shared_ptr<const Shape> object;
+    std::shared_ptr<const Shape> shape;
 
-    Intersection(float t, std::shared_ptr<const Shape> object);
+    Intersection(float t, std::shared_ptr<const Shape> shape);
 
     bool operator==(const Intersection& other) const;
     bool operator<(const Intersection& other) const;

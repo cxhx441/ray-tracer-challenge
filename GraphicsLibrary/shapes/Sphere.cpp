@@ -41,6 +41,6 @@ std::vector<Intersection> Sphere::model_intersect(const Ray &model_ray) const {
     // If it is, return both t intersections.
     float t1 = (-b - (float) sqrt(discriminant))  / ( 2 * a );
     float t2 = (-b + (float) sqrt(discriminant))  / ( 2 * a );
-    return {Intersection(t1, std::make_shared<Sphere>(*this)), Intersection(t2, std::make_shared<Sphere>(*this))};
+    return {Intersection(t1, shared_from_this()), Intersection(t2, shared_from_this())};
 }
 

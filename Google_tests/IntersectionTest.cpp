@@ -12,7 +12,7 @@ TEST(IntersectionTestSuite, IntersectionEncapsulatesTandShape){
     auto s = std::make_shared<Sphere>();
     Intersection i(3.5, s);
     EXPECT_EQ(i.t, 3.5);
-    EXPECT_EQ(i.object, s);
+    EXPECT_EQ(i.shape, s);
 }
 
 TEST(IntersectionTestSuite, AggregatingIntersections){
@@ -23,8 +23,8 @@ TEST(IntersectionTestSuite, AggregatingIntersections){
     EXPECT_EQ(xs.size(), 2);
     EXPECT_EQ(xs[0].t, 1);
     EXPECT_EQ(xs[1].t, 2);
-    EXPECT_EQ(xs[0].object, s);
-    EXPECT_EQ(xs[1].object, s);
+    EXPECT_EQ(xs[0].shape, s);
+    EXPECT_EQ(xs[1].shape, s);
 }
 
 TEST(IntersectionTestSuite, HitWhenAllIntersectionsHavePositiveT){

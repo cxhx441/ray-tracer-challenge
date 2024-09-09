@@ -63,11 +63,11 @@ std::vector<Intersection> Cylinder::model_intersect(const Ray &model_ray) const 
 
     float y0 = model_ray.origin.y + t0 * model_ray.direction.y;
     if (minimum < y0 && y0 < maximum)
-        xs.push_back({t0, std::make_shared<Cylinder>(*this)});
+        xs.push_back({t0, shared_from_this()});
 
     float y1 = model_ray.origin.y + t1 * model_ray.direction.y;
     if (minimum < y1 && y1 < maximum)
-        xs.push_back({t1, std::make_shared<Cylinder>(*this)});
+        xs.push_back({t1, shared_from_this()});
 
     intersect_caps(model_ray, xs);
 
@@ -81,12 +81,12 @@ void Cylinder::intersect_caps(const Ray &r, std::vector<Intersection> &xs) const
     // check intersection with lower cap
     float t_min = (minimum - r.origin.y) / r.direction.y;
     if (check_caps(r, t_min))
-        xs.push_back({t_min, std::make_shared<Cylinder>(*this)});
+        xs.push_back({t_min, shared_from_this()});
 
     // check intersection with higher cap
     float t_max = (maximum - r.origin.y) / r.direction.y;
     if (check_caps(r, t_max))
-        xs.push_back({t_max, std::make_shared<Cylinder>(*this)});
+        xs.push_back({t_max, shared_from_this()});
 }
 
 bool Cylinder::check_caps(const Ray &r, float t) {

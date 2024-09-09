@@ -10,7 +10,7 @@ PreparedComputation::PreparedComputation(Intersection &hit, Ray &r, const std::v
     set_refraction_details( hit, xs );
 
     t = hit.t;
-    object = hit.object;
+    object = hit.shape;
     point = Ray::position(r, t);
     eyev = -Tuple::normalized(r.direction);
     normalv = object->normal_at(point);
@@ -43,11 +43,11 @@ void PreparedComputation::set_refraction_details( Intersection &hit, const std::
         }
 
         // if object in containers already, the ray is exiting it so remove it, otherwise it's entering it so add it.
-        auto found_val = std::find(containers.begin(), containers.end(), i.object);
+        auto found_val = std::find(containers.begin(), containers.end(), i.shape);
         if ( found_val != containers.end()) // found object in containers.
             containers.erase(found_val);
         else
-            containers.push_back(i.object);
+            containers.push_back(i.shape);
 
         // For N2
         if (i == hit) {
