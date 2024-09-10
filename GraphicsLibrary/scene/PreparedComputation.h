@@ -16,7 +16,7 @@ private:
     void set_refraction_details( Intersection &hit, const std::vector<Intersection> &xs );
 public:
     float t = 0;
-    Sphere* object = nullptr;
+    std::shared_ptr<const Shape> object = nullptr;
     Tuple point;
     Tuple eyev;
     Tuple normalv;

@@ -30,21 +30,23 @@ TEST(PlaneTestSuite, RayIsCoplanarToPlane){
 }
 
 TEST(PlaneTestSuite, RayOriginIsAbovePlane){
-    Plane p;
+    auto p = std::make_shared<Plane>();
     Ray r(Tuple::point(0, 1, 0), Tuple::vector(0, -1, 0));
-    auto xs = p.model_intersect(r);
+    auto xs = p->model_intersect(r);
     EXPECT_EQ(xs.size(), 1);
     EXPECT_EQ(xs[0].t, 1);
-    EXPECT_EQ(xs[0].object, &p);
+    std::cout << xs[0].shape << ": " << p << std::endl;
+    EXPECT_EQ(xs[0].shape, p);
 }
 
 TEST(PlaneTestSuite, RayOriginIsBelowPlane){
-    Plane p;
+    auto p = std::make_shared<Plane>();
+    p->name = "plane";
     Ray r(Tuple::point(0, -1, 0), Tuple::vector(0, 1, 0));
-    auto xs = p.model_intersect(r);
+    auto xs = p->model_intersect(r);
     EXPECT_EQ(xs.size(), 1);
     EXPECT_EQ(xs[0].t, 1);
-    EXPECT_EQ(xs[0].object, &p);
+    EXPECT_EQ(xs[0].shape, p);
 }
 //TEST(SphereTestSuite, RayIntersectsSphereAtTangent){
 //    Ray r(Tuple::point(0, 1, -5), Tuple::vector(0, 0, 1) );

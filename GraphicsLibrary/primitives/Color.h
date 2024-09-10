@@ -26,6 +26,7 @@ public:
     static Color silver();
     static Color gray();
     static Color maroon();
+    static Color brown();
     static Color orange();
     static Color navy();
 

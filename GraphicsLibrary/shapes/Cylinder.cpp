@@ -5,16 +5,17 @@
 #include "Cylinder.h"
 #include <cmath>
 
-Cylinder Cylinder::solid_glass_cylinder() {
-    Cylinder c;
-    c.material.color = Color::black();
-    c.material.transparency = 1;
-    c.material.refractive_index = Material::RefractiveIndices::glass;
-    c.material.reflective = 1;
-    c.material.diffuse = 0.1;
-    c.material.ambient = 0.1;
-    c.material.specular = 1;
-    c.material.shininess = 300;
+std::shared_ptr<Cylinder> Cylinder::create() { return std::make_shared<Cylinder>(); }
+std::shared_ptr<Cylinder> Cylinder::solid_glass() {
+    auto c = std::make_shared<Cylinder>();
+    c->material.color = Color::black();
+    c->material.transparency = 1;
+    c->material.refractive_index = Material::RefractiveIndices::glass;
+    c->material.reflective = 1;
+    c->material.diffuse = 0.1;
+    c->material.ambient = 0.1;
+    c->material.specular = 1;
+    c->material.shininess = 300;
 
     return c;
 }
@@ -63,11 +64,11 @@ std::vector<Intersection> Cylinder::model_intersect(const Ray &model_ray) const 
 
     float y0 = model_ray.origin.y + t0 * model_ray.direction.y;
     if (minimum < y0 && y0 < maximum)
-        xs.push_back(Intersection(t0, (void*) this));
+        xs.push_back({t0, shared_from_this()});
 
     float y1 = model_ray.origin.y + t1 * model_ray.direction.y;
     if (minimum < y1 && y1 < maximum)
-        xs.push_back(Intersection(t1, (void*) this));
+        xs.push_back({t1, shared_from_this()});
 
     intersect_caps(model_ray, xs);
 
@@ -81,12 +82,12 @@ void Cylinder::intersect_caps(const Ray &r, std::vector<Intersection> &xs) const
     // check intersection with lower cap
     float t_min = (minimum - r.origin.y) / r.direction.y;
     if (check_caps(r, t_min))
-        xs.push_back({t_min, (void*) this});
+        xs.push_back({t_min, shared_from_this()});
 
     // check intersection with higher cap
     float t_max = (maximum - r.origin.y) / r.direction.y;
     if (check_caps(r, t_max))
-        xs.push_back({t_max, (void*) this});
+        xs.push_back({t_max, shared_from_this()});
 }
 
 bool Cylinder::check_caps(const Ray &r, float t) {

@@ -20,11 +20,12 @@ public:
     void set_closed(bool closed);
     void set_minimum(float minimum);
     void set_maximum(float maximum);
+    void casts_shadows(bool cast_shadowb);
 
     void add_transform(const Matrix &transform);
     void set_transform(const Matrix &transform);
 private:
-    float default_inner_scale = 0.9; // Todo: Acne...
+    float default_inner_scale = 0.99; // Todo: Acne...
 };
 
 #endif //RAYTRACERCHALLENGE_HOLLOWGLASSCONE_H

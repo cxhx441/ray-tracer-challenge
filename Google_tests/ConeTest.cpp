@@ -9,7 +9,7 @@
 #include "shapes/Cone.h"
 
 TEST(ConeTestSuite, RayIntersectsCone){
-    Cone c;
+    auto c = std::make_shared<Cone>();
 
     std::vector<Tuple> origins = {
             Tuple::point(0, 0, -5),
@@ -28,7 +28,7 @@ TEST(ConeTestSuite, RayIntersectsCone){
 
     for (int i = 0; i < origins.size(); ++i){
         Ray r(origins[i], Tuple::normalized(directions[i]));
-        std::vector<Intersection> xs = c.intersect(r);
+        std::vector<Intersection> xs = c->intersect(r);
         ASSERT_EQ(xs.size(), 2);
         EXPECT_FLOAT_EQ(xs[0].t, t0s[i]);
         EXPECT_FLOAT_EQ(xs[1].t, t1s[i]);
@@ -36,20 +36,20 @@ TEST(ConeTestSuite, RayIntersectsCone){
 }
 
 TEST(ConeTestSuite, IntersectConeWithARayParallelToOneHalf){
-    Cone c;
+    auto c = std::make_shared<Cone>();
     Tuple direction = Tuple::normalized(Tuple::vector(0, 1, 1));
     Ray r(Tuple::point(0, 0, -1), direction);
-    std::vector<Intersection> xs = c.intersect(r);
+    std::vector<Intersection> xs = c->intersect(r);
     ASSERT_EQ(xs.size(), 1);
 //    EXPECT_FLOAT_EQ(xs[0].t, 0.35355);
     EXPECT_FLOAT_EQ(xs[0].t, 0.35355338);
 }
 
 TEST(ConeTestSuite, IntersectiongConesCaps){
-    Cone c;
-    c.minimum = -0.5;
-    c.maximum = 0.5;
-    c.closed = true;
+    auto c = std::make_shared<Cone>();
+    c->minimum = -0.5;
+    c->maximum = 0.5;
+    c->closed = true;
 
     std::vector<Tuple> origins = {
             Tuple::point(0, 0, -5),
@@ -66,13 +66,13 @@ TEST(ConeTestSuite, IntersectiongConesCaps){
 
     for (int i = 0; i < origins.size(); ++i){
         Ray r(origins[i], Tuple::normalized(directions[i]));
-        std::vector<Intersection> xs = c.intersect(r);
+        std::vector<Intersection> xs = c->intersect(r);
         ASSERT_EQ(xs.size(), counts[i]);
     }
 }
 
 TEST(ConeTestSuite, NormalVectorOnCone){
-    Cone c;
+    auto c = std::make_shared<Cone>();
 
     std::vector<Tuple> points = {
             Tuple::point(0, 0, 0),
@@ -87,7 +87,7 @@ TEST(ConeTestSuite, NormalVectorOnCone){
 
     for (int i = 0; i < points.size(); ++i){
         Tuple p = points[i];
-        Tuple normal = c.model_normal_at(p);
+        Tuple normal = c->model_normal_at(p);
         EXPECT_EQ(normal, normals[i]);
     }
 }

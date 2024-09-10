@@ -9,7 +9,7 @@
 
 
 TEST(CylinderTestSuite, RayMissesCylinder){
-    Cylinder c;
+    auto c = std::make_shared<Cylinder>();
 
     std::vector<Tuple> origins = {
             Tuple::point(1, 0, 0),
@@ -24,13 +24,13 @@ TEST(CylinderTestSuite, RayMissesCylinder){
 
     for (int i = 0; i < origins.size(); ++i){
         Ray r(origins[i], Tuple::normalized(directions[i]));
-        std::vector<Intersection> xs = c.intersect(r);
+        std::vector<Intersection> xs = c->intersect(r);
         EXPECT_EQ(xs.size(), 0);
     }
 }
 
 TEST(CylinderTestSuite, RayIntersectsCylinder){
-    Cylinder c;
+    auto c = std::make_shared<Cylinder>();
 
     std::vector<Tuple> origins = {
             Tuple::point(1, 0, -5),
@@ -50,7 +50,7 @@ TEST(CylinderTestSuite, RayIntersectsCylinder){
 
     for (int i = 0; i < origins.size(); ++i){
         Ray r(origins[i], Tuple::normalized(directions[i]));
-        std::vector<Intersection> xs = c.intersect(r);
+        std::vector<Intersection> xs = c->intersect(r);
         EXPECT_EQ(xs.size(), 2);
         EXPECT_FLOAT_EQ(xs[0].t, t0s[i]);
         EXPECT_FLOAT_EQ(xs[1].t, t1s[i]);
@@ -58,7 +58,7 @@ TEST(CylinderTestSuite, RayIntersectsCylinder){
 }
 
 TEST(CylinderTestSuite, NormalVectorOnCylinder){
-    Cylinder c;
+    auto c = std::make_shared<Cylinder>();
 
     std::vector<Tuple> points = {
             Tuple::point(1, 0, 0),
@@ -75,21 +75,21 @@ TEST(CylinderTestSuite, NormalVectorOnCylinder){
 
     for (int i = 0; i < points.size(); ++i){
         Tuple p = points[i];
-        Tuple normal = c.model_normal_at(p);
+        Tuple normal = c->model_normal_at(p);
         EXPECT_EQ(normal, normals[i]);
     }
 }
 
 TEST(CylinderTestSuite, DefaultMinMaxHeight){
-    Cylinder c;
-    EXPECT_EQ(c.minimum, -std::numeric_limits<float>::infinity());
-    EXPECT_EQ(c.maximum, std::numeric_limits<float>::infinity());
+    auto c = std::make_shared<Cylinder>();
+    EXPECT_EQ(c->minimum, -std::numeric_limits<float>::infinity());
+    EXPECT_EQ(c->maximum, std::numeric_limits<float>::infinity());
 }
 
 TEST(CylinderTestSuite, IntersectingAConstrainedCylinder){
-    Cylinder c;
-    c.minimum = 1;
-    c.maximum = 2;
+    auto c = std::make_shared<Cylinder>();
+    c->minimum = 1;
+    c->maximum = 2;
 
     std::vector<Tuple> origins = {
             Tuple::point(0, 1.5, 0),
@@ -112,21 +112,21 @@ TEST(CylinderTestSuite, IntersectingAConstrainedCylinder){
 
     for (int i = 0; i < origins.size(); ++i){
         Ray r(origins[i], Tuple::normalized(directions[i]));
-        std::vector<Intersection> xs = c.intersect(r);
+        std::vector<Intersection> xs = c->intersect(r);
         EXPECT_EQ(xs.size(), counts[i]);
     }
 }
 
 TEST(CylinderTestSuite, DefaultClosedValueForCylinder){
-    Cylinder c;
-    EXPECT_FALSE(c.closed);
+    auto c = std::make_shared<Cylinder>();
+    EXPECT_FALSE(c->closed);
 }
 
 TEST(CylinderTestSuite, IntersectingTheCapsOfClosedCylinder){
-    Cylinder c;
-    c.minimum = 1;
-    c.maximum = 2;
-    c.closed = true;
+    auto c = std::make_shared<Cylinder>();
+    c->minimum = 1;
+    c->maximum = 2;
+    c->closed = true;
 
     std::vector<Tuple> origins = {
             Tuple::point(0, 3, 0),
@@ -147,16 +147,16 @@ TEST(CylinderTestSuite, IntersectingTheCapsOfClosedCylinder){
 
     for (int i = 0; i < origins.size(); ++i){
         Ray r(origins[i], Tuple::normalized(directions[i]));
-        std::vector<Intersection> xs = c.intersect(r);
+        std::vector<Intersection> xs = c->intersect(r);
         EXPECT_EQ(xs.size(), counts[i]);
     }
 }
 
 TEST(CylinderTestSuite, NormalVectorOnClosedCylinder){
-    Cylinder c;
-    c.minimum = 1;
-    c.maximum = 2;
-    c.closed = true;
+    auto c = std::make_shared<Cylinder>();
+    c->minimum = 1;
+    c->maximum = 2;
+    c->closed = true;
 
     std::vector<Tuple> points = {
             Tuple::point(0, 1, 0),
@@ -177,7 +177,7 @@ TEST(CylinderTestSuite, NormalVectorOnClosedCylinder){
 
     for (int i = 0; i < points.size(); ++i){
         Tuple p = points[i];
-        Tuple normal = c.model_normal_at(p);
+        Tuple normal = c->model_normal_at(p);
         EXPECT_EQ(normal, normals[i]);
     }
 }

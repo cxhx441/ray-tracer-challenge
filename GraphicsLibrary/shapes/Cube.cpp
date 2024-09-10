@@ -6,16 +6,18 @@
 #include <algorithm>
 #include "Cube.h"
 
-Cube Cube::solid_glass_cube() {
-    Cube c;
-    c.material.color = Color::black();
-    c.material.transparency = 1;
-    c.material.refractive_index = Material::RefractiveIndices::glass;
-    c.material.reflective = 1;
-    c.material.diffuse = 0.1;
-    c.material.ambient = 0.1;
-    c.material.specular = 1;
-    c.material.shininess = 300;
+std::shared_ptr<Cube> Cube::create() { return std::make_shared<Cube>(); }
+
+std::shared_ptr<Cube> Cube::solid_glass() {
+    auto c = std::make_shared<Cube>();
+    c->material.color = Color::black();
+    c->material.transparency = 1;
+    c->material.refractive_index = Material::RefractiveIndices::glass;
+    c->material.reflective = 1;
+    c->material.diffuse = 0.1;
+    c->material.ambient = 0.1;
+    c->material.specular = 1;
+    c->material.shininess = 300;
 
     return c;
 }
@@ -56,7 +58,7 @@ std::vector<Intersection> Cube::model_intersect(const Ray &model_ray) const {
     if (t_min > t_max)
         return {};
 
-    return {Intersection(t_min, (void *) this), Intersection(t_max, (void *) this)};
+    return {Intersection(t_min, shared_from_this()), Intersection(t_max, shared_from_this())};
 }
 
 std::tuple<float, float> Cube::check_axis(float origin, float direction) {

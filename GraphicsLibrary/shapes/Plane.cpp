@@ -4,6 +4,8 @@
 
 #include "Plane.h"
 
+std::shared_ptr<Plane> Plane::create() { return std::make_shared<Plane>(); }
+
 Tuple Plane::model_normal_at(const Tuple &model_point) const {
     return Tuple::vector(0, 1, 0);
 }
@@ -16,5 +18,5 @@ std::vector<Intersection> Plane::model_intersect(const Ray &model_ray) const {
         return {};
     }
     float t = -model_ray.origin.y / model_ray.direction.y;
-    return {Intersection(t, (void *) this)};
+    return {Intersection(t,  shared_from_this())};
 }

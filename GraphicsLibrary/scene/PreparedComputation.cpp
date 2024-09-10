@@ -10,7 +10,7 @@ PreparedComputation::PreparedComputation(Intersection &hit, Ray &r, const std::v
     set_refraction_details( hit, xs );
 
     t = hit.t;
-    object = (Sphere *) hit.object;
+    object = hit.shape;
     point = Ray::position(r, t);
     eyev = -Tuple::normalized(r.direction);
     normalv = object->normal_at(point);
@@ -30,7 +30,8 @@ PreparedComputation::PreparedComputation(Intersection &hit, Ray &r, const std::v
 
 
 void PreparedComputation::set_refraction_details( Intersection &hit, const std::vector<Intersection> &xs ){
-    std::vector<void*> containers;
+//    std::vector<void*> containers;
+    std::vector<std::shared_ptr<const Shape>> containers;
 
     for ( auto i : xs ){
         // For N1
@@ -38,22 +39,22 @@ void PreparedComputation::set_refraction_details( Intersection &hit, const std::
             if (containers.empty())
                 n1 = 1.0;
             else
-                n1 = ((Shape *) containers.back())->material.refractive_index;
+                n1 = (containers.back())->material.refractive_index;
         }
 
         // if object in containers already, the ray is exiting it so remove it, otherwise it's entering it so add it.
-        auto found_val = std::find(containers.begin(), containers.end(), i.object);
+        auto found_val = std::find(containers.begin(), containers.end(), i.shape);
         if ( found_val != containers.end()) // found object in containers.
             containers.erase(found_val);
         else
-            containers.push_back(i.object);
+            containers.push_back(i.shape);
 
         // For N2
         if (i == hit) {
             if (containers.empty())
                 n2 = 1.0;
             else
-                n2 = ((Shape *) containers.back())->material.refractive_index;
+                n2 = (containers.back())->material.refractive_index;
             break;
         }
     }

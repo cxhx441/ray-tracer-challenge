@@ -12,144 +12,90 @@ World World::DefaultWorld() {
     w.lights.push_back(l);
 
     // Unit sphere at origin.
-    Sphere s1;
-    s1.name = std::string("s1");
-    s1.material.color = Color(0.8, 1.0, 0.6);
-    s1.material.diffuse = 0.7;
-    s1.material.specular = 0.2;
+    auto s1 = std::make_shared<Sphere>();
+    s1->name = std::string("s1");
+    s1->material.color = Color(0.8, 1.0, 0.6);
+    s1->material.diffuse = 0.7;
+    s1->material.specular = 0.2;
 
     // Half unit sphere at origin.
-    Sphere s2;
-    s2.name = std::string("s2");
-    s2.set_transform(Transformation::scaling(0.5));
+    auto s2 = std::make_shared<Sphere>();
+    s2->name = std::string("s2");
+    s2->set_transform(Transformation::scaling(0.5));
 
-    w.spheres.push_back(s1);
-    w.spheres.push_back(s2);
+//    w.spheres.push_back(s1);
+//    w.spheres.push_back(s2);
+
+//    w.add(std::move(s1));
+    w.add(s1);
+    w.add(s2);
     return w;
 }
 
-void World::add(const PointLight &in_pointlight) { lights.push_back(in_pointlight); }
-void World::add(const Sphere &in_sphere) { spheres.push_back(in_sphere); }
-void World::add(const Plane &in_plane) { planes.push_back(in_plane); }
-void World::add(const Cube &in_cube) { cubes.push_back(in_cube); }
-void World::add(const Cylinder &in_cylinder) { cylinders.push_back(in_cylinder); }
-void World::add(const Cone &in_cone) { cones.push_back(in_cone); }
-void World::add(const std::vector<PointLight> &in_pointlights) {
+void World::add(PointLight &in_pointlight) { lights.push_back(in_pointlight); }
+void World::add(const std::shared_ptr<Shape> &in_shape) { shapes.push_back(in_shape); }
+void World::add(const std::vector<std::shared_ptr<Shape>> &in_shapes){
+    shapes.insert(shapes.end(), in_shapes.begin(), in_shapes.end());
+}
+
+void World::add(std::vector<PointLight> &in_pointlights) {
     lights.insert(lights.end(), in_pointlights.begin(), in_pointlights.end());
 }
-void World::add(const std::vector<Sphere> &in_spheres) {
-    spheres.insert(spheres.end(), in_spheres.begin(), in_spheres.end());
-}
-void World::add(const std::vector<Plane> &in_planes) {
-    planes.insert(planes.end(), in_planes.begin(), in_planes.end());
-}
-void World::add(const std::vector<Cube> &in_cubes) {
-    cubes.insert(cubes.end(), in_cubes.begin(), in_cubes.end());
-}
-void World::add(const std::vector<Cylinder> &in_cylinders) {
-    cylinders.insert(cylinders.end(), in_cylinders.begin(), in_cylinders.end());
-}
-void World::add(const std::vector<Cone> &in_cones) {
-    cones.insert(cones.end(), in_cones.begin(), in_cones.end());
+//void World::add(std::vector<Shape*> in_shape) {
+//    shapes.insert(shapes.end(), in_shape.begin(), in_shape.end());
+//}
+
+void World::add(HollowGlassSphere &hollow_glass_sphere) {
+    add(std::make_shared<Sphere>(hollow_glass_sphere.inner));
+    add(std::make_shared<Sphere>(hollow_glass_sphere.outer));
 }
 
-void World::add(const HollowGlassSphere &hollow_glass_sphere) {
-    add(hollow_glass_sphere.inner);
-    add(hollow_glass_sphere.outer);
+void World::add(HollowGlassCube &hollow_glass_cube) {
+    add(std::make_shared<Cube>(hollow_glass_cube.inner));
+    add(std::make_shared<Cube>(hollow_glass_cube.outer));
 }
 
-void World::add(const HollowGlassCube &hollow_glass_cube) {
-    add(hollow_glass_cube.inner);
-    add(hollow_glass_cube.outer);
+void World::add(HollowGlassCylinder &hollow_glass_cylinder) {
+    add(std::make_shared<Cylinder>(hollow_glass_cylinder.inner));
+    add(std::make_shared<Cylinder>(hollow_glass_cylinder.outer));
 }
 
-void World::add(const HollowGlassCylinder &hollow_glass_cylinder) {
-    add(hollow_glass_cylinder.inner);
-    add(hollow_glass_cylinder.outer);
+void World::add(HollowGlassCone &hollow_glass_cone) {
+    add(std::make_shared<Cone>(hollow_glass_cone.inner));
+    add(std::make_shared<Cone>(hollow_glass_cone.outer));
 }
 
-void World::add(const HollowGlassCone &hollow_glass_cone) {
-    add(hollow_glass_cone.inner);
-    add(hollow_glass_cone.outer);
-}
-
-void World::add(const std::vector<HollowGlassSphere> &hollow_glass_spheres) {
-    for (const auto &hs : hollow_glass_spheres)
-        add(hs);
-}
-
-void World::add(const std::vector<HollowGlassCube> &hollow_glass_cubes) {
-    for (const auto &hc : hollow_glass_cubes)
-        add(hc);
-}
-
-void World::add(const std::vector<HollowGlassCylinder> &hollow_glass_cylinders) {
-    for (const auto &hc : hollow_glass_cylinders)
-        add(hc);
-}
-
-void World::add(const std::vector<HollowGlassCone> &hollow_glass_cones) {
-    for (const auto &hc : hollow_glass_cones)
-        add(hc);
-}
-
+//void World::add(std::vector<HollowGlassSphere> &hollow_glass_spheres) {
+//    for (auto &hs : hollow_glass_spheres)
+//        add(hs);
+//}
+//
+//void World::add(std::vector<HollowGlassCube> &hollow_glass_cubes) {
+//    for (auto &hc : hollow_glass_cubes)
+//        add(hc);
+//}
+//
+//void World::add(std::vector<HollowGlassCylinder> &hollow_glass_cylinders) {
+//    for (auto &hc : hollow_glass_cylinders)
+//        add(hc);
+//}
+//
+//void World::add(std::vector<HollowGlassCone> &hollow_glass_cones) {
+//    for (auto &hc : hollow_glass_cones)
+//        add(hc);
+//}
+//
 std::vector<Intersection> World::intersect_world(Ray &r, bool test_for_shadows) {
     std::vector<Intersection> world_xs;
-    // Iterate over Spheres.
-    for (auto& sphere : spheres){
-        if (test_for_shadows && !sphere.casts_shadow )
+    for (auto shape : shapes){
+        if (test_for_shadows && !shape->casts_shadow )
             continue;
 
-        std::vector<Intersection> object_xs = sphere.intersect(r);
+        std::vector<Intersection> object_xs = shape->intersect(r);
         for (auto& x : object_xs){
             world_xs.push_back(x);
         }
     }
-
-    // Iterate over Planes.
-    for (auto& plane : planes){
-        if (test_for_shadows && !plane.casts_shadow ) continue;
-
-        std::vector<Intersection> object_xs = plane.intersect(r);
-        for (auto& x : object_xs){
-            world_xs.push_back(x);
-        }
-    }
-
-    // Iterate over Cubes.
-    for (auto& cube : cubes){
-        if (test_for_shadows && !cube.casts_shadow )
-            continue;
-
-        std::vector<Intersection> object_xs = cube.intersect(r);
-        for (auto& x : object_xs){
-            world_xs.push_back(x);
-        }
-    }
-
-    // Iterate over Cylinders.
-    for (auto& cylinder : cylinders){
-        if (test_for_shadows && !cylinder.casts_shadow )
-            continue;
-
-        std::vector<Intersection> object_xs = cylinder.intersect(r);
-        for (auto& x : object_xs){
-            world_xs.push_back(x);
-        }
-    }
-
-    // Iterate over Cones.
-    for (auto& cone : cones){
-        if (test_for_shadows && !cone.casts_shadow )
-            continue;
-
-        std::vector<Intersection> object_xs = cone.intersect(r);
-        for (auto& x : object_xs){
-            world_xs.push_back(x);
-        }
-    }
-
-
     std::sort(world_xs.begin(), world_xs.end());
     return world_xs;
 }

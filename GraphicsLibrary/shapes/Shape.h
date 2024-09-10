@@ -10,7 +10,7 @@
 #include "Material.h"
 
 
-class Shape {
+class Shape : public std::enable_shared_from_this<Shape>{
 private:
     Matrix transform = Matrix::identity(4);
     Matrix inverse_transform = Matrix::inverse(transform);
@@ -18,8 +18,6 @@ private:
 
 public:
     Material material = Material();
-
-    Shape() = default;
 
     // virtual destructor
     virtual ~Shape() = default;
@@ -31,11 +29,6 @@ public:
     Matrix get_transform() const;
     Matrix get_inverse_transform() const;
     Matrix get_normal_transform() const;
-
-//    Sphere(const Sphere& other);                // Copy constructor
-//    Sphere(Sphere&& other) noexcept;            // Move constructor
-//    Sphere& operator=(const Sphere& other);     // Copy assignment operator
-//    Sphere& operator=(Sphere&& other) noexcept; // Move assignment operator
 
     Color pattern_at(const Tuple& world_point) const;
 

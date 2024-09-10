@@ -49,10 +49,14 @@ void HollowGlassCone::set_closed(bool closed){
     outer.closed = closed;
 }
 void HollowGlassCone::set_minimum(float minimum){
-    inner.minimum = minimum;
+    inner.minimum = minimum + ( 1 - default_inner_scale );
     outer.minimum = minimum;
 }
 void HollowGlassCone::set_maximum(float maximum){
-    inner.maximum = maximum;
+    inner.maximum = maximum - ( 1 - default_inner_scale );
     outer.maximum = maximum;
+}
+
+void HollowGlassCone::casts_shadows(bool cast_shadowb) {
+    outer.casts_shadow = cast_shadowb;
 }

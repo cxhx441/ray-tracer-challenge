@@ -9,7 +9,7 @@
 
 TEST(CubeTestSuite, RayIntersectsCube){
     /* Create single cube, cast ray at each of its faces to test intersections work correctly. Also, one ray from inside. */
-    Cube c;
+    auto c = std::make_shared<Cube>();
 
     // +x , -x, +y, -y, +z, -z, inside
     std::vector<Tuple> origins = {
@@ -35,7 +35,7 @@ TEST(CubeTestSuite, RayIntersectsCube){
 
     for (int i = 0; i < origins.size(); ++i){
         Ray r(origins[i], directions[i]);
-        std::vector<Intersection> xs = c.intersect(r);
+        std::vector<Intersection> xs = c->intersect(r);
         EXPECT_EQ(xs.size(), 2);
         EXPECT_EQ(xs[0].t, t1s[i]);
         EXPECT_EQ(xs[1].t, t2s[i]);
@@ -43,7 +43,7 @@ TEST(CubeTestSuite, RayIntersectsCube){
 }
 
 TEST(CubeTestSuite, RayMissesCube){
-    Cube c;
+    auto c = std::make_shared<Cube>();
 
     std::vector<Tuple> origins = {
             Tuple::point(-2, 0, 0),
@@ -64,13 +64,13 @@ TEST(CubeTestSuite, RayMissesCube){
 
     for (int i = 0; i < origins.size(); ++i){
         Ray r(origins[i], directions[i]);
-        std::vector<Intersection> xs = c.intersect(r);
+        std::vector<Intersection> xs = c->intersect(r);
         EXPECT_EQ(xs.size(), 0);
     }
 }
 
 TEST(CubeTestSuite, NormalAtFaceOfCube){
-    Cube c;
+    auto c = std::make_shared<Cube>();
 
     std::vector<Tuple> points = {
             Tuple::point(1, 0.5, -0.8),
@@ -95,7 +95,7 @@ TEST(CubeTestSuite, NormalAtFaceOfCube){
 
     for (int i = 0; i < points.size(); ++i){
         Tuple p = points[i];
-        Tuple normal = c.model_normal_at(p);
+        Tuple normal = c->model_normal_at(p);
         EXPECT_EQ(normal, normals[i]);
     }
 }
