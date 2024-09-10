@@ -106,7 +106,6 @@ void Cone::intersect_caps(const Ray &r, std::vector<Intersection> &xs) const {
     // check intersection with lower cap
     float t_min = (minimum - r.origin.y) / r.direction.y;
     if (check_caps(r, t_min, std::fabs(minimum)))
-//        xs.push_back({t_min, (void*) this});
         xs.push_back({t_min, shared_from_this()});
 
     // check intersection with higher cap

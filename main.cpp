@@ -2561,6 +2561,109 @@ void all_current_shapes(){
     render_time_and_save(camera2, w, false, 7, __FUNCTION__);
 
 }
+
+void ice_cream(){
+    World w;
+
+    auto plane = Plane::create();
+    plane->set_transform(Transformation::translation(0, 0, 0));
+//    plane->material.set_pattern(CheckerPattern(Color::green(), Color::green() / 2.f ));
+    plane->material.set_pattern(CheckerPattern(Color(0.83, .71, .55), Color(.96, .87, .70) ));
+    w.add(plane);
+
+    auto sky = Plane::create();
+    sky->set_transform(Transformation::translation(0, 0, 20) * Transformation::rotation_x(M_PI_2));
+//    sky->material.set_pattern(RingPattern(Color::cyan(), Color::cyan() / 2.f));
+    sky->material.set_pattern(RingPattern(Color(0.83, .71, .55), Color(.96, .87, .70) ));
+    w.add(sky);
+
+    auto ice_cream_ball = Sphere::create();
+    ice_cream_ball->set_transform(Transformation::translation(0, 1.1, 0) * Transformation::scaling(0.325));
+    auto radgrad = RadialGradientPattern(Color::magenta(), Color::maroon());
+    radgrad.set_transform(Transformation::scaling(0.1));
+    ice_cream_ball->material.set_pattern(radgrad);
+    ice_cream_ball->material.specular = 0;
+    ice_cream_ball->material.shininess = 0;
+    auto ice_cream_ring = Sphere::create();
+    ice_cream_ring->set_transform(Transformation::translation(0, 1, 0) * Transformation::scaling(0.4, 0.15, 0.4));
+    ice_cream_ring->material.set_pattern(radgrad);
+    ice_cream_ring->material.specular = 0;
+    ice_cream_ring->material.shininess = 0;
+
+    auto cone = Cone::create();
+    cone->set_transform(Transformation::scaling(0.4, 1, 0.4));
+    cone->minimum = 0;
+    cone->maximum = 1;
+    auto cone_checkers = CheckerPattern(Color::brown(), Color::brown() / 2.f);
+    cone_checkers.set_transform(Transformation::scaling(0.2));
+    cone->material.set_pattern(cone_checkers);
+    cone->material.specular = 0;
+    cone->material.shininess = 0;
+
+    auto mv_milk = Transformation::translation(1, 0, 1);
+    auto scl_milk = Transformation::scaling(0.45, 1, 0.45);
+
+//    auto milk_glass = Cylinder::solid_glass();
+//    milk_glass->maximum = 2;
+//    milk_glass->minimum = 0;
+//    milk_glass->casts_shadow = false;
+//    milk_glass->set_transform(mv_milk * scl_milk);
+    auto milk_glass = HollowGlassCylinder();
+    milk_glass.outer.maximum = 2;
+    milk_glass.outer.minimum = 0;
+    milk_glass.inner.maximum = 2.1;
+    milk_glass.inner.minimum = 0.1;
+    milk_glass.inner.set_transform(Transformation::scaling(0.9, 1, 0.9));
+    milk_glass.add_transform(mv_milk * scl_milk);
+    milk_glass.casts_shadows(false);
+    milk_glass.outer.closed = false;
+    milk_glass.inner.closed = false;
+
+    auto milk = Cylinder::create();
+    milk->maximum = 1.85;
+    milk->minimum = .1;
+    milk->set_transform(mv_milk * scl_milk * Transformation::scaling(0.9, 1, 0.9));
+    milk->closed = true;
+
+    auto bubble_1 = HollowGlassSphere();
+    bubble_1.set_transform(Transformation::translation(1.1, 1.85, 1.1) * Transformation::scaling(0.1));
+    bubble_1.casts_shadows(false);
+    auto bubble_2 = HollowGlassSphere();
+    bubble_2.set_transform(Transformation::translation(1.0, 1.85, 0.9) * Transformation::scaling(0.08));
+    bubble_2.casts_shadows(false);
+    auto bubble_3 = HollowGlassSphere();
+    bubble_3.set_transform(Transformation::translation(1.13, 1.85, 0.95) * Transformation::scaling(0.06));
+    bubble_3.casts_shadows(false);
+
+    w.add( {cone, ice_cream_ball, ice_cream_ring, milk} );
+    w.add(milk_glass);
+//    w.add(bubble_1);
+//    w.add(bubble_2);
+//    w.add(bubble_3);
+
+    auto light1 = PointLight(Tuple::point(5, 5, -5), Color::white());
+    w.add(light1);
+
+    int factor = 100;
+    Camera cam1(50*factor, 50*factor, M_PI/6);
+    cam1.set_transform(Transformation::view_transform(
+            Tuple::point(1, 3., -5),
+            Tuple::point(0.5, 1, 0.5),
+            Tuple::point(0, 1, 0)
+    ));
+    Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
+    Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
+    Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
+//    Camera camera_bird = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
+
+    // num refractions needs to be 2 * num overlapping spheres. each hollow glass is 2 spheres. so 4 * num hgs;
+    render_time_and_save(cam1, w, true, 24, __FUNCTION__);
+//    render_time_and_save(camera_elv, w, true, 5, __FUNCTION__);
+//    render_time_and_save(camera_ang, w, true, 5, __FUNCTION__);
+//    render_time_and_save(camera_iso, w, true, 5, __FUNCTION__);
+//    render_time_and_save(camera_bird, w, true, 5, __FUNCTION__);
+
+}
 int main()
 {
 //    challenge_world_w_spheres();
@@ -2602,6 +2705,7 @@ int main()
 //    hollow_glass_cube_class();
 //    simple_cylinder();
 //    simple_cone();
-    all_current_shapes();
+//    all_current_shapes();
+    ice_cream();
     return 0;
 }

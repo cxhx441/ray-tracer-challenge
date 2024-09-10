@@ -56,3 +56,7 @@ void HollowGlassCone::set_maximum(float maximum){
     inner.maximum = maximum - ( 1 - default_inner_scale );
     outer.maximum = maximum;
 }
+
+void HollowGlassCone::casts_shadows(bool cast_shadowb) {
+    outer.casts_shadow = cast_shadowb;
+}

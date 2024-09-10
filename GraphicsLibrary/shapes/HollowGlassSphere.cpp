@@ -43,3 +43,7 @@ void HollowGlassSphere::set_color(const Color &color) {
 void HollowGlassSphere::set_pattern(const Pattern &pattern) {
     outer.material.set_pattern(pattern);
 }
+
+void HollowGlassSphere::casts_shadows(bool cast_shadowb) {
+    outer.casts_shadow = cast_shadowb;
+}
