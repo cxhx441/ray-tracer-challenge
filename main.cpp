@@ -2058,171 +2058,163 @@ void challenge_world_w_spheres(){
 //    render_time_and_save(camera_bird, world, false, 2 * world.spheres.size(), __FUNCTION__);
 //
 //}
-//
-//void orb_recursive(){
-//    auto world = World();
-//
-//    auto pointlight = PointLight(Tuple::point(10, 5, -10), Color::white());
-//    world.add(pointlight);
-//
-//    auto plane = Plane();
-//    auto checkers = CheckerPattern();
-//    plane.material.set_pattern(checkers);
-//    plane.set_transform(Transformation::translation(0, -1.01, 0));
-//    world.add(plane);
-//
-//    auto orb0 = Sphere::solid_glass_sphere();
-//    auto orb1 = Sphere::solid_glass_sphere();
-//    auto orb2 = Sphere::solid_glass_sphere();
-//    auto orb3 = Sphere::solid_glass_sphere();
-//    auto orb4 = Sphere::solid_glass_sphere();
-//
-//    orb1.set_transform(Transformation::translation(0.00, 0.00, 0.00) * Transformation::scaling(0.8));
-//    orb2.set_transform(Transformation::translation(0.00, 0.00, 0.00) * Transformation::scaling(0.6));
-//    orb3.set_transform(Transformation::translation(0.00, 0.00, 0.00) * Transformation::scaling(0.4));
-//    orb4.set_transform(Transformation::translation(0.00, 0.00, 0.00) * Transformation::scaling(0.2));
-//
-//    world.add(orb0);
-//    world.add(orb1);
-//    world.add(orb2);
-//    world.add(orb3);
-//    world.add(orb4);
-//
-//    int factor = 30;
-//    Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
-//    Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
-//    Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
-//    Camera camera_bird = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
-//
-//    // num refractions needs to be 2 * num overlapping spheres. each hollow glass is 2 spheres. so 4 * num hgs;
-//    render_time_and_save(camera_elv, world, false, 2 * world.spheres.size(), __FUNCTION__);
-//    render_time_and_save(camera_ang, world, false, 2 * world.spheres.size(), __FUNCTION__);
-//    render_time_and_save(camera_iso, world, false, 2 * world.spheres.size(), __FUNCTION__);
-//    render_time_and_save(camera_bird, world, false, 2 * world.spheres.size(), __FUNCTION__);
-//
-//}
-//
-//void orb_bulbs(){
-//    auto world = World();
-//
-//    auto pointlight = PointLight(Tuple::point(10, 5, -10), Color::white());
-//    world.add(pointlight);
-//
-//    auto plane = Plane();
-//    auto checkers = CheckerPattern();
-//    plane.material.set_pattern(checkers);
-//    plane.set_transform(Transformation::translation(0, -1.01, 0));
-//    world.add(plane);
-//
-//    auto orb0 = Sphere::solid_glass_sphere();
-//    auto orb1 = Sphere::solid_glass_sphere();
-//    auto orb2 = Sphere::solid_glass_sphere();
-//
-//    orb1.set_transform(Transformation::translation(-0.30, 0.00, -0.30) * Transformation::scaling(0.85));
-//    orb2.set_transform(Transformation::translation(0.20, 0.20, 0.20) * Transformation::scaling(0.7));
-//
-//    world.add(orb0);
-//    world.add(orb1);
-//    world.add(orb2);
-//
-//    int factor = 100;
-//    Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
-//    Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
-//    Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
-//    Camera camera_bird = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
-//
-//    // num refractions needs to be 2 * num overlapping spheres. each hollow glass is 2 spheres. so 4 * num hgs;
-//    render_time_and_save(camera_elv, world, false, 2 * world.spheres.size(), __FUNCTION__);
-//    render_time_and_save(camera_ang, world, false, 2 * world.spheres.size(), __FUNCTION__);
-//    render_time_and_save(camera_iso, world, false, 2 * world.spheres.size(), __FUNCTION__);
-//    render_time_and_save(camera_bird, world, false, 2 * world.spheres.size(), __FUNCTION__);
-//
-//}
-//
-//void orb_color_addition(){
-//    auto world = World();
-//
-//    auto pointlight = PointLight(Tuple::point(10, 5, -10), Color::white());
-//    world.add(pointlight);
-//
-//    auto plane = Plane();
-//    auto checkers = CheckerPattern();
-//    plane.material.set_pattern(checkers);
-//    plane.set_transform(Transformation::translation(0, -1.01, 0));
-//    world.add(plane);
-//
-//    auto orb0 = Sphere::solid_glass_sphere();
-//    orb0.material.color = Color::red();
-//    auto orb1 = Sphere::solid_glass_sphere();
-//    orb1.material.color = Color::green();
-//    auto orb2 = Sphere::solid_glass_sphere();
-//    orb2.material.color = Color::blue();
-//
-//    float sphere_scale = 0.65;
-//    float rad = 0.7 * sphere_scale;
-//    orb0.set_transform(Transformation::translation(0.00, 0.00, rad) * Transformation::scaling(sphere_scale));
-//    orb1.set_transform(Transformation::rotation_y(2 * (M_PI / 3) ) * Transformation::translation(0.00, 0.00, rad) * Transformation::scaling(sphere_scale));
-//    orb2.set_transform(Transformation::rotation_y(4 * (M_PI / 3) ) * Transformation::translation(0.00, 0.00, rad) * Transformation::scaling(sphere_scale));
-//
-//    world.add(orb0);
-//    world.add(orb1);
-//    world.add(orb2);
-//
-//    int factor = 100;
-//    Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
-//    Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
-//    Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
-//    Camera camera_bird = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
-//
-//    // num refractions needs to be 2 * num overlapping spheres. each hollow glass is 2 spheres. so 4 * num hgs;
-//    render_time_and_save(camera_elv, world, false, 2 * world.spheres.size(), __FUNCTION__);
-//    render_time_and_save(camera_ang, world, false, 2 * world.spheres.size(), __FUNCTION__);
-//    render_time_and_save(camera_iso, world, false, 2 * world.spheres.size(), __FUNCTION__);
-//    render_time_and_save(camera_bird, world, false, 2 * world.spheres.size(), __FUNCTION__);
-//
-//}
-//
-//void simple_cube(){
-//    auto world = World();
-//
-//    auto pointlight = PointLight(Tuple::point(1, 2, -10), Color::white());
-//    world.add(pointlight);
-//
-//    auto plane = Plane();
-//    auto checkers = CheckerPattern();
-//    plane.material.set_pattern(checkers);
-//    plane.set_transform(Transformation::translation(0, -.01, 0));
-////    plane.set_transform(Transformation::translation(0, 0, -20) * Transformation::rotation_x(M_PI_2));
-//    world.add(plane);
-//
-////    auto ceiling = Plane();
-////    ceiling.set_transform(Transformation::translation(0, 20, 0));
-////    auto rings = RingPattern();
-////    ceiling.material.set_pattern(rings);
-////    world.add(ceiling);
-//
-//    Cube cube;
-//    cube.set_transform(Transformation::rotation_x(-M_PI_2) * Transformation::scaling(0.5));
-//    cube.material.reflective = 0.5;
-//    cube.material.specular = 1;
-//    cube.material.shininess = 200;
-//    cube.material.color = Color::maroon();
-//
-//    world.add(cube);
-//
-//    int factor = 10;
-//    Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
-//    Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
-//    Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
-//    Camera camera_bird = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
-//
-//    // num refractions needs to be 2 * num overlapping spheres. each hollow glass is 2 spheres. so 4 * num hgs;
-//    render_time_and_save(camera_elv, world, true, 5, __FUNCTION__);
-//    render_time_and_save(camera_ang, world, true, 5, __FUNCTION__);
-//    render_time_and_save(camera_iso, world, true, 5, __FUNCTION__);
-//    render_time_and_save(camera_bird, world, true, 5, __FUNCTION__);
-//
-//}
+
+void orb_recursive(){
+    auto world = World();
+
+    auto pointlight = PointLight(Tuple::point(10, 5, -10), Color::white());
+    world.add(pointlight);
+
+    auto plane = std::make_shared<Plane>();
+    auto checkers = CheckerPattern();
+    plane->material.set_pattern(checkers);
+    plane->set_transform(Transformation::translation(0, -1.01, 0));
+    world.add(plane);
+
+    auto orb0 = Sphere::solid_glass();
+    auto orb1 = Sphere::solid_glass();
+    auto orb2 = Sphere::solid_glass();
+    auto orb3 = Sphere::solid_glass();
+    auto orb4 = Sphere::solid_glass();
+
+    orb1->set_transform(Transformation::translation(0.00, 0.00, 0.00) * Transformation::scaling(0.8));
+    orb2->set_transform(Transformation::translation(0.00, 0.00, 0.00) * Transformation::scaling(0.6));
+    orb3->set_transform(Transformation::translation(0.00, 0.00, 0.00) * Transformation::scaling(0.4));
+    orb4->set_transform(Transformation::translation(0.00, 0.00, 0.00) * Transformation::scaling(0.2));
+
+    world.add(orb0);
+    world.add(orb1);
+    world.add(orb2);
+    world.add(orb3);
+    world.add(orb4);
+
+    int factor = 30;
+    Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
+    Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
+    Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
+    Camera camera_bird = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
+
+    // num refractions needs to be 2 * num overlapping spheres. each hollow glass is 2 spheres. so 4 * num hgs;
+    render_time_and_save(camera_elv, world, false, 2 * world.shapes.size() - 1, __FUNCTION__);
+    render_time_and_save(camera_ang, world, false, 2 * world.shapes.size() - 1, __FUNCTION__);
+    render_time_and_save(camera_iso, world, false, 2 * world.shapes.size() - 1, __FUNCTION__);
+    render_time_and_save(camera_bird, world, false, 2 * world.shapes.size() - 1, __FUNCTION__);
+
+}
+
+void orb_bulbs(){
+    auto world = World();
+
+    auto pointlight = PointLight(Tuple::point(10, 5, -10), Color::white());
+    world.add(pointlight);
+
+    auto plane = std::make_shared<Plane>();
+    auto checkers = CheckerPattern();
+    plane->material.set_pattern(checkers);
+    plane->set_transform(Transformation::translation(0, -1.01, 0));
+    world.add(plane);
+
+    auto orb0 = Sphere::solid_glass();
+    auto orb1 = Sphere::solid_glass();
+    auto orb2 = Sphere::solid_glass();
+
+    orb1->set_transform(Transformation::translation(-0.30, 0.00, -0.30) * Transformation::scaling(0.85));
+    orb2->set_transform(Transformation::translation(0.20, 0.20, 0.20) * Transformation::scaling(0.7));
+
+    world.add(orb0);
+    world.add(orb1);
+    world.add(orb2);
+
+    int factor = 100;
+    Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
+    Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
+    Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
+    Camera camera_bird = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
+
+    // num refractions needs to be 2 * num overlapping spheres. each hollow glass is 2 spheres. so 4 * num hgs;
+    render_time_and_save(camera_elv, world, false, 2 * world.shapes.size() - 1, __FUNCTION__);
+    render_time_and_save(camera_ang, world, false, 2 * world.shapes.size() - 1, __FUNCTION__);
+    render_time_and_save(camera_iso, world, false, 2 * world.shapes.size() - 1, __FUNCTION__);
+    render_time_and_save(camera_bird, world, false, 2 * world.shapes.size() - 1, __FUNCTION__);
+
+}
+
+void orb_color_addition(){
+    auto world = World();
+
+    auto pointlight = PointLight(Tuple::point(10, 5, -10), Color::white());
+    world.add(pointlight);
+
+    auto plane = std::make_shared<Plane>();
+    auto checkers = CheckerPattern();
+    plane->material.set_pattern(checkers);
+    plane->set_transform(Transformation::translation(0, -1.01, 0));
+    world.add(plane);
+
+    auto orb0 = Sphere::solid_glass();
+    orb0->material.color = Color::red();
+    auto orb1 = Sphere::solid_glass();
+    orb1->material.color = Color::green();
+    auto orb2 = Sphere::solid_glass();
+    orb2->material.color = Color::blue();
+
+    float sphere_scale = 0.65;
+    float rad = 0.7 * sphere_scale;
+    orb0->set_transform(Transformation::translation(0.00, 0.00, rad) * Transformation::scaling(sphere_scale));
+    orb1->set_transform(Transformation::rotation_y(2 * (M_PI / 3) ) * Transformation::translation(0.00, 0.00, rad) * Transformation::scaling(sphere_scale));
+    orb2->set_transform(Transformation::rotation_y(4 * (M_PI / 3) ) * Transformation::translation(0.00, 0.00, rad) * Transformation::scaling(sphere_scale));
+
+    world.add(orb0);
+    world.add(orb1);
+    world.add(orb2);
+
+    int factor = 1;
+    Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
+    Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
+    Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
+    Camera camera_bird = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
+
+    // num refractions needs to be 2 * num overlapping spheres. each hollow glass is 2 spheres. so 4 * num hgs;
+    render_time_and_save(camera_elv, world, false, 2 * world.shapes.size() - 1, __FUNCTION__);
+    render_time_and_save(camera_ang, world, false, 2 * world.shapes.size() - 1, __FUNCTION__);
+    render_time_and_save(camera_iso, world, false, 2 * world.shapes.size() - 1, __FUNCTION__);
+    render_time_and_save(camera_bird, world, false, 2 * world.shapes.size() - 1, __FUNCTION__);
+
+}
+
+void simple_cube(){
+    auto world = World();
+
+    auto pointlight = PointLight(Tuple::point(1, 2, -10), Color::white());
+    world.add(pointlight);
+
+    auto plane = std::make_shared<Plane>();
+    auto checkers = CheckerPattern();
+    plane->material.set_pattern(checkers);
+    plane->set_transform(Transformation::translation(0, -.01, 0));
+    world.add(plane);
+
+    auto cube = std::make_shared<Cube>();
+    cube->set_transform(Transformation::rotation_x(-M_PI_2) * Transformation::scaling(0.5));
+    cube->material.reflective = 0.5;
+    cube->material.specular = 1;
+    cube->material.shininess = 200;
+    cube->material.color = Color::maroon();
+
+    world.add(cube);
+
+    int factor = 10;
+    Camera camera_elv = Camera::unit_sphere_plane_elevation(50*factor, 50*factor);
+    Camera camera_ang = Camera::unit_sphere_plane_angled(50*factor, 50*factor);
+    Camera camera_iso = Camera::unit_sphere_plane_isometric(50*factor, 50*factor);
+    Camera camera_bird = Camera::unit_sphere_plane_birds_eye(50*factor, 50*factor);
+
+    // num refractions needs to be 2 * num overlapping spheres. each hollow glass is 2 spheres. so 4 * num hgs;
+    render_time_and_save(camera_elv, world, true, 5, __FUNCTION__);
+    render_time_and_save(camera_ang, world, true, 5, __FUNCTION__);
+    render_time_and_save(camera_iso, world, true, 5, __FUNCTION__);
+    render_time_and_save(camera_bird, world, true, 5, __FUNCTION__);
+}
 
 void hollow_glass_cube_class(){
     auto world = World();
@@ -2348,7 +2340,7 @@ void hollow_glass_cube_class(){
 //
 //    render_time_and_save(camera, world, false, 8, __FUNCTION__);
 //}
-//
+
 //void simple_cylinder(){
 //    auto world = World();
 //
@@ -2403,7 +2395,7 @@ void hollow_glass_cube_class(){
 //    render_time_and_save(camera_bird, world, true, 5, __FUNCTION__);
 //
 //}
-//
+
 void simple_cone(){
     auto world = World();
 
@@ -2454,6 +2446,121 @@ void simple_cone(){
     render_time_and_save(camera_bird, world, true, 5, __FUNCTION__);
 
 }
+
+void all_current_shapes(){
+    World w;
+
+    auto plane = Plane::create();
+    plane->material.reflective = 0.2;
+    plane->set_transform(Transformation::translation(0, -1.01, 0));
+    plane->material.set_pattern(CheckerPattern(Color::red(), Color::yellow()));
+    w.add(plane);
+
+    auto cone = Cone::create();
+    auto cube = Cube::create();
+    auto cylinder = Cylinder::create();
+    auto sphere = Sphere::create();
+
+    auto gcone = Cone::solid_glass();
+    auto gcube = Cube::solid_glass();
+    auto gcylinder = Cylinder::solid_glass();
+    auto gsphere = Sphere::solid_glass();
+
+    auto hgcone = HollowGlassCone();
+    auto hgcube = HollowGlassCube();
+    auto hgcylinder = HollowGlassCylinder();
+    auto hgsphere = HollowGlassSphere();
+
+    cone->maximum = 1;
+    cylinder->maximum = 1;
+    gcone->maximum = 1;
+    gcylinder->maximum = 1;
+    hgcone.set_maximum(1);
+    hgcylinder.set_maximum(1);
+
+    cone->closed = true;
+    cylinder->closed = true;
+    gcone->closed = true;
+    gcylinder->closed = true;
+    hgcone.set_closed(true);
+    hgcylinder.set_closed(true);
+
+    cone->material.reflective = 0.2;
+    cube->material.reflective = 0.2;
+    cylinder->material.reflective = 0.2;
+    sphere->material.reflective = 0.2;
+
+    float rangex = 10;
+    float rangez = 10;
+    float dx = rangex / 3.f;
+    float dz = rangez / 4.f;
+    float startx = -rangex / 2 + dx/2;
+    float startz = -rangez / 2 + dz/2;
+    float new_size = 1;
+
+    float x = 0;
+    float z = 0;
+    cone->set_transform(Transformation::translation(startx + x * dx, 0, startz + z++ * dz) * Transformation::scaling(new_size) * cone->get_transform());
+    cube->set_transform(Transformation::translation(startx + x * dx, 0, startz + z++ * dz) * Transformation::scaling(new_size) * cube->get_transform());
+    cylinder->set_transform(Transformation::translation(startx + x * dx, 0, startz + z++ * dz) * Transformation::scaling(new_size) * cylinder->get_transform());
+    sphere->set_transform(Transformation::translation(startx + x++ * dx, 0, startz + z * dz) * Transformation::scaling(new_size) * sphere->get_transform());
+    z = 0;
+    gcone->set_transform(Transformation::translation(startx + x * dx, 0, startz + z++ * dz) * Transformation::scaling(new_size) * gcone->get_transform());
+    gcube->set_transform(Transformation::translation(startx + x * dx, 0, startz + z++ * dz) * Transformation::scaling(new_size) * gcube->get_transform());
+    gcylinder->set_transform(Transformation::translation(startx + x * dx, 0, startz + z++ * dz) * Transformation::scaling(new_size) * gcylinder->get_transform());
+    gsphere->set_transform(Transformation::translation(startx + x++ * dx, 0, startz + z * dz) * Transformation::scaling(new_size) * gsphere->get_transform());
+    z = 0;
+    hgcone.add_transform(Transformation::translation(startx + x * dx, 0, startz + z++ * dz) * Transformation::scaling(new_size));
+    hgcube.add_transform(Transformation::translation(startx + x * dx, 0, startz + z++ * dz) * Transformation::scaling(new_size));
+    hgcylinder.add_transform(Transformation::translation(startx + x * dx, 0, startz + z++ * dz) * Transformation::scaling(new_size));
+    hgsphere.add_transform(Transformation::translation(startx + x++ * dx, 0, startz + z * dz) * Transformation::scaling(new_size));
+
+
+    std::vector<std::shared_ptr<Shape>> my_shapes = {
+        cone,
+        cube,
+        cylinder,
+        sphere,
+        gcone,
+        gcube,
+        gcylinder,
+        gsphere,
+        std::make_shared<Cone>(hgcone.inner),
+        std::make_shared<Cube>(hgcube.inner),
+        std::make_shared<Cylinder>(hgcylinder.inner),
+        std::make_shared<Sphere>(hgsphere.inner),
+        std::make_shared<Cone>(hgcone.outer),
+        std::make_shared<Cube>(hgcube.outer),
+        std::make_shared<Cylinder>(hgcylinder.outer),
+        std::make_shared<Sphere>(hgsphere.outer),
+    };
+
+    w.add( my_shapes );
+
+    auto light = PointLight(Tuple::point(5, 10, -5), Color::white());
+    w.add(light);
+
+    int factor = 5;
+    Camera camera1(50*factor, 50*factor, M_PI/4.f);
+    camera1.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 15, 0),
+                    Tuple::point(0, 0, 0),
+                    Tuple::point(0, 0, 1)
+            ));
+
+    Camera camera2(50*factor, 50*factor, M_PI/4.f);
+    camera2.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(5, 13, -5),
+                    Tuple::point(0, 0, 0),
+                    Tuple::point(0, 0, 1)
+            ));
+
+    render_time_and_save(camera1, w, false, 7, __FUNCTION__);
+    render_time_and_save(camera2, w, false, 7, __FUNCTION__);
+
+}
 int main()
 {
 //    challenge_world_w_spheres();
@@ -2492,8 +2599,9 @@ int main()
 //    orb_recursive();
 //    simple_cube();
 //    glass_cubes();
-    hollow_glass_cube_class();
+//    hollow_glass_cube_class();
 //    simple_cylinder();
 //    simple_cone();
+    all_current_shapes();
     return 0;
 }

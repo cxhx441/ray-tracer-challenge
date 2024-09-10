@@ -45,25 +45,25 @@ void World::add(std::vector<PointLight> &in_pointlights) {
 //    shapes.insert(shapes.end(), in_shape.begin(), in_shape.end());
 //}
 
-//void World::add(HollowGlassSphere &hollow_glass_sphere) {
-//    add(&hollow_glass_sphere.inner);
-//    add(&hollow_glass_sphere.outer);
-//}
+void World::add(HollowGlassSphere &hollow_glass_sphere) {
+    add(std::make_shared<Sphere>(hollow_glass_sphere.inner));
+    add(std::make_shared<Sphere>(hollow_glass_sphere.outer));
+}
 
 void World::add(HollowGlassCube &hollow_glass_cube) {
     add(std::make_shared<Cube>(hollow_glass_cube.inner));
     add(std::make_shared<Cube>(hollow_glass_cube.outer));
 }
 
-//void World::add(HollowGlassCylinder &hollow_glass_cylinder) {
-//    add(&hollow_glass_cylinder.inner);
-//    add(&hollow_glass_cylinder.outer);
-//}
-//
-//void World::add(HollowGlassCone &hollow_glass_cone) {
-//    add(&hollow_glass_cone.inner);
-//    add(&hollow_glass_cone.outer);
-//}
+void World::add(HollowGlassCylinder &hollow_glass_cylinder) {
+    add(std::make_shared<Cylinder>(hollow_glass_cylinder.inner));
+    add(std::make_shared<Cylinder>(hollow_glass_cylinder.outer));
+}
+
+void World::add(HollowGlassCone &hollow_glass_cone) {
+    add(std::make_shared<Cone>(hollow_glass_cone.inner));
+    add(std::make_shared<Cone>(hollow_glass_cone.outer));
+}
 
 //void World::add(std::vector<HollowGlassSphere> &hollow_glass_spheres) {
 //    for (auto &hs : hollow_glass_spheres)

@@ -5,7 +5,7 @@
 #ifndef RAYTRACERCHALLENGE_CYLINDER_H
 #define RAYTRACERCHALLENGE_CYLINDER_H
 
-#include "shape.h"
+#include "Shape.h"
 #include <limits>
 
 class Cylinder : public Shape {
@@ -17,7 +17,9 @@ public:
     Cylinder() = default;
     ~Cylinder() override = default;
 
-    static Cylinder solid_glass_cylinder();
+    static std::shared_ptr<Cylinder> create();
+    static std::shared_ptr<Cylinder> solid_glass();
+
 
     std::vector<Intersection> model_intersect(const Ray& model_ray) const override;
     Tuple model_normal_at(const Tuple& model_point) const override;

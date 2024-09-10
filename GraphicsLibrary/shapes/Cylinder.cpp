@@ -5,16 +5,17 @@
 #include "Cylinder.h"
 #include <cmath>
 
-Cylinder Cylinder::solid_glass_cylinder() {
-    Cylinder c;
-    c.material.color = Color::black();
-    c.material.transparency = 1;
-    c.material.refractive_index = Material::RefractiveIndices::glass;
-    c.material.reflective = 1;
-    c.material.diffuse = 0.1;
-    c.material.ambient = 0.1;
-    c.material.specular = 1;
-    c.material.shininess = 300;
+std::shared_ptr<Cylinder> Cylinder::create() { return std::make_shared<Cylinder>(); }
+std::shared_ptr<Cylinder> Cylinder::solid_glass() {
+    auto c = std::make_shared<Cylinder>();
+    c->material.color = Color::black();
+    c->material.transparency = 1;
+    c->material.refractive_index = Material::RefractiveIndices::glass;
+    c->material.reflective = 1;
+    c->material.diffuse = 0.1;
+    c->material.ambient = 0.1;
+    c->material.specular = 1;
+    c->material.shininess = 300;
 
     return c;
 }

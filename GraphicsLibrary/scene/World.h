@@ -32,19 +32,13 @@ public:
     void add(PointLight &in_pointlight) ;
     void add(const std::shared_ptr<Shape> &in_shape);
     void add(const std::vector<std::shared_ptr<Shape>> &in_shapes);
-
     void add(std::vector<PointLight> &in_pointlights) ;
-//    void add(std::vector<Shape*> in_shapes);
 
-//    void add(HollowGlassSphere &hollow_glass_sphere) ;
+
+    void add(HollowGlassSphere &hollow_glass_sphere) ;
     void add(HollowGlassCube &hollow_glass_cube) ;
-//    void add(HollowGlassCylinder &hollow_glass_cylinder) ;
-//    void add(HollowGlassCone &hollow_glass_cone) ;
-
-//    void add(std::vector<HollowGlassSphere> &hollow_glass_spheres) ;
-//    void add(std::vector<HollowGlassCube> &hollow_glass_cubes) ;
-//    void add(std::vector<HollowGlassCylinder> &hollow_glass_cylinders) ;
-//    void add(std::vector<HollowGlassCone> &hollow_glass_cones) ;
+    void add(HollowGlassCylinder &hollow_glass_cylinder) ;
+    void add(HollowGlassCone &hollow_glass_cone) ;
 
     std::vector<Intersection> intersect_world(Ray& r, bool test_for_shadows=false);
     Color shade_hit(PreparedComputation& precompute, bool shadows_enabled=false, int remaining_rays=0);

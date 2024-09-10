@@ -5,16 +5,18 @@
 #include "Cone.h"
 #include <cmath>
 
-Cone Cone::solid_glass_cone() {
-    Cone c;
-    c.material.color = Color::black();
-    c.material.transparency = 1;
-    c.material.refractive_index = Material::RefractiveIndices::glass;
-    c.material.reflective = 1;
-    c.material.diffuse = 0.1;
-    c.material.ambient = 0.1;
-    c.material.specular = 1;
-    c.material.shininess = 300;
+std::shared_ptr<Cone> Cone::create() { return std::make_shared<Cone>(); }
+
+std::shared_ptr<Cone> Cone::solid_glass() {
+    auto c = std::make_shared<Cone>();
+    c->material.color = Color::black();
+    c->material.transparency = 1;
+    c->material.refractive_index = Material::RefractiveIndices::glass;
+    c->material.reflective = 1;
+    c->material.diffuse = 0.1;
+    c->material.ambient = 0.1;
+    c->material.specular = 1;
+    c->material.shininess = 300;
 
     return c;
 }
@@ -57,14 +59,14 @@ std::vector<Intersection> Cone::model_intersect(const Ray &model_ray) const {
               pow(model_ray.origin.z, 2);
 
     // ray is parallel to one cone but hits the other
-    if ( std::abs(a) < 0.0001 && std::abs(b) > 0.0001) {
+    if ( std::abs(a) < 0.001 && std::abs(b) > 0.001) {
         xs.push_back({-c/(2.f*b), shared_from_this()});
         intersect_caps(model_ray, xs);
         return xs;
     }
 
     // ray misses both cones.
-    if ( std::abs(a) < 0.0001){
+    if ( std::abs(a) < 0.001){
         return {};
     }
 
@@ -72,7 +74,7 @@ std::vector<Intersection> Cone::model_intersect(const Ray &model_ray) const {
 
     // Check the discriminant is valid
     double discriminant = (b * b) - (4 * a * c);
-    if (fabs(discriminant) < 0.0001)
+    if (fabs(discriminant) < 0.001)
         discriminant = 0;
     if (discriminant < 0)
         return {}; // no intersections.
@@ -98,7 +100,7 @@ std::vector<Intersection> Cone::model_intersect(const Ray &model_ray) const {
 }
 
 void Cone::intersect_caps(const Ray &r, std::vector<Intersection> &xs) const {
-    if (!closed || std::fabs(r.direction.y) < 0.0001)
+    if (!closed || std::fabs(r.direction.y) < 0.001)
         return;
 
     // check intersection with lower cap
@@ -116,7 +118,7 @@ void Cone::intersect_caps(const Ray &r, std::vector<Intersection> &xs) const {
 bool Cone::check_caps(const Ray &r, float t, float cap_radius) {
     float x = r.origin.x + t * r.direction.x;
     float z = r.origin.z + t * r.direction.z;
-    return pow(x, 2) + pow(z, 2) - cap_radius < 0.000001;
+    return pow(x, 2) + pow(z, 2) - cap_radius < 0.001;
 }
 
 

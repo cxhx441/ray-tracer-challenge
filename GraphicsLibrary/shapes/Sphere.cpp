@@ -6,16 +6,18 @@
 #include <cmath>
 #include <utility>
 
-Sphere Sphere::solid_glass_sphere() {
-    Sphere s;
-    s.material.color = Color::black();
-    s.material.transparency = 1;
-    s.material.refractive_index = Material::RefractiveIndices::glass;
-    s.material.reflective = 1;
-    s.material.diffuse = 0.1;
-    s.material.ambient = 0.1;
-    s.material.specular = 1;
-    s.material.shininess = 300;
+std::shared_ptr<Sphere> Sphere::create() { return std::make_shared<Sphere>(); }
+
+std::shared_ptr<Sphere> Sphere::solid_glass() {
+    auto s = std::make_shared<Sphere>();
+    s->material.color = Color::black();
+    s->material.transparency = 1;
+    s->material.refractive_index = Material::RefractiveIndices::glass;
+    s->material.reflective = 1;
+    s->material.diffuse = 0.1;
+    s->material.ambient = 0.1;
+    s->material.specular = 1;
+    s->material.shininess = 300;
 
     return s;
 }
@@ -23,6 +25,7 @@ Sphere Sphere::solid_glass_sphere() {
 Tuple Sphere::model_normal_at(const Tuple &model_point) const {
     return model_point - Tuple::point(0, 0, 0);
 }
+
 std::vector<Intersection> Sphere::model_intersect(const Ray &model_ray) const {
     /**
         Return the times t when the ray intersects the sphere.

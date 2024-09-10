@@ -164,9 +164,9 @@ TEST(ShadowTestSuite, PrecomputingTheReflectionVector) {
 }
 
 TEST(ShadowTestSuite, PrecomputingN1N2AtVariousIntersections) {
-    auto A = std::make_shared<Sphere>(Sphere::solid_glass_sphere());
-    auto B = std::make_shared<Sphere>(Sphere::solid_glass_sphere());
-    auto C = std::make_shared<Sphere>(Sphere::solid_glass_sphere());
+    auto A = Sphere::solid_glass();
+    auto B = Sphere::solid_glass();
+    auto C = Sphere::solid_glass();
 
     A->set_transform(Transformation::scaling(2));
     B->set_transform(Transformation::translation(0, 0, -0.25));
@@ -210,7 +210,7 @@ TEST(ShadowTestSuite, PrecomputingN1N2AtVariousIntersections) {
 
 TEST(ShadowTestSuite, UnderPointIsOffsetbelowTheSurface) {
     Ray r(Tuple::point(0, 0, -5), Tuple::vector(0, 0, 1));
-    auto shape = std::make_shared<Sphere>(Sphere::solid_glass_sphere());
+    auto shape = Sphere::solid_glass();
     shape->set_transform(Transformation::translation(0, 0, 1));
     Intersection i(5, shape);
     std::vector<Intersection> xs = {i};
@@ -222,7 +222,7 @@ TEST(ShadowTestSuite, UnderPointIsOffsetbelowTheSurface) {
 }
 
 TEST(SchlickReflectanceTestSuite, SchlickAppoxUnderTotalInternalReflection) {
-    auto shape = std::make_shared<Sphere>(Sphere::solid_glass_sphere());
+    auto shape = Sphere::solid_glass();
     Ray r(Tuple::point(0, 0, sqrtf(2)/2), Tuple::vector(0, 1, 0));
     std::vector<Intersection> xs = {{-sqrtf(2)/2, shape}, {sqrtf(2)/2, shape}};
     PreparedComputation comps = PreparedComputation(xs[1], r, xs);
@@ -231,7 +231,7 @@ TEST(SchlickReflectanceTestSuite, SchlickAppoxUnderTotalInternalReflection) {
 }
 
 TEST(SchlickReflectanceTestSuite, SchlickAppoxWithPerpendicularViewingAngle) {
-    auto shape = std::make_shared<Sphere>(Sphere::solid_glass_sphere());
+    auto shape = Sphere::solid_glass();
     Ray r(Tuple::point(0, 0, 0), Tuple::vector(0, 1, 0));
     std::vector<Intersection> xs = {{-1, shape}, {1, shape}};
     PreparedComputation comps = PreparedComputation(xs[1], r, xs);
@@ -240,7 +240,7 @@ TEST(SchlickReflectanceTestSuite, SchlickAppoxWithPerpendicularViewingAngle) {
 }
 
 TEST(SchlickReflectanceTestSuite, SchlickAppoxWithSmallAngleAndN2GreaterThanN1) {
-    auto shape = std::make_shared<Sphere>(Sphere::solid_glass_sphere());
+    auto shape = Sphere::solid_glass();
     Ray r(Tuple::point(0, 0.99, -2), Tuple::vector(0, 0, 1));
     std::vector<Intersection> xs = {{1.8589, shape}};
     PreparedComputation comps = PreparedComputation(xs[0], r, xs);

@@ -4,6 +4,8 @@
 
 #include "Plane.h"
 
+std::shared_ptr<Plane> Plane::create() { return std::make_shared<Plane>(); }
+
 Tuple Plane::model_normal_at(const Tuple &model_point) const {
     return Tuple::vector(0, 1, 0);
 }

@@ -5,7 +5,7 @@
 #ifndef RAYTRACERCHALLENGE_CONE_H
 #define RAYTRACERCHALLENGE_CONE_H
 
-#include "shape.h"
+#include "Shape.h"
 #include <limits>
 
 class Cone : public Shape {
@@ -17,7 +17,8 @@ public:
     Cone() = default;
     ~Cone() override = default;
 
-    static Cone solid_glass_cone();
+    static std::shared_ptr<Cone> create();
+    static std::shared_ptr<Cone> solid_glass();
 
     std::vector<Intersection> model_intersect(const Ray& model_ray) const override;
     Tuple model_normal_at(const Tuple& model_point) const override;
