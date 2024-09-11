@@ -40,3 +40,11 @@ Implemented in C++ and tested with Google tests.
 
 [//]: # (<img src="example_imgs/10_patterns_rings_plane.png" height="150"> <img src="example_imgs/10_patterns_striped_plane.png" height="150"></br>)
 <img src="example_imgs/10_patterns_spheres.png" height="200"></br>
+
+### Chapter 11: Reflection & Refraction 
+<img src="example_imgs/11_bulbs.png" height="200"> <img src="example_imgs/11_hollow_random_overlap.png" height="200"></br>
+<img src="example_imgs/11_hollow_glass_inside.png" height="200"> <img src="example_imgs/11_hollow_glass_color.png" height="200"></br>
+
+### Chapter 12 & 13: Cylinders & Cones
+<img src="example_imgs/12_ice_cream.png" height="200"></br>
+
