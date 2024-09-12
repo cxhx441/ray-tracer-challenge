@@ -1255,15 +1255,15 @@ void basic_blended_sphere_patterns_example(){
     g1->add_child(ring_sphere);
     g1->add_child(checkered_sphere);
 
-    auto g2 = Group::create();
-    g2->set_transform(Transformation::scaling(0.75));
-    g2->add_child(g1);
+//    auto g2 = Group::create();
+//    g2->set_transform(Transformation::scaling(0.75));
+//    g2->add_child(g1);
 
     PointLight light(Tuple::point(0, 10, 0), Color::white());
 
     World world;
 //    world.add( {striped_sphere, gradient_sphere, ring_sphere, checkered_sphere} );
-    world.add(g2);
+    world.add(g1);
     world.add(regular_plane);
     world.add(light);
 
