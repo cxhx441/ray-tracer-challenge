@@ -5,6 +5,7 @@
 #include "GraphicsLibrary/patterns/GradientPattern.h"
 #include "GraphicsLibrary/patterns/CheckerPattern.h"
 #include "GraphicsLibrary/patterns/RadialGradientPattern.h"
+#include "GraphicsLibrary/shapes/Group.h"
 #include <cmath>
 #include <chrono>
 
@@ -1193,104 +1194,103 @@ void challenge_world_w_spheres(){
 //    canvas.to_ppm_file(filename);
 //}
 //
-//void basic_blended_sphere_patterns_example(){
-//    // colors
-//    Color orange = Color(1, .27, 0, 1);
-//    Color blue = Color::blue();
-//
-//    Color red = Color::red();
-//    Color yellow = Color::yellow();
-//
-//    // patterns
-//    StripedPattern stripes(orange, blue);
-//    StripedPattern stripes_rot(red, yellow);
-//    GradientPattern gradient(orange, blue);
-//    RingPattern rings(orange, blue);
-//    CheckerPattern checkers(orange, blue);
-//
-//    stripes.set_transform(Transformation::scaling(0.1));
-//    stripes_rot.set_transform(Transformation::rotation_y(M_PI_2) * Transformation::scaling(0.1));
-//    gradient.set_transform(Transformation::scaling(2, 1, 1) * Transformation::translation(0.5, 0, 0));
-//    rings.set_transform(Transformation::scaling(0.085));
-//    checkers.set_transform(Transformation::scaling(0.25));
-//
-//    // Shapes
-//    Sphere striped_sphere;
-//    Sphere gradient_sphere;
-//    Sphere ring_sphere;
-//    Sphere checkered_sphere;
-//
-//    Plane regular_plane;
-//    Plane striped_plane;
-//    Plane gradient_plane;
-//    Plane ring_plane;
-//    Plane checkered_plane;
-//
-////    striped_sphere.set_transform(Transformation::translation(-2.25, 0, 1) * Transformation::scaling(.6));
-////    gradient_sphere.set_transform(Transformation::translation(-0.75, 0, 1) * Transformation::scaling(.6));
-////    ring_sphere.set_transform(Transformation::translation(.75, 0, 1) * Transformation::scaling(.6));
-////    checkered_sphere.set_transform(Transformation::translation(2.25, 0, 1) * Transformation::scaling(.6));
-//    float sphere_size = .9;
-//    float delta = 2.2;
-//    float two = -delta / 2;
-//    float three = delta / 2;
-//    float one = two - delta;
-//    float four = three + delta;
-//
-//    float y_up = 0;
-//    striped_sphere.set_transform(Transformation::translation(one, y_up, 1) * Transformation::scaling(sphere_size));
-//    gradient_sphere.set_transform(Transformation::translation(two, y_up, 1) * Transformation::scaling(sphere_size));
-//    ring_sphere.set_transform(Transformation::translation(three, y_up, 1) * Transformation::scaling(sphere_size));
-//    checkered_sphere.set_transform(Transformation::translation(four, y_up, 1) * Transformation::scaling(sphere_size));
-//
-//    striped_sphere.material.set_pattern(stripes);
-//    gradient_sphere.material.set_pattern(gradient);
-//    ring_sphere.material.set_pattern(rings);
-//    checkered_sphere.material.set_pattern(checkers);
-//
-//    striped_sphere.material.add_pattern(stripes_rot);
-//    gradient_sphere.material.add_pattern(stripes_rot);
-//    ring_sphere.material.add_pattern(stripes_rot);
-//    checkered_sphere.material.add_pattern(stripes_rot);
-//
-//    regular_plane.set_transform(Transformation::translation(0, -1, 0));
-////    striped_plane;
-////    gradient_plane;
-////    ring_plane;
-////    checkered_plane;
-//
-//    PointLight light(Tuple::point(0, 10, 0), Color::white());
-//
-//    World world;
-//    world.spheres.insert(world.spheres.end(), {striped_sphere, gradient_sphere, ring_sphere, checkered_sphere} );
-//    world.planes.push_back(regular_plane);
-////    world.planes.insert(world.planes.end(), {striped_plane, gradient_plane, ring_plane, checkered_plane} );
-//    world.lights.push_back(light);
-//
-//    int factor = 10;
-//    Camera camera(100*factor, 50*factor, M_PI/3.f);
-//    camera.set_transform(
-//            Transformation::view_transform(
-//                    Tuple::point(0, 4., -5),
-//                    Tuple::point(0, 1, 0),
-//                    Tuple::vector(0, 1, 0)
-//            )
-//    );
-//
-//    auto start = std::chrono::high_resolution_clock::now();
-//
-//    Canvas canvas = Canvas::render(camera, world);
-//
-//    auto stop = std::chrono::high_resolution_clock::now();
-//    std::chrono::duration<double> duration = stop - start;
-//    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
-//
-//    std::string filename = "../exported_images/canvas_";
-//    filename.append(__FUNCTION__);
-//    filename.append("_" + std::to_string(duration.count()) + "s");
-//    canvas.to_ppm_file(filename);
-//}
-//
+void basic_blended_sphere_patterns_example(){
+    // patterns
+    StripedPattern stripes(Color::orange(), Color::blue());
+    StripedPattern stripes_rot(Color::red(), Color::yellow());
+    GradientPattern gradient(Color::orange(), Color::blue());
+    RingPattern rings(Color::orange(), Color::blue());
+    CheckerPattern checkers(Color::orange(), Color::blue());
+
+    stripes.set_transform(Transformation::scaling(0.1));
+    stripes_rot.set_transform(Transformation::rotation_y(M_PI_2) * Transformation::scaling(0.1));
+    gradient.set_transform(Transformation::scaling(2, 1, 1) * Transformation::translation(0.5, 0, 0));
+    rings.set_transform(Transformation::scaling(0.085));
+    checkers.set_transform(Transformation::scaling(0.25));
+
+    // Shapes
+    auto striped_sphere = Sphere::create();
+    auto gradient_sphere = Sphere::create();
+    auto ring_sphere = Sphere::create();
+    auto checkered_sphere = Sphere::create();
+
+    auto regular_plane = Plane::create();
+    auto striped_plane = Plane::create();
+    auto gradient_plane = Plane::create();
+    auto ring_plane = Plane::create();
+    auto checkered_plane = Plane::create();
+
+//    striped_sphere.set_transform(Transformation::translation(-2.25, 0, 1) * Transformation::scaling(.6));
+//    gradient_sphere.set_transform(Transformation::translation(-0.75, 0, 1) * Transformation::scaling(.6));
+//    ring_sphere.set_transform(Transformation::translation(.75, 0, 1) * Transformation::scaling(.6));
+//    checkered_sphere.set_transform(Transformation::translation(2.25, 0, 1) * Transformation::scaling(.6));
+    float sphere_size = .9;
+    float delta = 2.2;
+    float two = -delta / 2;
+    float three = delta / 2;
+    float one = two - delta;
+    float four = three + delta;
+
+    float y_up = 0;
+    striped_sphere->set_transform(Transformation::translation(one, y_up, 1) * Transformation::scaling(sphere_size));
+    gradient_sphere->set_transform(Transformation::translation(two, y_up, 1) * Transformation::scaling(sphere_size));
+    ring_sphere->set_transform(Transformation::translation(three, y_up, 1) * Transformation::scaling(sphere_size));
+    checkered_sphere->set_transform(Transformation::translation(four, y_up, 1) * Transformation::scaling(sphere_size));
+
+    striped_sphere->material.set_pattern(stripes);
+    gradient_sphere->material.set_pattern(gradient);
+    ring_sphere->material.set_pattern(rings);
+    checkered_sphere->material.set_pattern(checkers);
+
+    striped_sphere->material.add_pattern(stripes_rot);
+    gradient_sphere->material.add_pattern(stripes_rot);
+    ring_sphere->material.add_pattern(stripes_rot);
+    checkered_sphere->material.add_pattern(stripes_rot);
+
+    regular_plane->set_transform(Transformation::translation(0, -1, 0));
+    auto g1 = Group::create();
+    g1->set_transform(Transformation::translation(0, 0, 0.5));
+    g1->add_child(striped_sphere);
+    g1->add_child(gradient_sphere);
+    g1->add_child(ring_sphere);
+    g1->add_child(checkered_sphere);
+
+    auto g2 = Group::create();
+    g2->set_transform(Transformation::scaling(0.75));
+    g2->add_child(g1);
+
+    PointLight light(Tuple::point(0, 10, 0), Color::white());
+
+    World world;
+//    world.add( {striped_sphere, gradient_sphere, ring_sphere, checkered_sphere} );
+    world.add(g2);
+    world.add(regular_plane);
+    world.add(light);
+
+    int factor = 10;
+    Camera camera(100*factor, 50*factor, M_PI/3.f);
+    camera.set_transform(
+            Transformation::view_transform(
+                    Tuple::point(0, 4., -5),
+                    Tuple::point(0, 1, 0),
+                    Tuple::vector(0, 1, 0)
+            )
+    );
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    Canvas canvas = Canvas::render(camera, world);
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = stop - start;
+    std::cout << "render Time: " << duration.count() << " seconds" << std::endl;
+
+    std::string filename = "../exported_images/canvas_";
+    filename.append(__FUNCTION__);
+    filename.append("_" + std::to_string(duration.count()) + "s");
+    canvas.to_ppm_file(filename);
+}
+
 //void default_world_w_reflection(){
 //    World w = World::DefaultWorld();
 //
@@ -2664,6 +2664,11 @@ void ice_cream(){
 //    render_time_and_save(camera_bird, w, true, 5, __FUNCTION__);
 
 }
+
+//void group_check(){
+//
+//}
+
 int main()
 {
 //    challenge_world_w_spheres();
@@ -2679,7 +2684,7 @@ int main()
 //    basic_ring_patterns_plane_example();
 //    basic_checker_pattern_plane_example();
 //    basic_blended_pattern_plane_example();
-//    basic_blended_sphere_patterns_example();
+    basic_blended_sphere_patterns_example();
 //    basic_blended_sphere_patterns_with_reflections_example();
 //    perfectly_reflective_spheres();
 //    default_world_w_reflection();
@@ -2706,6 +2711,6 @@ int main()
 //    simple_cylinder();
 //    simple_cone();
 //    all_current_shapes();
-    ice_cream();
+//    ice_cream();
     return 0;
 }

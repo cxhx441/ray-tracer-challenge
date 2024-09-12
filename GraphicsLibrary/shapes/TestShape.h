@@ -11,6 +11,8 @@ class TestShape : public Shape{
 public:
     mutable Ray saved_ray = Ray(Tuple::point(0, 0, 0), Tuple::vector(0, 0, 0));
 
+    static std::shared_ptr<TestShape> create();
+
     TestShape() = default;
     ~TestShape() override = default;
 

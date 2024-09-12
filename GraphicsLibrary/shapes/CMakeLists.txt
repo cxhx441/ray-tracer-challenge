@@ -17,6 +17,7 @@ add_library(shapes STATIC
         Cone.h
         HollowGlassCone.cpp
         HollowGlassCone.h
+        Group.cpp
 )
 target_include_directories(shapes PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}

@@ -21,6 +21,8 @@ public:
     [[nodiscard]] bool isPoint() const;
     [[nodiscard]] bool isVector() const;
 
+    void normalize();
+
     static Tuple normalized(const Tuple &v);
     static float dot(const Tuple& a, const Tuple& b);
     static Tuple cross(const Tuple& a, const Tuple& b);

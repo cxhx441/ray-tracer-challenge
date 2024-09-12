@@ -17,6 +17,7 @@ private:
     Matrix normal_transform = Matrix::normal_matrix(transform);
 
 public:
+    std::shared_ptr<Shape> parent = nullptr;
     Material material = Material();
 
     // virtual destructor
@@ -29,6 +30,9 @@ public:
     Matrix get_transform() const;
     Matrix get_inverse_transform() const;
     Matrix get_normal_transform() const;
+
+    Tuple world_to_object(const Tuple &world_point) const;
+    Tuple normal_to_world(const Tuple &model_normal) const;
 
     Color pattern_at(const Tuple& world_point) const;
 

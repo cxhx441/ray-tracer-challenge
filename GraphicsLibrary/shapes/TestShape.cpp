@@ -4,6 +4,9 @@
 
 #include "TestShape.h"
 
+std::shared_ptr<TestShape> TestShape::create() { return std::make_shared<TestShape>(); }
+
+
 Tuple TestShape::model_normal_at(const Tuple& model_point) const {
     return Tuple::vector(model_point.x, model_point.y, model_point.z);
 }

@@ -25,6 +25,7 @@ add_executable(Google_Tests_run
         CubeTest.cpp
         CylinderTest.cpp
         ConeTest.cpp
+        GroupTest.cpp
 )
 
 target_link_libraries(Google_Tests_run PRIVATE GraphicsLibrary_lib)

@@ -135,17 +135,25 @@ TEST(TupleTestSuite, MagnitudeOfVecNeg123) {
     EXPECT_FLOAT_EQ( v.magnitude(), std::sqrt(14));
 }
 
-TEST(TupleTestSuite, Normalize400) {
+TEST(TupleTestSuite, Normalize400_static) {
     Tuple v = Tuple::vector(4, 0, 0);
     EXPECT_EQ(Tuple::normalized(v), Tuple::vector(1, 0, 0));
 }
 
-TEST(TupleTestSuite, Normalize123) {
+TEST(TupleTestSuite, Normalize123_static) {
     Tuple v = Tuple::vector(1, 2, 3);
     Tuple n = Tuple::normalized(v);
     EXPECT_FLOAT_EQ(n.x, 1.f / std::sqrt(14));
     EXPECT_FLOAT_EQ(n.y, 2.f / std::sqrt(14));
     EXPECT_FLOAT_EQ(n.z, 3.f / std::sqrt(14));
+}
+
+TEST(TupleTestSuite, Normalize123) {
+    Tuple v = Tuple::vector(1, 2, 3);
+    v.normalize();
+    EXPECT_FLOAT_EQ(v.x, 1.f / std::sqrt(14));
+    EXPECT_FLOAT_EQ(v.y, 2.f / std::sqrt(14));
+    EXPECT_FLOAT_EQ(v.z, 3.f / std::sqrt(14));
 }
 
 TEST(TupleTestSuite, MagnitudeOfNormalizedVector) {

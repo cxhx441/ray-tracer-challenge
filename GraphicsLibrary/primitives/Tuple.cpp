@@ -23,6 +23,13 @@ float Tuple::magnitude() const {
     return std:: sqrt(x * x + y * y + z * z);
 }
 
+void Tuple::normalize(){
+    float m = magnitude();
+    x /= m;
+    y /= m;
+    z /= m;
+}
+
 Tuple Tuple::normalized(const Tuple& v) {
     return vector(v.x, v.y, v.z) / v.magnitude();
 }
