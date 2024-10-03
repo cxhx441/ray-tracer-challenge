@@ -121,3 +121,9 @@ TEST(ShapeTestSuite, FindingTheNormalOnAChildObject) {
     auto n = s->normal_at(Tuple::point(1.7321, 1.1547, -5.5774));
     EXPECT_EQ(n, Tuple::vector(0.2857, 0.4286, -0.8571));
 }
+
+TEST(ShapeTestSuite, FindNormalOnGroupThrowsError) {
+    auto g1 = Group::create();
+    g1->set_transform(Transformation::rotation_y(M_PI_2));
+    EXPECT_THROW(g1->model_normal_at(Tuple::point(1.7321, 1.1547, -5.5774)), std::runtime_error);
+}

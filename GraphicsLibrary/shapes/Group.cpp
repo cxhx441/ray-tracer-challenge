@@ -26,6 +26,6 @@ std::vector<Intersection> Group::model_intersect(const Ray &model_ray) const {
 }
 
 Tuple Group::model_normal_at(const Tuple &model_point) const {
-    return Tuple();
+    throw std::runtime_error("This is not implemented and should never be called");
 }
 
