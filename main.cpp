@@ -1248,8 +1248,9 @@ void basic_blended_sphere_patterns_example(){
     checkered_sphere->material.add_pattern(stripes_rot);
 
     regular_plane->set_transform(Transformation::translation(0, -1, 0));
+
     auto g1 = Group::create();
-    g1->set_transform(Transformation::translation(0, 0, 0.5));
+    g1->set_transform(Transformation::translation(0, 0, 2.5));
     g1->add_child(striped_sphere);
     g1->add_child(gradient_sphere);
     g1->add_child(ring_sphere);
@@ -1262,12 +1263,12 @@ void basic_blended_sphere_patterns_example(){
     PointLight light(Tuple::point(0, 10, 0), Color::white());
 
     World world;
-//    world.add( {striped_sphere, gradient_sphere, ring_sphere, checkered_sphere} );
+    // world.add( {striped_sphere, gradient_sphere, ring_sphere, checkered_sphere} );
     world.add(g1);
     world.add(regular_plane);
     world.add(light);
 
-    int factor = 10;
+    int factor = 5;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.set_transform(
             Transformation::view_transform(

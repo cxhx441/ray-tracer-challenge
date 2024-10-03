@@ -16,9 +16,9 @@ void Group::add_child(const std::shared_ptr<Shape> &child) {
 
 std::vector<Intersection> Group::model_intersect(const Ray &model_ray) const {
     std::vector<Intersection> group_xs = {};
-    Ray group_ray = Transformation::transform( model_ray, this->get_inverse_transform() );
+    // Ray group_ray = Transformation::transform( model_ray, this->get_inverse_transform() );
     for (const auto &shape : children){
-        auto shape_xs = shape->intersect(group_ray);
+        auto shape_xs = shape->intersect(model_ray);
         group_xs.insert(group_xs.end(), shape_xs.begin(), shape_xs.end());
     }
     std::sort(group_xs.begin(), group_xs.end());

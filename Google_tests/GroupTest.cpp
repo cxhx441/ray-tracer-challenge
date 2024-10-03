@@ -51,15 +51,18 @@ TEST(GroupTestSuite, IntersectionOnNonEmptyGroup) {
     EXPECT_EQ(xs[3].shape, s1);
 }
 
-TEST(GroupTestSuite, IntersectingATrnsformedGroup) {
+TEST(GroupTestSuite, IntersectingATransformedGroup) {
     auto g = Group::create();
     g->set_transform(Transformation::scaling(2));
+
     auto s = Sphere::create();
     s->set_transform(Transformation::translation(5, 0, 0));
+
     g->add_child(s);
 
-    Ray r(Tuple::point(10, 0, -10), Tuple::vector(0, 0, 1));
-    auto xs = g->model_intersect(r);
+    Ray ray(Tuple::point(10, 0, -10), Tuple::vector(0, 0, 1));
+    auto model_ray = Transformation::transform(ray, g->get_inverse_transform());  // I added this.
+    auto xs = g->model_intersect(model_ray);
     ASSERT_EQ(xs.size(), 2);
 }
 
