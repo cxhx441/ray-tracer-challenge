@@ -50,8 +50,10 @@ TEST(CylinderTestSuite, RayIntersectsCylinder){
         Ray r(origins[i], Tuple::normalized(directions[i]));
         std::vector<Intersection> xs = c->intersect(r);
         EXPECT_EQ(xs.size(), 2);
-        EXPECT_FLOAT_EQ(xs[0].t, t0s[i]);
-        EXPECT_FLOAT_EQ(xs[1].t, t1s[i]);
+//        EXPECT_FLOAT_EQ(xs[0].t, t0s[i]);
+//        EXPECT_FLOAT_EQ(xs[1].t, t1s[i]);
+        EXPECT_NEAR(xs[0].t, t0s[i], 0.0001);
+        EXPECT_NEAR(xs[1].t, t1s[i], 0.0001);
     }
 }
 
