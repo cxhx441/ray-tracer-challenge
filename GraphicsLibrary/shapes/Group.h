@@ -22,6 +22,8 @@ public:
     std::vector<Tuple> bounds() const override;
     std::vector<Intersection> model_intersect(const Ray& model_ray) const override;
     Tuple model_normal_at(const Tuple& model_point) const override;
+    std::vector<Intersection> bounds_intersect(const Ray &model_ray) const;
+    std::tuple<float, float> check_bounds_axis(float origin, float direction, float bound_min, float bound_max) const;
 
 };
 

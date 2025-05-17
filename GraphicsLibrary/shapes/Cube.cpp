@@ -69,8 +69,8 @@ std::tuple<float, float> Cube::check_axis(float origin, float direction) {
     float tmin_numerator = (-1 - origin);
     float tmax_numerator = (1 - origin);
 
-    float tmin = -1;
-    float tmax = -1;
+    float tmin;
+    float tmax;
     if (std::abs(direction) >= 0.00001){
         tmin = tmin_numerator / direction;
         tmax = tmax_numerator / direction;
