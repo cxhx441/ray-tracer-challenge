@@ -20,3 +20,10 @@ std::vector<Intersection> Plane::model_intersect(const Ray &model_ray) const {
     float t = -model_ray.origin.y / model_ray.direction.y;
     return {Intersection(t,  shared_from_this())};
 }
+
+std::vector<Tuple> Plane::bounds() const {
+    float inf = std::numeric_limits<float>::infinity();
+    Tuple minimum = Tuple::point(-inf, 0, -inf);
+    Tuple maximum = Tuple::point(inf, 0, inf);
+    return { minimum, maximum };
+}

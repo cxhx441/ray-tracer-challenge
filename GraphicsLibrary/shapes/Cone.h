@@ -20,6 +20,7 @@ public:
     static std::shared_ptr<Cone> create();
     static std::shared_ptr<Cone> solid_glass();
 
+    std::vector<Tuple> bounds() const override;
     std::vector<Intersection> model_intersect(const Ray& model_ray) const override;
     Tuple model_normal_at(const Tuple& model_point) const override;
 private:

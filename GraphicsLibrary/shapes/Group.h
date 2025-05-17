@@ -18,6 +18,8 @@ public:
 
     void add_child(const std::shared_ptr<Shape> &child);
 
+
+    std::vector<Tuple> bounds() const override;
     std::vector<Intersection> model_intersect(const Ray& model_ray) const override;
     Tuple model_normal_at(const Tuple& model_point) const override;
 

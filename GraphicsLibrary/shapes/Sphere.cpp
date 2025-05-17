@@ -47,3 +47,8 @@ std::vector<Intersection> Sphere::model_intersect(const Ray &model_ray) const {
     return {Intersection(t1, shared_from_this()), Intersection(t2, shared_from_this())};
 }
 
+std::vector<Tuple> Sphere::bounds() const {
+    Tuple minimum = Tuple::point(-1, -1, -1);
+    Tuple maximum = Tuple::point(1, 1, 1);
+    return { minimum, maximum };
+}

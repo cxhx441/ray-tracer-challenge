@@ -97,4 +97,10 @@ bool Cylinder::check_caps(const Ray &r, float t) {
     return pow(x, 2) + pow(z, 2) - 1 < 0.000001;
 }
 
+std::vector<Tuple> Cylinder::bounds() const {
+    float inf = std::numeric_limits<float>::infinity();
+    Tuple minimum = Tuple::point(-1, inf, -1);
+    Tuple maximum = Tuple::point(1, -inf, 1);
+    return { minimum, maximum };
+}
 

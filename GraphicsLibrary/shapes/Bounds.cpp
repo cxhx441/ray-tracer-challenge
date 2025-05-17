@@ -1,28 +1,14 @@
 //
-// Created by craig on 9/5/2024.
+// Created by craig on 5/17/2025.
 //
 
 #include <limits>
 #include <algorithm>
-#include "Cube.h"
+#include "Bounds.h"
 
-std::shared_ptr<Cube> Cube::create() { return std::make_shared<Cube>(); }
+std::shared_ptr<Bounds> Bounds::create() { return std::make_shared<Bounds>(); }
 
-std::shared_ptr<Cube> Cube::solid_glass() {
-    auto c = std::make_shared<Cube>();
-    c->material.color = Color::black();
-    c->material.transparency = 1;
-    c->material.refractive_index = Material::RefractiveIndices::glass;
-    c->material.reflective = 1;
-    c->material.diffuse = 0.1;
-    c->material.ambient = 0.1;
-    c->material.specular = 1;
-    c->material.shininess = 300;
-
-    return c;
-}
-
-Tuple Cube::model_normal_at(const Tuple &model_point) const {
+Tuple Bounds::model_normal_at(const Tuple &model_point) const {
     /**
      *  The normal would typically be on the corresponding face of the component whose abs_val is 1. But we can't trust
      *  == due to floating point, so just pick the one with the largest abs_val.
@@ -39,7 +25,7 @@ Tuple Cube::model_normal_at(const Tuple &model_point) const {
         return Tuple::vector(0, 0, model_point.z);
 }
 
-std::vector<Intersection> Cube::model_intersect(const Ray &model_ray) const {
+std::vector<Intersection> Bounds::model_intersect(const Ray &model_ray) const {
     /**
         Return the largest minimum t val and smallest maximum t val.
     **/
@@ -61,7 +47,7 @@ std::vector<Intersection> Cube::model_intersect(const Ray &model_ray) const {
     return {Intersection(t_min, shared_from_this()), Intersection(t_max, shared_from_this())};
 }
 
-std::tuple<float, float> Cube::check_axis(float origin, float direction) {
+std::tuple<float, float> Bounds::check_axis(float origin, float direction) {
     /**
      * Same ray-plane intersection as in Plans class but generalized for offset planes.
      * Handles when direction is 0 by multiplying by infinity.
@@ -86,9 +72,3 @@ std::tuple<float, float> Cube::check_axis(float origin, float direction) {
     return {tmin, tmax};
 }
 
-// std::vector<Intersection> Cube::model_intersect(const Ray &model_ray) const {
-std::vector<Tuple> Cube::bounds() const {
-    Tuple minimum = Tuple::point(-1, -1, -1);
-    Tuple maximum = Tuple::point(1, 1, 1);
-    return { minimum, maximum };
-}
