@@ -14,6 +14,11 @@ TEST(GroupTestSuite, CreateGroup) {
     EXPECT_EQ(g->children.size(), 0);
 }
 
+TEST(GroupTestSuite, ShapeHasAParentAttribute) {
+    auto s = TestShape::create();
+    ASSERT_EQ(s->parent, nullptr);
+}
+
 TEST(GroupTestSuite, AddChildToGroup) {
     auto g = Group::create();
     auto s = TestShape::create();
@@ -24,7 +29,7 @@ TEST(GroupTestSuite, AddChildToGroup) {
     EXPECT_EQ(s->parent, g);
 }
 
-TEST(GroupTestSuite, IntersectionOnEmptyGroupIsEmpty) {
+TEST(GroupTestSuite, IntersectionOnEmptyGroup) {
     auto g = Group::create();
     Ray r(Tuple::point(0, 0, 0), Tuple::vector(0, 0, 1));
     auto xs = g->model_intersect(r);
