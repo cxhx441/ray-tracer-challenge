@@ -120,8 +120,8 @@ bool Cone::check_caps(const Ray &r, float t, float cap_radius) {
     return pow(x, 2) + pow(z, 2) - cap_radius < 0.001;
 }
 
-std::vector<Tuple> Cone::bounds() const {
+Bounds Cone::bounds() const {
     Tuple minimum = Tuple::point(-1, 0, -1);
     Tuple maximum = Tuple::point(1, 1, 1);
-    return { minimum, maximum };
+    return {minimum, maximum};
 }

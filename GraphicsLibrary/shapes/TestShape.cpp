@@ -16,7 +16,7 @@ std::vector<Intersection> TestShape::model_intersect(const Ray &model_ray) const
     return {};
 }
 
-std::vector<Tuple> TestShape::bounds() const {
+Bounds TestShape::bounds() const {
     Tuple minimum = Tuple::point(-1, -1, -1);
     Tuple maximum = Tuple::point(1, 1, 1);
     return { minimum, maximum };

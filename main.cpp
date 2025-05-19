@@ -1268,7 +1268,7 @@ void basic_blended_sphere_patterns_example(){
     world.add(regular_plane);
     world.add(light);
 
-    int factor = 5;
+    int factor = 10;
     Camera camera(100*factor, 50*factor, M_PI/3.f);
     camera.set_transform(
             Transformation::view_transform(

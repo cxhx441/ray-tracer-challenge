@@ -5,7 +5,7 @@
 #ifndef RAYTRACERCHAELLENGE_SHAPE_H
 #define RAYTRACERCHAELLENGE_SHAPE_H
 
-// #include "Bounds.h"
+#include "Bounds.h"
 #include "../primitives/Transformation.h"
 #include "../primitives/Intersection.h"
 #include "Material.h"
@@ -37,7 +37,7 @@ public:
 
     Color pattern_at(const Tuple& world_point) const;
 
-    virtual std::vector<Tuple> bounds() const = 0;
+    virtual Bounds bounds() const = 0;
     virtual std::vector<Intersection> intersect(const Ray& world_ray) const final;
     virtual std::vector<Intersection> model_intersect(const Ray& model_ray) const = 0;
     virtual Tuple normal_at(const Tuple& world_point) const final;

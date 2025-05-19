@@ -16,7 +16,7 @@ public:
     TestShape() = default;
     ~TestShape() override = default;
 
-    std::vector<Tuple> bounds() const override;
+    Bounds bounds() const override;
     std::vector<Intersection> model_intersect(const Ray &model_ray) const override;
     Tuple model_normal_at(const Tuple& model_point) const override;
 };

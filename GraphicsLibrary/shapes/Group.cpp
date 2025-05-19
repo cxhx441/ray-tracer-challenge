@@ -12,11 +12,22 @@ std::shared_ptr<Group> Group::create() {
 void Group::add_child(const std::shared_ptr<Shape> &child) {
     children.push_back(child);
     child->parent = shared_from_this();
+
+    Bounds child_bounds = child->bounds(); // In object space
+    for (const auto& corner : child_bounds.corners()) {
+        Tuple transformed_corner = child->get_transform() * corner;
+        group_bounds.include(transformed_corner);
+    }
 }
 
 std::vector<Intersection> Group::model_intersect(const Ray &model_ray) const {
-    std::vector<Intersection> group_xs = {};
     // Ray group_ray = Transformation::transform( model_ray, this->get_inverse_transform() );
+    if ( this->bounds_intersect(model_ray).empty() ) {
+        // check if ray misses bounding box
+        return {};
+    }
+
+    std::vector<Intersection> group_xs = {};
     for (const auto &shape : children){
         auto shape_xs = shape->intersect(model_ray);
         group_xs.insert(group_xs.end(), shape_xs.begin(), shape_xs.end());
@@ -34,15 +45,13 @@ std::vector<Intersection> Group::bounds_intersect(const Ray &model_ray) const {
         Return the largest minimum t val and smallest maximum t val.
     **/
 
-    std::vector<Tuple> bounds = Group::bounds();
-
-    auto [xt_min, xt_max] = check_bounds_axis(model_ray.origin.x, model_ray.direction.x, bounds[0].x, bounds[1].x);
+    auto [xt_min, xt_max] = check_bounds_axis(model_ray.origin.x, model_ray.direction.x, group_bounds.min.x, group_bounds.max.x);
     if (xt_min > xt_max) return {}; // return early.
 
-    auto [yt_min, yt_max] = check_bounds_axis(model_ray.origin.y, model_ray.direction.y, bounds[0].y, bounds[1].y);
+    auto [yt_min, yt_max] = check_bounds_axis(model_ray.origin.y, model_ray.direction.y, group_bounds.min.y, group_bounds.max.y);
     if (yt_min > yt_max) return {}; // return early.
 
-    auto [zt_min, zt_max] = check_bounds_axis(model_ray.origin.z, model_ray.direction.z, bounds[0].z, bounds[1].z);
+    auto [zt_min, zt_max] = check_bounds_axis(model_ray.origin.z, model_ray.direction.z, group_bounds.min.z, group_bounds.max.z);
     if (zt_min > zt_max) return {}; // return early.
 
     float t_min = std::max({xt_min, yt_min, zt_min});
@@ -79,57 +88,17 @@ std::tuple<float, float> Group::check_bounds_axis(float origin, float direction,
     return {tmin, tmax};
 }
 
-
-std::vector<Tuple> Group::bounds() const {
-    // First get bounds that fit all the objects after their object space transformations
-    float inf = std::numeric_limits<float>::infinity();
-    float x_min = inf;
-    float y_min = inf;
-    float z_min = inf;
-    float x_max = -inf;
-    float y_max = -inf;
-    float z_max = -inf;
-
-    for (const auto &shape : children){
-        auto bounds = shape->bounds();
-        Tuple trans_min = shape->get_transform() * bounds[0];
-        Tuple trans_max = shape->get_transform() * bounds[1];
-
-        x_min = ( trans_min.x < x_min ) ? trans_min.x : x_min;
-        y_min = ( trans_min.y < y_min ) ? trans_min.y : y_min;
-        z_min = ( trans_min.z < z_min ) ? trans_min.z : z_min;
-
-        x_max = ( trans_max.x > x_max ) ? trans_max.x : x_max;
-        y_max = ( trans_max.y > y_max ) ? trans_max.y : y_max;
-        z_max = ( trans_max.z > z_max ) ? trans_max.z : z_max;
+void Group::update_bounds(){
+    for (const auto &child_shape : children){
+        // auto shape_xs = shape->intersect(model_ray);
+        Bounds child_bounds = child_shape->bounds(); // In object space
+        for (const auto& corner : child_bounds.corners()) {
+            Tuple transformed_corner = child_shape->get_transform() * corner;
+            group_bounds.include(transformed_corner);
+        }
     }
+}
 
-    // Then transform the points of this AABB into group space, and create a new AABB based off that.
-    Matrix group_transform = this->get_transform();
-    Tuple p00 = group_transform * Tuple::point(x_min, y_min, z_min);
-    Tuple p01 = group_transform * Tuple::point(x_min, y_min, z_max);
-    Tuple p02 = group_transform * Tuple::point(x_max, y_min, z_max);
-    Tuple p03 = group_transform * Tuple::point(x_max, y_min, z_min);
-
-    Tuple p10 = group_transform * Tuple::point(x_min, y_max, z_min);
-    Tuple p11 = group_transform * Tuple::point(x_min, y_max, z_max);
-    Tuple p12 = group_transform * Tuple::point(x_max, y_max, z_max);
-    Tuple p13 = group_transform * Tuple::point(x_max, y_max, z_min);
-
-    std::vector<float> xs = { p00.x, p01.x, p02.x, p03.x, p10.x, p11.x, p12.x, p13.x };
-    std::vector<float> ys = { p00.y, p01.y, p02.y, p03.y, p10.y, p11.y, p12.y, p13.y };
-    std::vector<float> zs = { p00.z, p01.z, p02.z, p03.z, p10.z, p11.z, p12.z, p13.z };
-
-    x_min = *min_element(xs.begin(), xs.end());
-    y_min = *min_element(ys.begin(), ys.end());
-    z_min = *min_element(zs.begin(), zs.end());
-
-    x_max = *max_element(xs.begin(), xs.end());
-    y_max = *max_element(ys.begin(), ys.end());
-    z_max = *max_element(zs.begin(), zs.end());
-
-    Tuple minimum = Tuple::point(x_min, y_min, z_min);
-    Tuple maximum = Tuple::point(x_max, y_max, z_max);
-
-    return { minimum, maximum };
+Bounds Group::bounds() const {
+    return group_bounds;
 }

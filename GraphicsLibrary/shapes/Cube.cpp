@@ -87,7 +87,7 @@ std::tuple<float, float> Cube::check_axis(float origin, float direction) {
 }
 
 // std::vector<Intersection> Cube::model_intersect(const Ray &model_ray) const {
-std::vector<Tuple> Cube::bounds() const {
+Bounds Cube::bounds() const {
     Tuple minimum = Tuple::point(-1, -1, -1);
     Tuple maximum = Tuple::point(1, 1, 1);
     return { minimum, maximum };

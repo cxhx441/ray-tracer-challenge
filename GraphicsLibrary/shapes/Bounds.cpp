@@ -2,73 +2,52 @@
 // Created by craig on 5/17/2025.
 //
 
-#include <limits>
-#include <algorithm>
 #include "Bounds.h"
 
-std::shared_ptr<Bounds> Bounds::create() { return std::make_shared<Bounds>(); }
-
-Tuple Bounds::model_normal_at(const Tuple &model_point) const {
-    /**
-     *  The normal would typically be on the corresponding face of the component whose abs_val is 1. But we can't trust
-     *  == due to floating point, so just pick the one with the largest abs_val.
-     */
-    float abs_x = std::abs(model_point.x);
-    float abs_y = std::abs(model_point.y);
-    float abs_z = std::abs(model_point.z);
-
-    if (abs_x >= abs_y && abs_x >= abs_z)
-        return Tuple::vector(model_point.x, 0, 0);
-    else if (abs_y >= abs_x && abs_y >= abs_z)
-        return Tuple::vector(0, model_point.y, 0);
-    else
-        return Tuple::vector(0, 0, model_point.z);
-}
-
-std::vector<Intersection> Bounds::model_intersect(const Ray &model_ray) const {
-    /**
-        Return the largest minimum t val and smallest maximum t val.
-    **/
-    auto [xt_min, xt_max] = check_axis(model_ray.origin.x, model_ray.direction.x);
-    if (xt_min > xt_max) return {}; // return early.
-
-    auto [yt_min, yt_max] = check_axis(model_ray.origin.y, model_ray.direction.y);
-    if (yt_min > yt_max) return {}; // return early.
-
-    auto [zt_min, zt_max] = check_axis(model_ray.origin.z, model_ray.direction.z);
-    if (zt_min > zt_max) return {}; // return early.
-
-    float t_min = std::max({xt_min, yt_min, zt_min});
-    float t_max = std::min({xt_max, yt_max, zt_max});
-
-    if (t_min > t_max)
-        return {};
-
-    return {Intersection(t_min, shared_from_this()), Intersection(t_max, shared_from_this())};
-}
-
-std::tuple<float, float> Bounds::check_axis(float origin, float direction) {
-    /**
-     * Same ray-plane intersection as in Plans class but generalized for offset planes.
-     * Handles when direction is 0 by multiplying by infinity.
-     */
-    float tmin_numerator = (-1 - origin);
-    float tmax_numerator = (1 - origin);
-
-    float tmin = -1;
-    float tmax = -1;
-    if (std::abs(direction) >= 0.00001){
-        tmin = tmin_numerator / direction;
-        tmax = tmax_numerator / direction;
-    }
-    else {
-        tmin = tmin_numerator * std::numeric_limits<float>::infinity();
-        tmax = tmax_numerator * std::numeric_limits<float>::infinity();
-    }
-
-    if ( tmin > tmax )
-        std::swap(tmin, tmax);
-
-    return {tmin, tmax};
-}
+// std::vector<Intersection> Bounds::model_intersect(const Ray &model_ray) const {
+//     /**
+//         Return the largest minimum t val and smallest maximum t val.
+//     **/
+//     auto [xt_min, xt_max] = check_axis(model_ray.origin.x, model_ray.direction.x);
+//     if (xt_min > xt_max) return {}; // return early.
+//
+//     auto [yt_min, yt_max] = check_axis(model_ray.origin.y, model_ray.direction.y);
+//     if (yt_min > yt_max) return {}; // return early.
+//
+//     auto [zt_min, zt_max] = check_axis(model_ray.origin.z, model_ray.direction.z);
+//     if (zt_min > zt_max) return {}; // return early.
+//
+//     float t_min = std::max({xt_min, yt_min, zt_min});
+//     float t_max = std::min({xt_max, yt_max, zt_max});
+//
+//     if (t_min > t_max)
+//         return {};
+//
+//     return {Intersection(t_min, shared_from_this()), Intersection(t_max, shared_from_this())};
+// }
+//
+// std::tuple<float, float> Bounds::check_axis(float origin, float direction) {
+//     /**
+//      * Same ray-plane intersection as in Plans class but generalized for offset planes.
+//      * Handles when direction is 0 by multiplying by infinity.
+//      */
+//     float tmin_numerator = (-1 - origin);
+//     float tmax_numerator = (1 - origin);
+//
+//     float tmin = -1;
+//     float tmax = -1;
+//     if (std::abs(direction) >= 0.00001){
+//         tmin = tmin_numerator / direction;
+//         tmax = tmax_numerator / direction;
+//     }
+//     else {
+//         tmin = tmin_numerator * std::numeric_limits<float>::infinity();
+//         tmax = tmax_numerator * std::numeric_limits<float>::infinity();
+//     }
+//
+//     if ( tmin > tmax )
+//         std::swap(tmin, tmax);
+//
+//     return {tmin, tmax};
+// }
 
